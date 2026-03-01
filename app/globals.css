@@ -1,26 +1,66 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-light: #F1FAEE;
+  --color-brand-primary: #34A0A4;
+  --color-brand-secondary: #76C893;
+  --color-brand-accent: #82C49C;
+  --color-brand-dark: #1D3557;
+  --color-background: #ffffff;
+  --color-foreground: #1D3557;
+  --font-sans: var(--font-dm-sans), system-ui, sans-serif;
+  --font-heading: var(--font-outfit), system-ui, sans-serif;
+  --font-number: var(--font-space-grotesk), monospace;
+}
+
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground: #1D3557;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-number {
+  font-family: var(--font-number);
+  font-feature-settings: "tnum" on, "lnum" on;
+}
+
+.text-brand-primary {
+  color: var(--color-brand-primary);
+}
+
+.bg-brand-primary {
+  background-color: var(--color-brand-primary);
+}
+
+.text-brand-secondary {
+  color: var(--color-brand-secondary);
+}
+
+.bg-brand-secondary {
+  background-color: var(--color-brand-secondary);
+}
+
+.text-brand-accent {
+  color: var(--color-brand-accent);
+}
+
+.bg-brand-accent {
+  background-color: var(--color-brand-accent);
 }
