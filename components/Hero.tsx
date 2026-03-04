@@ -1,4 +1,5 @@
-import Image from "next/image";
+﻿import Image from "next/image";
+import Link from "next/link";
 
 const SvgCheckCircle = ({ className, strokeWidth = 1.5 }: { className?: string, strokeWidth?: number }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor" strokeWidth={strokeWidth}>
@@ -29,15 +30,15 @@ export function Hero() {
           {/* Content */}
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-3 mb-6">
-              <span className="h-px w-8 bg-[#34A0A4]"></span>
-              <span className="text-[#34A0A4] font-bold text-xs uppercase tracking-[0.2em] font-heading">
+              <span className="h-px w-8 bg-emerald-600"></span>
+              <span className="text-emerald-600 font-bold text-xs uppercase tracking-[0.2em] font-heading">
                 Next Generation Nutrition
               </span>
             </div>
 
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-medium tracking-tight text-[#1D3557] leading-[1.05] font-heading mb-6">
               True Health,<br />
-              <span className="text-[#34A0A4] italic font-light">Simplified.</span>
+              <span className="text-emerald-600 italic font-light">Simplified.</span>
             </h1>
 
             <p className="text-lg sm:text-xl text-[#1D3557]/70 font-sans font-light leading-relaxed mb-10 max-w-lg">
@@ -45,13 +46,13 @@ export function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5">
-              <button className="px-8 py-4 bg-[#34A0A4] text-[#ffffff] rounded-full font-sans font-medium hover:bg-[#1D3557] shadow-[0_4px_20px_rgba(52,160,164,0.3)] hover:shadow-[0_4px_20px_rgba(29,53,87,0.3)] transition-all duration-300 flex items-center justify-center gap-3 group">
+              <Link href="/products" className="px-10 py-5 bg-emerald-600 text-[#ffffff] rounded-full font-sans font-bold uppercase tracking-widest text-xs hover:bg-emerald-700 shadow-[0_20px_40px_rgba(5,150,105,0.2)] transition-all duration-500 flex items-center justify-center gap-3 group">
                 Shop Essentials
-                <SvgArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="px-8 py-4 bg-white text-[#1D3557] rounded-full font-sans font-medium border border-[#1D3557]/10 hover:border-[#34A0A4] shadow-[0_2px_10px_rgba(29,53,87,0.03)] transition-all duration-300">
+                <SvgArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-500" />
+              </Link>
+              <Link href="/information" className="px-10 py-5 bg-white text-[#1D3557] rounded-full font-sans font-bold uppercase tracking-widest text-xs border border-[#1D3557]/10 hover:border-emerald-600 shadow-[0_10px_30px_rgba(29,53,87,0.03)] transition-all duration-500 flex items-center justify-center">
                 Explore The Science
-              </button>
+              </Link>
             </div>
 
             <div className="mt-12 pt-8 border-t border-[#1D3557]/10 flex flex-wrap gap-8 items-center justify-start">
@@ -93,7 +94,7 @@ export function Hero() {
                 {[1, 2, 3].map(i => <img key={i} src={`https://i.pravatar.cc/100?img=${i + 20}`} className="w-10 h-10 rounded-full border-2 border-white object-cover" alt="Reviewer" />)}
               </div>
               <div>
-                <div className="flex text-[#34A0A4] mb-0.5 space-x-0.5">
+                <div className="flex text-emerald-500 mb-0.5 space-x-0.5">
                   {[1, 2, 3, 4, 5].map(i => <SvgStar key={i} className="w-[14px] h-[14px]" />)}
                 </div>
                 <div className="text-xs font-bold text-[#1D3557] font-sans mt-1">Over 50K+ Reviews</div>

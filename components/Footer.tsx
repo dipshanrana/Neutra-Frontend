@@ -1,4 +1,4 @@
-const SvgArrowRight = ({ className, strokeWidth = 1.5 }: { className?: string, strokeWidth?: number }) => (
+﻿const SvgArrowRight = ({ className, strokeWidth = 1.5 }: { className?: string, strokeWidth?: number }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor" strokeWidth={strokeWidth}>
     <path d="M5 12H19M19 12L12 5M19 12L12 19" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
@@ -28,14 +28,14 @@ const SvgLinkedin = ({ className, strokeWidth = 1.5 }: { className?: string, str
 
 export function Footer() {
   return (
-    <footer className="bg-[#1D3557] pt-24 pb-12">
+    <footer className="bg-emerald-600 pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-[#F1FAEE]">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-16 xl:gap-24 mb-24">
 
           {/* Brand column */}
           <div className="md:col-span-5">
             <span className="text-[2rem] font-medium tracking-tight font-heading block mb-6 text-white">
-              Nutri<span className="text-[#34A0A4]">Core</span>
+              Nutri<span className="text-emerald-600">Core</span>
             </span>
             <p className="text-[#F1FAEE]/70 font-sans font-light leading-relaxed max-w-sm mb-12 text-sm">
               Formulating the highest quality nutritional supplements, delivered straight to your door. Backed by science, obsessed with purity.
@@ -49,7 +49,7 @@ export function Footer() {
                   placeholder="Subscribe for insider updates"
                   className="bg-transparent border-none outline-none text-[#F1FAEE] w-full placeholder:text-[#F1FAEE]/40 font-sans text-sm font-light"
                 />
-                <button className="text-[#F1FAEE]/50 group-focus-within:text-[#34A0A4] hover:text-[#76C893] transition-colors">
+                <button className="text-[#F1FAEE]/50 group-focus-within:text-emerald-600 hover:text-[#76C893] transition-colors">
                   <SvgArrowRight className="w-5 h-5" strokeWidth={1.5} />
                 </button>
               </div>
@@ -62,30 +62,30 @@ export function Footer() {
             <div>
               <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#82C49C] font-heading mb-8">Shop</h4>
               <ul className="space-y-4 font-sans text-sm font-light">
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">Vitamins</a></li>
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">Proteins</a></li>
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">Omegas</a></li>
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">Minerals</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Vitamins</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Proteins</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Omegas</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Minerals</a></li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#82C49C] font-heading mb-8">Learn</h4>
               <ul className="space-y-4 font-sans text-sm font-light">
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">Our Ingredients</a></li>
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">Clinical Studies</a></li>
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">Sustainability</a></li>
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">Blog</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Our Ingredients</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Clinical Studies</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Sustainability</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Blog</a></li>
               </ul>
             </div>
 
             <div>
               <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#82C49C] font-heading mb-8">Support</h4>
               <ul className="space-y-4 font-sans text-sm font-light">
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">FAQ</a></li>
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">Shipping</a></li>
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">Returns</a></li>
-                <li><a href="#" className="hover:text-[#34A0A4] transition-colors text-[#F1FAEE]/80">Contact</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">FAQ</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Shipping</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Returns</a></li>
+                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Contact</a></li>
               </ul>
             </div>
 

@@ -1,26 +1,26 @@
 import type { Metadata } from "next";
-import { Outfit, DM_Sans, Space_Grotesk } from "next/font/google";
+import { Cormorant_Garamond, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
   subsets: ["latin"],
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
-  subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
   title: "NutriCore | Complete Nutrition Solutions",
   description: "Premium Supplements for a Better You. 100% Natural Ingredients.",
 };
+
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 
 export default function RootLayout({
   children,
@@ -30,8 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${outfit.variable} ${dmSans.variable} ${spaceGrotesk.variable} font-sans antialiased bg-[#ffffff] text-[#1D3557]`}
+        className={`${cormorant.variable} ${spaceMono.variable} font-sans antialiased bg-[#ffffff] text-[#1D3557]`}
       >
+        <AnalyticsTracker />
         {children}
       </body>
     </html>

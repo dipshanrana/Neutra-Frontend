@@ -1,4 +1,8 @@
-import React from "react";
+﻿"use client";
+
+import React, { useEffect, useState } from "react";
+import { categoryApi } from "@/lib/api";
+import Link from "next/link";
 
 const SvgArrowRight = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
@@ -36,64 +40,118 @@ const SvgDNA = ({ className }: { className?: string }) => (
     </svg>
 )
 
-export function Categories() {
-    const categories = [
-        { id: "01", name: "Vitamins & Minerals", desc: "Foundational micronutrients engineered for maximum bioavailability and absorption.", icon: SvgPill },
-        { id: "02", name: "Proteins & Powders", desc: "Ultra-filtered isolates optimized for immediate muscle repair and synthesis.", icon: SvgHexagon },
-        { id: "03", name: "Omegas & Oils", desc: "Cold-pressed, heavy-metal free lipids tailored for cognitive supremacy.", icon: SvgDrop },
-        { id: "04", name: "Performance Energy", desc: "Cellular ATP activators. Zero jitters, just clean, sustained kinetic output.", icon: SvgDNA },
-    ];
+const iconList = [SvgPill, SvgHexagon, SvgDrop, SvgDNA];
+const defaultDescs = [
+    "Foundational micronutrients engineered for maximum bioavailability.",
+    "Ultra-filtered isolates optimized for immediate muscle repair.",
+    "Cold-pressed, heavy-metal free lipids tailored for cognitive supremacy.",
+    "Cellular ATP activators. Zero jitters, just clean kinetic output."
+];
+
+export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
+    const [categories, setCategories] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const data = await categoryApi.getAll();
+                if (Array.isArray(data) && data.length > 0) {
+                    const mapped = data.map((cat: any, index: number) => ({
+                        id: `0${index + 1}`.slice(-2),
+                        name: typeof cat === 'string' ? cat : cat.name,
+                        svg: typeof cat === 'string' ? null : cat.svg,
+                        desc: defaultDescs[index % defaultDescs.length],
+                        icon: iconList[index % iconList.length],
+                    }));
+                    setCategories(mapped);
+                }
+            } catch (e) {
+                console.error("Failed to fetch categories", e);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchCategories();
+    }, []);
 
     return (
-        <section className="py-16 bg-white font-sans relative">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-24 bg-white font-sans relative overflow-hidden">
+            {/* Ambient Background Elements */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-600/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#82C49C]/5 rounded-full blur-[150px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
 
-                {/* Impeccably Clean Header */}
-                <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-                    <div>
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-[#1D3557] font-heading leading-[1.1] mb-6">
-                            Engineered for <br /> <span className="text-[#34A0A4] italic font-light">Specific Outcomes.</span>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                {!hideHeader && (
+                    <div className="mb-20">
+                        <div className="flex items-center gap-4 mb-4">
+                            <span className="h-px w-12 bg-emerald-600"></span>
+                            <span className="text-emerald-600 font-black uppercase tracking-[0.4em] text-[10px]">Taxonomy of Performance</span>
+                        </div>
+                        <h2 className="text-5xl md:text-7xl font-medium tracking-tight text-[#1D3557] font-heading leading-[1.05] mb-8">
+                            Biological <span className="text-emerald-600 italic font-light">Classification.</span>
                         </h2>
-                        <p className="text-[#1D3557]/60 font-sans text-lg font-light max-w-xl leading-relaxed">
-                            We discard broad-spectrum guesses. Every product category is mathematically formulated to target a precise biological mechanism.
+                        <p className="text-[#1D3557]/50 font-sans text-xl font-light max-w-2xl leading-relaxed">
+                            Every formula is systematically categorized by its primary cellular interaction mechanism. Navigate our library by specific physiological pathways.
                         </p>
                     </div>
-                </div>
+                )}
 
-                {/* Tesla / Apple Architectural Blueprint Grid */}
-                <div className="border-t border-l border-[#1D3557]/10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                    {categories.map((cat, index) => (
-                        <div key={index} className="border-r border-b border-[#1D3557]/10 p-10 lg:p-12 xl:p-14 group cursor-pointer hover:bg-[#F1FAEE]/60 transition-colors duration-500 relative flex flex-col h-full min-h-[420px]">
-
-                            {/* Number & Arrow Header */}
-                            <div className="flex justify-between items-start mb-16">
-                                <span className="text-sm font-bold font-number text-[#1D3557]/30 group-hover:text-[#34A0A4] transition-colors duration-500 tracking-widest">
-                                    {cat.id} //
-                                </span>
-                                <div className="w-12 h-12 rounded-full border border-[#1D3557]/10 flex items-center justify-center text-[#1D3557]/30 group-hover:bg-[#34A0A4] group-hover:border-[#34A0A4] group-hover:text-white transition-all duration-500 transform group-hover:-rotate-45 shadow-sm">
-                                    <SvgArrowRight className="w-5 h-5" />
-                                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-px bg-emerald-600/10 border border-[#1D3557]/10 rounded-[3rem] overflow-hidden shadow-2xl">
+                    {loading ? (
+                        [1, 2, 3, 4].map(i => (
+                            <div key={i} className="bg-white p-12 lg:p-20 min-h-[450px] animate-pulse">
+                                <div className="h-4 bg-[#F1FAEE] rounded w-1/4 mb-16"></div>
+                                <div className="h-20 w-20 bg-[#F1FAEE] rounded-3xl mb-12"></div>
+                                <div className="h-10 bg-[#F1FAEE] rounded w-2/3 mb-6"></div>
+                                <div className="h-4 bg-[#F1FAEE] rounded w-full"></div>
                             </div>
+                        ))
+                    ) : categories.length > 0 ? categories.map((cat, index) => {
+                        const IconComponent = cat.icon;
+                        return (
+                            <Link
+                                href={`/products?category=${cat.name}`}
+                                key={index}
+                                className="bg-white p-12 lg:p-20 group cursor-pointer hover:bg-[#fcfdfc] transition-all duration-700 relative flex flex-col h-full min-h-[450px] overflow-hidden"
+                            >
+                                {/* Hover background effect */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#F1FAEE] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
 
-                            <div className="mt-auto">
-                                {/* Precision Icon */}
-                                <div className="text-[#1D3557]/40 group-hover:text-[#34A0A4] transition-colors duration-500 mb-8 transform group-hover:scale-110 group-hover:-translate-y-2 origin-left">
-                                    <cat.icon className="w-14 h-14" />
+                                <div className="flex justify-between items-start mb-16 relative z-10">
+                                    <span className="text-xs font-black font-number text-[#1D3557]/20 group-hover:text-emerald-700 transition-colors duration-500 tracking-[0.4em]">
+                                        PROTOCOL 0{index + 1}
+                                    </span>
+                                    <div className="w-14 h-14 rounded-full border border-[#1D3557]/10 flex items-center justify-center text-[#1D3557]/20 group-hover:bg-emerald-600 group-hover:border-[#1D3557] group-hover:text-white transition-all duration-700 transform group-hover:rotate-45 shadow-sm">
+                                        <SvgArrowRight className="w-6 h-6" />
+                                    </div>
                                 </div>
-
-                                {/* Typography */}
-                                <h3 className="text-2xl lg:text-3xl font-medium text-[#1D3557] font-heading tracking-tight mb-4 leading-tight">
-                                    {cat.name}
-                                </h3>
-                                <p className="text-[#1D3557]/60 font-light font-sans text-sm leading-relaxed group-hover:text-[#1D3557]/80 transition-colors duration-500">
-                                    {cat.desc}
-                                </p>
-                            </div>
-
+                                <div className="mt-auto relative z-10">
+                                    <div className="text-[#1D3557]/20 group-hover:text-emerald-700 transition-all duration-700 mb-10 transform group-hover:scale-110 origin-left">
+                                        {cat.svg ? (
+                                            <span
+                                                className="block w-20 h-20 [&>svg]:w-20 [&>svg]:h-20 [&>svg]:block"
+                                                dangerouslySetInnerHTML={{ __html: cat.svg }}
+                                            />
+                                        ) : (
+                                            <IconComponent className="w-20 h-20" />
+                                        )}
+                                    </div>
+                                    <h3 className="text-4xl lg:text-5xl font-medium text-[#1D3557] font-heading tracking-tight mb-6 leading-tight group-hover:translate-x-2 transition-transform duration-700">
+                                        {cat.name}
+                                    </h3>
+                                    <p className="text-[#1D3557]/40 font-light font-sans text-lg leading-relaxed group-hover:text-[#1D3557]/70 transition-colors duration-700 max-w-md">
+                                        {cat.desc}
+                                    </p>
+                                </div>
+                            </Link>
+                        );
+                    }) : (
+                        <div className="col-span-2 bg-white text-center py-24">
+                            <p className="text-[#1D3557]/40 font-sans text-xl font-light">Laboratory database offline. No entries found.</p>
                         </div>
-                    ))}
+                    )}
                 </div>
-
             </div>
         </section>
     );
