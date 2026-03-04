@@ -15,27 +15,33 @@ import { Search, SlidersHorizontal, ShoppingCart, Star, Check } from "lucide-rea
 function ShopContent() {
     const searchParams = useSearchParams();
     const categoryParam = searchParams.get("category");
+    const searchParam = searchParams.get("search");
 
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState("");
+    const [searchQuery, setSearchQuery] = useState(searchParam || "");
     const [selectedCategory, setSelectedCategory] = useState(categoryParam || "");
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
 
-    useEffect(() => { loadInitialData(); }, [categoryParam]);
+    useEffect(() => { loadInitialData(); }, [categoryParam, searchParam]);
 
     const loadInitialData = async () => {
         setLoading(true);
         try {
             const [prods, cats] = await Promise.all([
-                categoryParam ? api.products.searchByCategory(categoryParam) : api.products.getAll(),
+                searchParam ? api.products.searchByName(searchParam) :
+                    categoryParam ? api.products.searchByCategory(categoryParam) :
+                        api.products.getAll(),
                 api.categories.getAll(),
             ]);
             setProducts(prods);
             setCategories(cats);
-            if (categoryParam) {
+            if (searchParam) {
+                setSearchQuery(searchParam);
+                setSelectedCategory(""); setMinPrice(""); setMaxPrice("");
+            } else if (categoryParam) {
                 setSelectedCategory(categoryParam);
                 setSearchQuery(""); setMinPrice(""); setMaxPrice("");
             }
@@ -157,111 +163,72 @@ function ShopContent() {
                             const benefits = p.benefits ?? [];
 
                             return (
-                                <div
+                                <Link
                                     key={p.id}
-                                    className="bg-white border border-stone-200 rounded-2xl overflow-hidden flex flex-col hover:shadow-lg hover:border-stone-300 transition-all duration-300 group"
+                                    href={`/products/${p.id}`}
+                                    className="group bg-white border border-stone-200 rounded-2xl overflow-hidden hover:shadow-lg hover:border-emerald-200 transition-all flex flex-col"
                                 >
-                                    {/* Image area */}
-                                    <div className="relative bg-[#FAF8F3] aspect-[4/5] w-full flex flex-col justify-end overflow-hidden">
-                                        {/* Discount badge — only shown when real discount exists */}
+                                    {/* Card image */}
+                                    <div className="relative bg-[#FAF8F3] aspect-square flex items-center justify-center p-8">
                                         {savePct > 0 && (
-                                            <div className="absolute top-4 left-4 z-10 bg-emerald-600 text-white font-heading font-semibold text-[10px] uppercase tracking-wide px-3 py-1.5 rounded-full shadow-sm">
-                                                Save {savePct}%
+                                            <div className="absolute top-3 left-3 bg-emerald-500 text-white font-heading font-semibold text-[10px] px-2.5 py-1 rounded-full uppercase">
+                                                -{savePct}%
                                             </div>
                                         )}
-                                        {/* Category top-right — only when available */}
                                         {catName && (
-                                            <div className="absolute top-4 right-4 z-10 font-heading font-semibold text-[10px] text-stone-400 uppercase tracking-[0.15em]">
+                                            <div className="absolute top-3 right-3 bg-white/80 text-stone-500 font-heading font-semibold text-[10px] px-2 py-1 rounded-full uppercase tracking-wide border border-stone-100">
                                                 {catName}
                                             </div>
                                         )}
-                                        {/* Product image */}
                                         {imageSrc.startsWith("http") || imageSrc.startsWith("data:") ? (
                                             <img
                                                 src={imageSrc}
                                                 alt={p.name}
-                                                className="w-full h-full object-cover mix-blend-multiply group-hover:scale-[1.05] transition-transform duration-500"
+                                                className="w-full h-full object-contain mix-blend-multiply group-hover:scale-[1.06] transition-transform duration-500"
                                             />
                                         ) : (
                                             <Image
                                                 src={imageSrc}
                                                 fill
                                                 alt={p.name}
-                                                className="object-cover mix-blend-multiply group-hover:scale-[1.05] transition-transform duration-500"
+                                                className="object-contain mix-blend-multiply group-hover:scale-[1.06] transition-transform duration-500 p-8"
                                             />
                                         )}
                                     </div>
 
                                     {/* Card body */}
-                                    <div className="flex flex-col flex-1 p-5">
-                                        {/* Stars + count — only rendered when product has real reviews */}
+                                    <div className="p-5 flex flex-col flex-1">
+                                        {/* Stars */}
                                         {avgRating !== null && (
-                                            <div className="flex items-center gap-1.5 mb-2">
-                                                <div className="flex items-center gap-0.5">
-                                                    {[...Array(5)].map((_, i) => (
-                                                        <Star key={i} strokeWidth={0}
-                                                            className={`w-3.5 h-3.5 ${i < Math.round(avgRating) ? "fill-amber-400" : "fill-stone-200"}`} />
-                                                    ))}
-                                                </div>
-                                                <span className="font-sans text-stone-400 text-xs">({reviews.length})</span>
+                                            <div className="flex items-center gap-1 mb-2">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <Star key={i} strokeWidth={0} className={`w-3 h-3 ${i < Math.round(avgRating) ? "fill-amber-400" : "fill-stone-200"}`} />
+                                                ))}
+                                                <span className="font-sans text-stone-400 text-xs ml-1">({reviews.length})</span>
                                             </div>
                                         )}
 
-                                        {/* Product name */}
-                                        <h2 className="font-heading font-semibold text-[#2A401E] text-[1.25rem] leading-tight mb-1">
+                                        <h3 className="font-heading font-semibold text-[#2A401E] text-[1rem] leading-tight mb-1 group-hover:text-emerald-600 transition-colors">
                                             {p.name}
-                                        </h2>
-
-                                        {/* Category subtitle in emerald */}
-                                        <span className="font-heading font-semibold text-[10px] text-emerald-600 uppercase tracking-[0.2em] block mb-2">
+                                        </h3>
+                                        <span className="font-heading font-semibold text-[10px] text-emerald-600 uppercase tracking-widest block mb-3">
                                             {catName}
                                         </span>
 
-                                        {/* Description */}
-                                        {p.description && (
-                                            <p className="font-sans text-stone-500 text-[13px] leading-relaxed mb-3 line-clamp-2">
-                                                {p.description}
-                                            </p>
-                                        )}
-
-                                        {/* Benefits checklist */}
-                                        {benefits.length > 0 && (
-                                            <ul className="space-y-1 mb-4">
-                                                {benefits.slice(0, 3).map((b, i) => (
-                                                    <li key={i} className="flex items-center gap-2 font-sans text-[13px] font-medium text-stone-600">
-                                                        <span className="w-4 h-4 rounded-full bg-[#EEF5EC] flex items-center justify-center shrink-0">
-                                                            <Check className="w-2.5 h-2.5 text-[#2A401E]" strokeWidth={3} />
-                                                        </span>
-                                                        {b.nutrientName}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        )}
-
-                                        <div className="mt-auto">
-                                            {/* Price row */}
-                                            <div className="flex items-baseline gap-2 mb-4">
-                                                <span className="font-heading font-semibold text-[#2A401E] text-[1.6rem] tracking-tight">
-                                                    NPR {currentSp.toLocaleString()}
-                                                </span>
+                                        <div className="flex items-center justify-between mt-auto pt-2">
+                                            <div className="flex items-baseline gap-2">
+                                                <span className="font-heading font-semibold text-[#2A401E] text-lg">NPR {currentSp.toLocaleString()}</span>
                                                 {currentMp > currentSp && (
-                                                    <span className="font-sans text-stone-400 text-base line-through font-medium">
-                                                        NPR {currentMp.toLocaleString()}
-                                                    </span>
+                                                    <span className="font-sans text-stone-400 text-sm line-through">NPR {currentMp.toLocaleString()}</span>
                                                 )}
                                             </div>
-
-                                            {/* CTA */}
-                                            <Link
-                                                href={`/products/${p.id}`}
-                                                className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-3 font-heading font-semibold text-[13px] uppercase tracking-wide transition-colors shadow-[0_4px_14px_rgba(5,150,105,0.25)] active:scale-[0.98]"
-                                            >
-                                                <ShoppingCart className="w-4 h-4" />
-                                                Shop Now
-                                            </Link>
+                                            <button className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-heading font-semibold text-[10px] uppercase tracking-wide px-3.5 py-2 rounded-full transition-colors shadow-sm">
+                                                <ShoppingCart className="w-3.5 h-3.5" />
+                                                Buy
+                                            </button>
                                         </div>
                                     </div>
-                                </div>
+                                </Link>
                             );
                         })}
                     </div>

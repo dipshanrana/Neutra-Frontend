@@ -16,7 +16,7 @@ const SvgChevronRight = ({ className }: { className?: string }) => (
 
 export function Features() {
   return (
-    <section                    className="py-24 bg-[#F1FAEE] relative overflow-hidden font-sans">
+    <section className="py-24 bg-[#F1FAEE] relative overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header - Slimmed Down */}
@@ -53,7 +53,7 @@ export function Features() {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white/90 text-[10px] font-black uppercase tracking-[0.4em] font-heading mb-8 w-max">
                 <span className="w-2 h-2 rounded-full bg-[#76C893] animate-pulse"></span> Bio-Optimization
               </div>
-              <h3 className="text-4xl lg:text-7xl font-medium text-white font-heading mb-6 tracking-tight leading-[1.05]">
+              <h3 className="text-4xl lg:text-7xl font-medium text-white font-heading mb-6 tracking-tight leading-[1.05] break-words">
                 Clinically Validated <br /> <span className="font-light italic text-[#52B788]">Potency Matrix</span>
               </h3>
               <p className="text-[#F1FAEE]/60 font-sans font-light leading-relaxed max-w-xl text-xl">

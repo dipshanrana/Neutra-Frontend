@@ -1,33 +1,36 @@
-﻿import { Navbar } from "@/components/Navbar";
+﻿"use client";
+
+import { useEffect, useState } from "react";
+import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PreFooter } from "@/components/PreFooter";
 import Image from "next/image";
 import Link from "next/link";
+import { api, Blog, formatBase64Image } from "@/lib/api";
 
 export default function BlogPage() {
-    const articles = [
-        {
-            title: "Optimizing Hypertrophic Pathways with Bio-Available Whey",
-            date: "OCT 14, 2026",
-            excerpt: "A deep dive into protein synthesis rates, mTOR activation, and why immediate post-workout ingestion parameters are shifting in modern clinical studies.",
-            cat: "Muscle Biology",
-            image: "https://images.unsplash.com/photo-1579722821273-0f6c77042f02?q=80&w=2000&auto=format&fit=crop"
-        },
-        {
-            title: "Liposomal Delivery vs. Standard Encapsulation",
-            date: "SEP 29, 2026",
-            excerpt: "How encasing micronutrients in lipid bilayers dramatically increases cellular absorption rates and bypasses gastrointestinal degradation.",
-            cat: "Applied Biochemistry",
-            image: "https://images.unsplash.com/photo-1532187863486-abf322ce36c9?q=80&w=2000&auto=format&fit=crop"
-        },
-        {
-            title: "The Neurochemistry of Omega-3 EPA Ratios",
-            date: "SEP 12, 2026",
-            excerpt: "DHA provides structural integrity, but EPA modulates inflammatory cytokines. Exploring the exact ratio needed for peak cognitive preservation.",
-            cat: "Neurology",
-            image: "https://images.unsplash.com/photo-1542318047-920fca5df6da?q=80&w=2000&auto=format&fit=crop"
-        }
+    const [articles, setArticles] = useState<Blog[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    const fallbacks = [
+        "https://images.unsplash.com/photo-1579722821273-0f6c77042f02?q=80&w=2000&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1532187863486-abf322ce36c9?q=80&w=2000&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1542318047-920fca5df6da?q=80&w=2000&auto=format&fit=crop"
     ];
+
+    useEffect(() => {
+        const fetchBlogs = async () => {
+            try {
+                const data = await api.blogs.getAll();
+                setArticles(Array.isArray(data) ? data : []);
+            } catch (error) {
+                console.error("Failed to load blogs:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchBlogs();
+    }, []);
 
     return (
         <main className="min-h-screen bg-[#F1FAEE] selection:bg-emerald-600 selection:text-white flex flex-col font-sans">
@@ -48,25 +51,39 @@ export default function BlogPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                        {articles.map((article, idx) => (
-                            <div key={idx} className="group cursor-pointer flex flex-col h-full hover:-translate-y-2 transition-transform duration-500">
-                                <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden mb-6">
-                                    <div className="absolute inset-0 bg-emerald-600/20 group-hover:bg-transparent transition-colors duration-500 z-10 mix-blend-multiply"></div>
-                                    <Image src={article.image} fill className="object-cover scale-100 group-hover:scale-110 transition-transform duration-700" alt={article.title} />
-                                    <div className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest text-[#1D3557]">
-                                        {article.cat}
-                                    </div>
-                                </div>
-                                <div className="flex flex-col flex-1 pl-2">
-                                    <span className="text-xs font-bold font-number text-emerald-600 tracking-widest uppercase mb-3">{article.date}</span>
-                                    <h3 className="text-2xl font-medium text-[#1D3557] font-heading tracking-tight leading-tight mb-4 group-hover:text-emerald-700 transition-colors">{article.title}</h3>
-                                    <p className="text-[#1D3557]/60 font-light text-sm leading-relaxed mb-8 flex-1">{article.excerpt}</p>
-                                    <div className="inline-flex items-center gap-2 text-[#1D3557] font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
-                                        Read Protocol →
-                                    </div>
-                                </div>
+                        {loading ? (
+                            <div className="col-span-full text-center text-[#1D3557]/50 font-sans py-20 flex justify-center">
+                                <div className="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
                             </div>
-                        ))}
+                        ) : articles.length > 0 ? (
+                            articles.map((article, idx) => {
+                                const excerptText = article.content.replace(/<[^>]+>/g, '').substring(0, 150) + '...';
+                                const imgUrl = article.image ? formatBase64Image(article.image) : fallbacks[idx % fallbacks.length];
+                                return (
+                                    <Link href={`/blog/${article.id}`} key={article.id || idx} className="group cursor-pointer flex flex-col h-full hover:-translate-y-2 transition-transform duration-500">
+                                        <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden mb-6 bg-stone-100">
+                                            <div className="absolute inset-0 bg-emerald-600/20 group-hover:bg-transparent transition-colors duration-500 z-10 mix-blend-multiply"></div>
+                                            <img src={imgUrl} className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-700" alt={article.title} />
+                                            <div className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest text-[#1D3557]">
+                                                {article.author || "Research"}
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col flex-1 pl-2">
+                                            <span className="text-xs font-bold font-number text-emerald-600 tracking-widest uppercase mb-3">LATEST PUBLICATION</span>
+                                            <h3 className="text-2xl font-medium text-[#1D3557] font-heading tracking-tight leading-tight mb-4 group-hover:text-emerald-700 transition-colors">{article.title}</h3>
+                                            <p className="text-[#1D3557]/60 font-light text-sm leading-relaxed mb-8 flex-1">{excerptText}</p>
+                                            <div className="inline-flex items-center gap-2 text-[#1D3557] font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
+                                                Read Product →
+                                            </div>
+                                        </div>
+                                    </Link>
+                                );
+                            })
+                        ) : (
+                            <div className="col-span-full text-center text-[#1D3557]/50 font-sans py-20 bg-white rounded-[3rem] border border-[#1D3557]/5 mt-4">
+                                No clinical journals published yet.
+                            </div>
+                        )}
                     </div>
 
                     <div className="mt-20 flex justify-center border-t border-[#1D3557]/10 pt-16">

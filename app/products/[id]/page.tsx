@@ -6,11 +6,12 @@ import { PreFooter } from "@/components/PreFooter";
 import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";
 import { useParams } from "next/navigation";
-import { productApi, Product, formatBase64Image, getProductAllImages } from "@/lib/api";
+import { productApi, Product, formatBase64Image, getProductAllImages, getProductMainImage } from "@/lib/api";
 import {
     ShoppingCart, Star, ChevronRight, Truck, ShieldCheck,
     RotateCcw, Plus, Minus, Check,
-    Leaf, FlaskConical, Award
+    Leaf, FlaskConical, Award, ExternalLink,
+    HelpCircle, ChevronDown
 } from "lucide-react";
 
 /* ── Star Rating ─────────────────────────────── */
@@ -86,7 +87,6 @@ function ProductDetailContent() {
     else if (bundleQty === 3) bundleImage = formatBase64Image(product.threeProductImage);
 
     const images = getProductAllImages(product);
-
     const img = selectedImg ?? (bundleImage || images[0]);
     const cat = typeof product.category === "string" ? product.category : product.category?.name ?? "Supplement";
     const reviews = product.reviews ?? [];
@@ -109,7 +109,6 @@ function ProductDetailContent() {
 
     return (
         <div className="flex-1 bg-[#FAF8F3]">
-
             {/* ── BREADCRUMB ─────────────────── */}
             <div className="bg-white border-b border-stone-200">
                 <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-10 h-11 flex items-center">
@@ -123,17 +122,14 @@ function ProductDetailContent() {
                 </div>
             </div>
 
-            {/* ── HERO: two-column — image left, buy panel right ── */}
+            {/* ── HERO ─────────────────── */}
             <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-10 py-10 lg:py-12">
                 <div className="flex flex-col lg:flex-row gap-10 xl:gap-12 items-stretch">
-
                     {/* LEFT COLUMN: Gallery & Extra Content */}
                     <div className="w-full lg:flex-1 flex flex-col gap-10 min-w-0">
-                        {/* Image Gallery */}
                         <div className="lg:h-[700px]">
                             <div className="flex flex-col-reverse lg:flex-row gap-4 lg:gap-6 h-full">
-
-                                {/* Thumbnails List — Vertically stacked on desktop, horizontal on mobile */}
+                                {/* Thumbnails */}
                                 <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto w-full lg:w-[88px] shrink-0 pb-2 lg:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
                                     {images.map((src, idx) => {
                                         const isActive = selectedImg ? src === selectedImg : (idx === 0 && !selectedImg && !bundleImage);
@@ -149,48 +145,24 @@ function ProductDetailContent() {
                                                     alt={`${product.name} thumbnail ${idx + 1}`}
                                                     className={`relative w-full h-full object-contain p-2 mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-110 ${isActive ? 'opacity-100 scale-105' : 'opacity-60 hover:opacity-100'}`}
                                                 />
-                                                {isActive && <div className="absolute inset-0 bg-[#2A401E]/[0.02] pointer-events-none"></div>}
                                             </button>
                                         );
                                     })}
                                 </div>
 
-                                {/* Main Hero Slot — Large Display */}
+                                {/* Main Hero Image */}
                                 <div className="relative flex-1 aspect-square lg:aspect-auto h-full bg-stone-50 rounded-[2rem] overflow-hidden border border-stone-100/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] group flex items-center justify-center p-8 lg:p-12 cursor-crosshair">
-                                    {/* Elegant background effects */}
                                     <div className="absolute inset-0 bg-gradient-to-tr from-[#FAF8F3] via-white to-[#F2F5F0]"></div>
                                     <div className="absolute inset-0 bg-[linear-gradient(rgba(42,64,30,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(42,64,30,0.02)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-[radial-gradient(circle_at_center,rgba(42,64,30,0.04)_0%,transparent_60%)] pointer-events-none transition-transform duration-1000 group-hover:scale-105"></div>
-                                    <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-100/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-                                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#FAF8F3]/60 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3 pointer-events-none"></div>
 
-                                    {/* Floating Badges */}
                                     <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-20 flex flex-col gap-2.5">
                                         {savePct > 0 && (
-                                            <div className="bg-[#2A401E] text-white font-sans text-[10px] sm:text-[11px] px-4 py-1.5 rounded-full uppercase tracking-[0.2em] font-bold shadow-[0_4px_12px_rgba(42,64,30,0.2)] border border-[#2A401E]/80 backdrop-blur-md w-fit">
+                                            <div className="bg-[#2A401E] text-white font-sans text-[10px] sm:text-[11px] px-4 py-1.5 rounded-full uppercase tracking-[0.2em] font-bold shadow-[0_4px_12px_rgba(42,64,30,0.2)]">
                                                 Save {savePct}%
                                             </div>
                                         )}
-                                        {cat && (
-                                            <div className="bg-white/90 backdrop-blur-md text-[#2A401E] font-sans text-[9px] sm:text-[10px] px-4 py-1.5 rounded-full uppercase tracking-[0.25em] border border-stone-200/60 font-bold shadow-[0_2px_8px_rgba(0,0,0,0.04)] w-fit flex items-center gap-1.5">
-                                                <span className="w-1 h-1 rounded-full bg-emerald-500"></span>
-                                                {cat}
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {/* Bottom Left - Authenticity Badge */}
-                                    <div className="hidden sm:flex absolute bottom-6 left-6 sm:bottom-8 sm:left-8 z-20 items-center gap-2">
-                                        <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/90 backdrop-blur-md shadow-sm border border-stone-200/60 text-[#2A401E]">
-                                            <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="1.5" /><path d="M8 12L11 15L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                                        </div>
-                                        <span className="text-[9px] font-bold text-[#2A401E] uppercase tracking-widest bg-white/60 backdrop-blur-md px-3.5 py-2 rounded-full border border-stone-100">100% Authentic</span>
-                                    </div>
-
-                                    {/* Zoom Icon Overlay */}
-                                    <div className="absolute bottom-6 right-6 sm:bottom-8 sm:right-8 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                        <div className="bg-white/90 backdrop-blur-sm text-[#2A401E] p-2.5 rounded-full shadow-[0_8px_20px_rgba(0,0,0,0.06)] border border-stone-200 flex items-center justify-center pointer-events-none">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5"><circle cx="11" cy="11" r="8" strokeWidth="1.5" /><path d="M21 21L16.65 16.65" strokeWidth="1.5" strokeLinecap="round" /><line x1="11" y1="8" x2="11" y2="14" strokeWidth="1.5" strokeLinecap="round" /><line x1="8" y1="11" x2="14" y2="11" strokeWidth="1.5" strokeLinecap="round" /></svg>
+                                        <div className="bg-white/90 backdrop-blur-md text-[#2A401E] font-sans text-[9px] sm:text-[10px] px-4 py-1.5 rounded-full uppercase tracking-[0.25em] border border-stone-200 font-bold">
+                                            {cat}
                                         </div>
                                     </div>
 
@@ -202,12 +174,10 @@ function ProductDetailContent() {
                                         />
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
 
-                        {/* How to Use Section (Moved to fill the left gap) */}
+                        {/* How to Use Section */}
                         {howToUse.length > 0 && (
                             <div className="bg-white rounded-2xl border border-stone-100 p-8 shadow-sm">
                                 <div className="flex items-center gap-3 mb-6">
@@ -238,7 +208,7 @@ function ProductDetailContent() {
                                             <span className="font-heading text-[#2A401E] font-medium">Expert Recommendation</span>
                                         </div>
                                         <p className="font-sans text-stone-500 text-[13px] italic leading-relaxed">
-                                            Consistency is key to optimal results. Ensure you follow the usage steps regularly as part of your daily protocol.
+                                            Consistency is key. Follow the product usage regularly for best results.
                                         </p>
                                     </div>
                                 </div>
@@ -246,14 +216,10 @@ function ProductDetailContent() {
                         )}
                     </div>
 
-                    {/* RIGHT: Sticky buy panel */}
+                    {/* RIGHT: Buy Panel */}
                     <div className="w-full lg:w-[450px] xl:w-[500px] shrink-0">
                         <div className="lg:sticky lg:top-6 space-y-4">
-
-                            {/* Main purchase card */}
                             <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden">
-
-                                {/* Product header */}
                                 <div className="p-6 pb-5 border-b border-stone-100">
                                     <span className="font-sans text-[9px] text-emerald-700 uppercase tracking-[0.28em] block mb-2">{cat}</span>
                                     <h1 className="font-heading text-[#2A401E] text-[1.85rem] leading-[1.1] tracking-tight mb-3">
@@ -264,20 +230,16 @@ function ProductDetailContent() {
                                     )}
                                 </div>
 
-                                {/* Pricing */}
                                 <div className="px-6 pt-5 pb-4 border-b border-stone-100">
                                     <div className="flex items-end gap-4 mb-2">
-                                        {/* Sale price — NPR label + big number */}
                                         <div>
                                             <span className="font-sans text-[9px] text-stone-400 uppercase tracking-[0.3em] block mb-0.5">NPR</span>
                                             <span className="font-heading text-[#2A401E] text-[2.6rem] leading-none tracking-tight">
                                                 {displaySp.toLocaleString()}
                                             </span>
                                         </div>
-                                        {/* MRP strikethrough */}
                                         {displayMp > displaySp && (
                                             <div className="mb-1">
-                                                <span className="font-sans text-[8px] text-stone-300 uppercase tracking-[0.25em] block">MRP</span>
                                                 <span className="font-sans text-stone-300 text-base line-through">
                                                     {displayMp.toLocaleString()}
                                                 </span>
@@ -286,74 +248,15 @@ function ProductDetailContent() {
                                     </div>
                                     {savePct > 0 && (
                                         <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-800 font-sans text-[11px] uppercase tracking-[0.12em] px-3 py-1.5 rounded-full">
-                                            Save {savePct}% &mdash; NPR {(displayMp - displaySp).toLocaleString()} off
+                                            Save {savePct}%
                                         </span>
                                     )}
-                                </div>
-
-                                {/* Serving tiles */}
-                                {(product.servingSize || product.capsulesPerContainer) && (
-                                    <div className="px-6 py-4 border-b border-stone-100">
-                                        <div className="grid grid-cols-2 gap-2">
-                                            {product.servingSize && (
-                                                <div className="bg-[#FAF8F3] border border-stone-100 rounded-xl p-3 text-center">
-                                                    <span className="font-sans text-[9px] text-stone-400 uppercase tracking-[0.2em] block mb-0.5">Serving Size</span>
-                                                    <span className="font-heading text-[#2A401E] text-base">{product.servingSize}</span>
-                                                </div>
-                                            )}
-                                            {product.capsulesPerContainer && (
-                                                <div className="bg-[#FAF8F3] border border-stone-100 rounded-xl p-3 text-center">
-                                                    <span className="font-sans text-[9px] text-stone-400 uppercase tracking-[0.2em] block mb-0.5">Servings</span>
-                                                    <span className="font-heading text-[#2A401E] text-base">{product.capsulesPerContainer}</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* CTA — full width, no qty selector */}
-                                <div className="px-6 py-5 border-b border-stone-100 space-y-3">
-                                    <button className="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-amber-950 rounded-xl py-3.5 font-sans font-bold text-[14px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-[0_4px_20px_rgba(251,191,36,0.3)] hover:shadow-[0_6px_25px_rgba(251,191,36,0.4)] active:scale-[0.98]">
-                                        <ShoppingCart className="w-4 h-4" />
-                                        Shop Now
-                                    </button>
-
-                                    {/* Secure Payment Cards */}
-                                    <div className="flex items-center justify-center gap-2 pt-2.5 pb-1 opacity-90">
-                                        <svg viewBox="0 0 32 20" className="w-8 h-auto drop-shadow-sm"><rect width="32" height="20" rx="3" fill="#1A1F71" /><text x="4" y="13.5" fill="#fff" fontFamily="Arial, sans-serif" fontWeight="900" fontSize="8" fontStyle="italic">VISA</text></svg>
-                                        <svg viewBox="0 0 32 20" className="w-8 h-auto drop-shadow-sm"><rect width="32" height="20" rx="3" fill="#1C1C1C" /><circle cx="12" cy="10" r="5" fill="#EB001B" /><circle cx="20" cy="10" r="5" fill="#F79E1B" opacity="0.9" /></svg>
-                                        <svg viewBox="0 0 32 20" className="w-8 h-auto drop-shadow-sm"><rect width="32" height="20" rx="3" fill="#006FCF" /><text x="4" y="13" fill="#fff" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="7">AMEX</text></svg>
-                                        <svg viewBox="0 0 32 20" className="w-8 h-auto drop-shadow-sm"><rect width="32" height="20" rx="3" fill="#E55C20" /><text x="2" y="12.5" fill="#fff" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="5.5" letterSpacing="0.5">DISCOVER</text></svg>
-                                        <svg viewBox="0 0 32 20" className="w-8 h-auto drop-shadow-sm"><rect width="32" height="20" rx="3" fill="#003087" /><text x="4" y="13" fill="#fff" fontFamily="Arial, sans-serif" fontWeight="bold" fontSize="6.5" fontStyle="italic">PayPal</text></svg>
-                                    </div>
-                                    <div className="space-y-1.5 mt-4">
-                                        {freebies.length > 0 ? (
-                                            freebies.map((text, i) => (
-                                                <div key={i} className="flex items-center gap-2 font-sans text-[12px] text-stone-600">
-                                                    <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={2.5} />
-                                                    {text}
-                                                </div>
-                                            ))
-                                        ) : (
-                                            [
-                                                { icon: Truck, text: "Free delivery on all orders" },
-                                                { icon: ShieldCheck, text: "30-day money-back guarantee" },
-                                                { icon: RotateCcw, text: "Easy returns & exchanges" },
-                                            ].map(({ icon: Icon, text }) => (
-                                                <div key={text} className="flex items-center gap-2 font-sans text-[12px] text-stone-400">
-                                                    <Icon className="w-3.5 h-3.5 text-[#2A401E]" strokeWidth={1.75} />
-                                                    {text}
-                                                </div>
-                                            ))
-                                        )}
-                                    </div>
                                 </div>
 
                                 {/* Bundle selection */}
                                 <div className="p-6 border-b border-stone-100 bg-gradient-to-b from-[#FAF8F3]/60 to-[#FAF8F3]/20">
                                     <div className="flex items-center justify-between mb-4">
                                         <h3 className="font-heading font-bold text-[#2A401E] text-[15px] uppercase tracking-wider">Select Supply</h3>
-                                        <span className="font-sans text-[10px] text-stone-500 italic">Save more with bundles</span>
                                     </div>
                                     <div className="flex flex-col gap-3">
                                         {[
@@ -361,19 +264,10 @@ function ProductDetailContent() {
                                             { qty: 2, label: "2 Packs", sub: "2 Month Supply", key: "twoProductImage", sp: product.twoProductSp ?? (product.singleProductSp ?? product.sp) * 2, mp: product.twoProductMp ?? (product.singleProductMp ?? product.mp) * 2 },
                                             { qty: 3, label: "3 Packs", sub: "3 Month Supply", key: "threeProductImage", sp: product.threeProductSp ?? (product.singleProductSp ?? product.sp) * 3, mp: product.threeProductMp ?? (product.singleProductMp ?? product.mp) * 3 },
                                         ].map((b) => {
-                                            // Handle missing or invalid images gracefully
                                             const rawSrc = (product as any)[b.key];
-                                            let imgSrc = "";
-                                            if (rawSrc && rawSrc.trim() !== "") {
-                                                imgSrc = formatBase64Image(rawSrc);
-                                            } else if (product.images && product.images[0] && product.images[0].trim() !== "") {
-                                                imgSrc = formatBase64Image(product.images[0]);
-                                            } else {
-                                                imgSrc = "/multi-vit.png"; // final fallback
-                                            }
-
+                                            let imgSrc = rawSrc && rawSrc.trim() !== "" ? formatBase64Image(rawSrc) : formatBase64Image(product.images?.[0] || "");
                                             const isActive = bundleQty === b.qty;
-                                            const bundleSavePct = b.mp > b.sp ? Math.round(((b.mp - b.sp) / b.mp) * 100) : 0;
+                                            const bSavePct = b.mp > b.sp ? Math.round(((b.mp - b.sp) / b.mp) * 100) : 0;
 
                                             return (
                                                 <button
@@ -382,268 +276,212 @@ function ProductDetailContent() {
                                                         setBundleQty(b.qty as 1 | 2 | 3);
                                                         setSelectedImg(imgSrc);
                                                     }}
-                                                    className={`relative flex items-center justify-between p-3.5 sm:p-4 rounded-2xl transition-all duration-200 border-2 text-left w-full group ${isActive ? "border-emerald-600 bg-emerald-50/40 shadow-[0_4px_15px_rgba(56,163,109,0.08)]" : "border-stone-100 bg-white hover:border-stone-200"}`}
+                                                    className={`relative flex items-center justify-between p-3.5 sm:p-4 rounded-2xl transition-all duration-200 border-2 text-left w-full group ${isActive ? "border-emerald-600 bg-emerald-50/40" : "border-stone-100 bg-white hover:border-stone-200"}`}
                                                 >
                                                     <div className="flex items-center gap-3 sm:gap-4">
-                                                        {/* Radio indicator */}
-                                                        <div className={`w-5 h-5 rounded-full border flex flex-shrink-0 items-center justify-center ${isActive ? "border-emerald-600" : "border-stone-300 group-hover:border-stone-400"}`}>
+                                                        <div className={`w-5 h-5 rounded-full border flex shrink-0 items-center justify-center ${isActive ? "border-emerald-600" : "border-stone-300"}`}>
                                                             {isActive && <div className="w-2.5 h-2.5 rounded-full bg-emerald-600"></div>}
                                                         </div>
-
-                                                        {/* Thumbnail */}
-                                                        <div className="w-12 h-12 bg-white rounded-lg border border-stone-100 flex items-center justify-center p-1 shrink-0 overflow-hidden relative">
-                                                            <div className="absolute inset-0 bg-[#FAF8F3]/50"></div>
-                                                            <img src={imgSrc} alt={b.label} className="w-full h-full object-contain mix-blend-multiply relative z-10" />
-                                                        </div>
-
-                                                        {/* Details */}
+                                                        <img src={imgSrc} alt={b.label} className="w-12 h-12 object-contain mix-blend-multiply bg-[#FAF8F3] rounded p-1" />
                                                         <div>
-                                                            <div className="flex items-center gap-2 flex-wrap">
-                                                                <span className={`font-heading font-bold text-[15px] sm:text-[16px] leading-none ${isActive ? "text-[#2A401E]" : "text-stone-700"}`}>{b.label}</span>
-                                                                {b.qty === 2 && <span className="text-[9px] uppercase tracking-wider font-bold text-emerald-800 bg-emerald-100 border border-emerald-200 px-1.5 py-0.5 rounded shadow-sm">Popular</span>}
-                                                                {b.qty === 3 && <span className="text-[9px] uppercase tracking-wider font-bold text-[#2A401E] bg-amber-200 border border-amber-300 px-1.5 py-0.5 rounded shadow-sm">Best Value</span>}
-                                                            </div>
-                                                            <span className="font-sans text-[11px] sm:text-[12px] text-stone-500 block mt-1">{b.sub}</span>
+                                                            <span className={`font-inter font-medium block ${isActive ? "text-[#2A401E]" : "text-stone-700"}`}>{b.label}</span>
+                                                            <span className="font-sans text-[11px] text-stone-500">{b.sub}</span>
                                                         </div>
                                                     </div>
-
-                                                    {/* Pricing Right */}
                                                     <div className="text-right flex flex-col items-end">
-                                                        <span className={`font-heading font-bold text-[16px] sm:text-[18px] leading-tight ${isActive ? "text-[#2A401E]" : "text-stone-800"}`}>
-                                                            Rs. {b.sp.toLocaleString()}
-                                                        </span>
-                                                        {b.qty > 1 && bundleSavePct > 0 ? (
-                                                            <span className="font-sans text-[10px] sm:text-[11px] text-emerald-600 font-bold mt-0.5">Save {bundleSavePct}%</span>
-                                                        ) : (
-                                                            b.mp > b.sp ? (
-                                                                <span className="font-sans text-[10px] sm:text-[11px] text-stone-400 line-through mt-0.5">Rs. {b.mp.toLocaleString()}</span>
-                                                            ) : null
-                                                        )}
+                                                        <span className="font-inter font-medium text-[#2A401E]">Rs. {b.sp.toLocaleString()}</span>
+                                                        {bSavePct > 0 && <span className="font-sans text-[11px] text-emerald-600 font-bold uppercase">Save {bSavePct}%</span>}
                                                     </div>
                                                 </button>
-                                            )
+                                            );
                                         })}
                                     </div>
                                 </div>
 
-                                {/* Quick Benefit checklist — below Shop Now */}
-                                {benefits.length > 0 && (
-                                    <div className="px-6 py-4 border-b border-stone-100 space-y-3">
-                                        {benefits.slice(0, 4).map((b, i) => (
-                                            <div key={i} className="flex items-start gap-3">
-                                                {b.svg ? (
-                                                    <span
-                                                        className="w-5 h-5 shrink-0 mt-0.5 flex items-center justify-center text-[#2A401E] [&>svg]:w-5 [&>svg]:h-5 [&>svg]:block [&>svg]:fill-current"
-                                                        dangerouslySetInnerHTML={{ __html: b.svg }}
-                                                    />
-                                                ) : (
-                                                    <span className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center shrink-0 mt-0.5">
-                                                        <Check className="w-3 h-3 text-[#2A401E]" strokeWidth={3} />
-                                                    </span>
-                                                )}
-                                                <div className="min-w-0">
-                                                    <p className="font-sans text-[12px] font-semibold text-[#2A401E] leading-tight">{b.nutrientName}</p>
-                                                    {b.benefitDescription && (
-                                                        <p className="font-sans text-[11px] text-stone-400 leading-snug mt-0.5">{b.benefitDescription}</p>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {benefits.length > 4 && (
-                                            <p className="font-sans text-[11px] text-stone-400 ml-8">+{benefits.length - 4} more benefits below</p>
-                                        )}
+                                {/* Shop Now */}
+                                <div className="px-6 py-5 border-b border-stone-100 space-y-3">
+                                    <a
+                                        href={(() => {
+                                            if (!product.link || product.link === "#" || product.link === "") return "#";
+                                            return product.link.startsWith("http") ? product.link : `https://${product.link}`;
+                                        })()}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl py-4 font-heading font-bold text-[15px] uppercase tracking-widest flex items-center justify-center gap-3 transition-all shadow-lg active:scale-[0.97]"
+                                    >
+                                        <ShoppingCart className="w-5 h-5" />
+                                        <span>Shop Now</span>
+                                        <ExternalLink className="w-4 h-4 opacity-50" />
+                                    </a>
+                                    <div className="flex items-center justify-center gap-2 pt-2.5 opacity-60">
+                                        <svg viewBox="0 0 32 20" className="w-8 h-auto"><rect width="32" height="20" rx="3" fill="#1A1F71" /><text x="4" y="13.5" fill="#fff" fontFamily="Arial" fontWeight="900" fontSize="8" fontStyle="italic">VISA</text></svg>
+                                        <svg viewBox="0 0 32 20" className="w-8 h-auto"><rect width="32" height="20" rx="3" fill="#1C1C1C" /><circle cx="12" cy="10" r="5" fill="#EB001B" /><circle cx="20" cy="10" r="5" fill="#F79E1B" opacity="0.9" /></svg>
                                     </div>
-                                )}
+                                </div>
 
-
-                                {/* Trust tiles — inside the card */}
+                                {/* Trust Tiles */}
                                 <div className="px-6 py-4 border-t border-stone-100">
                                     <div className="grid grid-cols-3 gap-2">
                                         {[
                                             { icon: ShieldCheck, label: "Lab Tested" },
                                             { icon: FlaskConical, label: "Pure Formula" },
-                                            { icon: Award, label: "Premium Grade" },
+                                            { icon: Award, label: "Premium" },
                                         ].map(({ icon: Icon, label }) => (
                                             <div key={label} className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl bg-[#FAF8F3] border border-stone-100">
-                                                <Icon className="w-4 h-4 text-[#2A401E]" strokeWidth={1.75} />
-                                                <span className="font-sans text-[9px] text-[#2A401E] text-center uppercase tracking-wide leading-tight">{label}</span>
+                                                <Icon className="w-4 h-4 text-[#2A401E]" strokeWidth={1.5} />
+                                                <span className="font-sans text-[9px] text-[#2A401E] uppercase tracking-wide text-center">{label}</span>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
-
                 </div>
             </div>
 
-            {/* ── DETAILS SECTION — full width below hero ── */}
+            {/* ── DETAILS ── */}
             <div className="border-t border-stone-200 bg-white">
-                <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-10 py-10 space-y-8">
-
+                <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-10 py-16 space-y-12">
                     {/* Description */}
                     {product.description && (
                         <div className="grid lg:grid-cols-[200px_1fr] gap-6 items-start">
-                            <div className="pt-1">
-                                <span className="font-sans text-[9px] text-stone-400 uppercase tracking-[0.28em] block mb-1">About</span>
-                                <h2 className="font-heading text-[#2A401E] text-xl leading-tight">Product Description</h2>
+                            <div>
+                                <span className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.25em] block mb-1">Overview</span>
+                                <h2 className="font-heading text-[#2A401E] text-2xl font-bold">The Product</h2>
                             </div>
-                            <p className="font-sans text-stone-500 text-[14px] leading-[1.9] border-l border-stone-100 pl-6">
+                            <p className="font-sans text-stone-500 text-lg leading-relaxed border-l-2 border-stone-50 pl-8">
                                 {product.description}
                             </p>
                         </div>
                     )}
 
-                    {/* Divider */}
-                    {product.description && (benefits.length > 0 || facts.length > 0) && (
-                        <div className="flex items-center gap-4">
-                            <div className="flex-1 h-px bg-stone-100" />
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            <div className="flex-1 h-px bg-stone-100" />
-                        </div>
-                    )}
+                    <div className="flex items-center gap-4 py-8">
+                        <div className="flex-1 h-px bg-stone-100" />
+                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                        <div className="flex-1 h-px bg-stone-100" />
+                    </div>
 
-                    {/* Benefits + Supplement Facts side by side */}
-                    {(benefits.length > 0 || facts.length > 0) && (
-                        <div className="grid md:grid-cols-2 gap-6">
-
-                            {/* Key Ingredients */}
-                            {benefits.length > 0 && (
-                                <div className="border border-stone-100 rounded-2xl overflow-hidden">
-                                    <div className="px-6 py-4 border-b border-stone-100 bg-[#FAFAF9]">
-                                        <span className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.28em] block mb-1">Formula</span>
-                                        <h2 className="font-heading text-[#2A401E] text-xl">Key Ingredients</h2>
-                                    </div>
-                                    <div className="divide-y divide-stone-100">
-                                        {benefits.map((b, i) => (
-                                            <div key={i} className="flex items-start gap-3 px-6 py-3.5 hover:bg-[#FAFAF8] transition-colors">
-                                                <span className="font-sans text-[10px] text-stone-300 w-5 shrink-0 mt-0.5 tabular-nums">{String(i + 1).padStart(2, "00")}</span>
-                                                <div className="min-w-0">
-                                                    <p className="font-heading text-[#2A401E] text-[16px] leading-snug mb-0.5">{b.nutrientName}</p>
-                                                    <p className="font-sans text-stone-400 text-[13px] leading-relaxed">{b.benefitDescription}</p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Supplement Facts */}
-                            {facts.length > 0 && (
-                                <div className="border border-stone-100 rounded-2xl overflow-hidden">
-                                    <div className="px-6 py-4 border-b border-stone-100 bg-[#FAFAF9]">
-                                        <span className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.28em] block mb-1">Nutrition</span>
-                                        <h2 className="font-heading text-[#2A401E] text-xl">Supplement Facts</h2>
-                                    </div>
-                                    {(product.servingSize || product.capsulesPerContainer) && (
-                                        <div className="px-6 py-3 border-b border-stone-100 flex gap-6">
-                                            {product.servingSize && (
-                                                <div>
-                                                    <span className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.2em] block">Serving</span>
-                                                    <span className="font-heading text-[#2A401E] text-[14px]">{product.servingSize}</span>
-                                                </div>
-                                            )}
-                                            {product.capsulesPerContainer && (
-                                                <div>
-                                                    <span className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.2em] block">Per Container</span>
-                                                    <span className="font-heading text-[#2A401E] text-[14px]">{product.capsulesPerContainer}</span>
-                                                </div>
-                                            )}
-                                        </div>
-                                    )}
-                                    <div className="flex px-6 py-2 border-b border-stone-100">
-                                        <span className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.2em] flex-1">Nutrient</span>
-                                        <span className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.2em] w-24 text-right">Amount</span>
-                                        <span className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.2em] w-10 text-right">% DV</span>
-                                    </div>
-                                    <div className="divide-y divide-stone-100">
-                                        {facts.map((f, i) => (
-                                            <div key={i} className="flex items-center px-6 py-3 hover:bg-[#FAFAF8] transition-colors">
-                                                <span className="font-heading text-[#2A401E] text-[15px] flex-1">{f.nutrientName}</span>
-                                                <span className="font-sans text-stone-400 text-[13px] w-24 text-right">{f.amountPerServing}</span>
-                                                <span className="font-sans text-stone-500 text-[13px] w-10 text-right">{f.amount}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <p className="px-6 py-2.5 font-sans text-[10px] text-stone-300 border-t border-stone-100">
-                                        * % DV not established.
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    {/* Reviews */}
-                    {reviews.length > 0 && (
-                        <>
-                            <div className="flex items-center gap-4">
-                                <div className="flex-1 h-px bg-stone-100" />
-                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                <div className="flex-1 h-px bg-stone-100" />
-                            </div>
-                            <div className="border border-stone-100 rounded-2xl overflow-hidden">
-                                {/* Review header */}
-                                <div className="px-6 py-4 border-b border-stone-100 bg-[#FAFAF9] flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div>
-                                        <span className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.28em] block mb-1">Feedback</span>
-                                        <div className="flex items-baseline gap-2">
-                                            <h2 className="font-heading text-[#2A401E] text-xl">Customer Reviews</h2>
-                                            <span className="font-sans text-stone-400 text-sm">({reviews.length})</span>
-                                        </div>
-                                    </div>
-                                    <div className="flex items-center gap-4 sm:ml-auto">
-                                        <div>
-                                            <span className="font-heading text-[#2A401E] text-4xl block leading-none">{avgRating.toFixed(1)}</span>
-                                            <div className="flex gap-0.5 mt-1">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <Star key={i} strokeWidth={0} className={`w-3 h-3 ${i < Math.round(avgRating) ? "fill-amber-400" : "fill-stone-200"}`} />
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <div className="space-y-1 w-28">
-                                            {[5, 4, 3, 2, 1].map(star => {
-                                                const cnt = reviews.filter(r => r.stars === star).length;
-                                                return (
-                                                    <div key={star} className="flex items-center gap-1.5">
-                                                        <span className="font-sans text-[9px] text-stone-400 w-2">{star}</span>
-                                                        <div className="flex-1 h-1 bg-stone-100 rounded-full overflow-hidden">
-                                                            <div className="h-full bg-amber-400 rounded-full" style={{ width: `${(cnt / reviews.length) * 100}%` }} />
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* Review grid */}
-                                <div className="grid sm:grid-cols-2 lg:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-stone-100">
-                                    {reviews.map((r, i) => (
-                                        <div key={i} className={`p-5 ${i >= 2 ? "border-t border-stone-100" : ""}`}>
-                                            <div className="flex items-center gap-2.5 mb-2.5">
-                                                <div className="w-7 h-7 rounded-full bg-stone-100 text-stone-500 flex items-center justify-center font-heading text-sm shrink-0">
-                                                    {r.username.charAt(0).toUpperCase()}
-                                                </div>
-                                                <div className="min-w-0 flex-1">
-                                                    <span className="font-heading text-[#2A401E] text-[15px] block truncate">{r.username}</span>
-                                                    <div className="flex gap-0.5">
-                                                        {[...Array(5)].map((_, si) => (
-                                                            <Star key={si} strokeWidth={0} className={`w-3 h-3 ${si < r.stars ? "fill-amber-400" : "fill-stone-200"}`} />
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                                <span className="font-sans text-[9px] text-stone-300 uppercase tracking-widest">✓</span>
-                                            </div>
-                                            <p className="font-sans text-stone-500 text-[14px] leading-relaxed">{r.comment}</p>
+                    {/* Ingredients & Facts */}
+                    <div className="grid md:grid-cols-2 gap-12">
+                        {benefits.length > 0 && (
+                            <div className="space-y-6">
+                                <h3 className="font-heading text-[#2A401E] text-2xl font-bold">Key Ingredients</h3>
+                                <div className="space-y-4">
+                                    {benefits.map((b, i) => (
+                                        <div key={i} className="group p-5 bg-[#FAF8F3]/50 rounded-2xl border border-stone-100 hover:border-emerald-100 transition-colors">
+                                            <p className="font-heading text-[#2A401E] font-bold text-lg mb-1">{b.nutrientName}</p>
+                                            <p className="font-sans text-stone-500 text-sm">{b.benefitDescription}</p>
                                         </div>
                                     ))}
                                 </div>
                             </div>
-                        </>
+                        )}
+
+                        {facts.length > 0 && (
+                            <div className="space-y-6">
+                                <h3 className="font-heading text-[#2A401E] text-2xl font-bold">Supplement Facts</h3>
+                                <div className="border border-stone-200 rounded-2xl overflow-hidden shadow-sm bg-white">
+                                    <div className="bg-stone-50 px-6 py-4 flex justify-between border-b border-stone-200">
+                                        <span className="font-sans text-xs font-bold uppercase tracking-widest text-stone-400">Nutrient</span>
+                                        <span className="font-sans text-xs font-bold uppercase tracking-widest text-stone-400">Amount</span>
+                                    </div>
+                                    <div className="divide-y divide-stone-100">
+                                        {facts.map((f, i) => (
+                                            <div key={i} className="px-6 py-4 flex justify-between items-center hover:bg-stone-50/50 transition-colors">
+                                                <span className="font-heading text-[#2A401E] font-semibold">{f.nutrientName}</span>
+                                                <div className="text-right">
+                                                    <p className="font-sans text-stone-800 font-bold">{f.amount}</p>
+                                                    <p className="font-sans text-stone-400 text-[10px]">Per Serving</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* ──── REVIEWS SECTION ──── */}
+                    {reviews.length > 0 && (
+                        <div className="pt-24 border-t border-stone-100">
+                            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
+                                <div>
+                                    <span className="font-sans text-[11px] font-bold text-emerald-600 uppercase tracking-[0.3em] block mb-3">Community Feedback</span>
+                                    <h2 className="font-heading text-[#2A401E] text-4xl font-semibold tracking-tight">Verified Reviews</h2>
+                                </div>
+                                <div className="text-center sm:text-right">
+                                    <div className="flex items-center gap-2 justify-center sm:justify-end mb-1">
+                                        <span className="font-heading text-[#2A401E] text-3xl font-bold">{avgRating.toFixed(1)}</span>
+                                        <div className="flex gap-0.5">
+                                            {[...Array(5)].map((_, i) => (
+                                                <Star key={i} strokeWidth={0} className={`w-3.5 h-3.5 ${i < Math.round(avgRating) ? "fill-amber-400" : "fill-stone-100"}`} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <p className="font-sans text-stone-400 text-xs font-medium">Based on {reviews.length} actual experiences</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {reviews.map((r, i) => (
+                                    <div key={i} className="group flex flex-col h-full bg-white p-8 rounded-[2rem] border border-stone-100/60 shadow-[0_2px_10px_rgba(0,0,0,0.01)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.03)] hover:border-emerald-100/50 transition-all duration-500">
+                                        <div className="flex items-center gap-4 mb-6">
+                                            <div className="w-11 h-11 rounded-2xl bg-stone-50 flex items-center justify-center font-heading text-[#2A401E] font-bold text-base border border-stone-100">
+                                                {r.username.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div>
+                                                <div className="flex items-center gap-1.5 leading-none mb-1">
+                                                    <span className="font-heading text-[#2A401E] font-bold text-base tracking-tight">{r.username}</span>
+                                                    <div className="w-3.5 h-3.5 rounded-full bg-emerald-500 flex items-center justify-center">
+                                                        <Check className="w-2 h-2 text-white" strokeWidth={5} />
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-0.5">
+                                                    {[...Array(5)].map((_, si) => (
+                                                        <Star key={si} strokeWidth={0} className={`w-2.5 h-2.5 ${si < r.stars ? "fill-amber-400" : "fill-stone-100"}`} />
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p className="font-sans text-stone-500 text-[15px] leading-relaxed mb-6 flex-1 italic">
+                                            "{r.comment}"
+                                        </p>
+                                        <span className="font-sans text-[10px] text-stone-300 font-black uppercase tracking-widest block pt-4 border-t border-stone-50">Verified Product</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     )}
 
+                    {/* ──── FAQ SECTION (Apple Style) ──── */}
+                    {product.faqs && product.faqs.length > 0 && (
+                        <div className="pt-32 max-w-4xl mx-auto px-4">
+                            <h2 className="font-heading text-black text-[32px] font-bold mb-10 tracking-tight">
+                                Frequently Asked Questions
+                            </h2>
+
+                            <div className="border-t border-stone-200">
+                                {product.faqs.map((faq, i) => (
+                                    <details key={i} className="group border-b border-stone-200">
+                                        <summary className="flex items-center justify-between py-6 cursor-pointer list-none appearance-none [&::-webkit-details-marker]:hidden">
+                                            <h3 className="font-sans text-[#1d1d1f] text-[17px] font-semibold leading-tight pr-8">
+                                                {faq.question}
+                                            </h3>
+                                            <div className="relative w-5 h-5 flex items-center justify-center shrink-0">
+                                                <ChevronDown className="w-5 h-5 text-stone-400 transition-transform duration-300 group-open:rotate-180" />
+                                            </div>
+                                        </summary>
+                                        <div className="pb-8 animate-in fade-in slide-in-from-top-2 duration-300">
+                                            <p className="font-sans text-[#424245] text-[17px] leading-relaxed max-w-3xl">
+                                                {faq.answer}
+                                            </p>
+                                        </div>
+                                    </details>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -654,7 +492,7 @@ function ProductDetailContent() {
                         <div className="flex items-end justify-between mb-10">
                             <div>
                                 <span className="font-heading font-semibold text-[10px] text-emerald-600 uppercase tracking-[0.28em] block mb-2">Architectural Synergy</span>
-                                <h2 className="font-heading font-semibold text-[#2A401E] text-4xl tracking-tight">Related Protocols</h2>
+                                <h2 className="font-heading font-semibold text-[#2A401E] text-4xl tracking-tight">Related Products</h2>
                             </div>
                             <Link href="/products" className="hidden sm:block font-sans text-sm font-semibold text-stone-400 hover:text-emerald-600 transition-colors underline-offset-4 hover:underline">
                                 View all →
@@ -680,7 +518,7 @@ function ProductDetailContent() {
                                                 {relCat}
                                             </div>
                                             <img
-                                                src={formatBase64Image(p.images?.[0]) || "/multi-vit.png"}
+                                                src={getProductMainImage(p)}
                                                 alt={p.name}
                                                 className="w-full h-full object-contain mix-blend-multiply group-hover:scale-[1.06] transition-transform duration-500"
                                             />

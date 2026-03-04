@@ -1,15 +1,17 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { api, ApiError, Category } from "@/lib/api";
+import { useRouter, useParams } from "next/navigation";
+import { api, ApiError, Category, formatBase64Image } from "@/lib/api";
 import { Image as ImageIcon, X } from "lucide-react";
 
-export default function NewInformation() {
+export default function EditInformation() {
     const router = useRouter();
+    const params = useParams();
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(false);
+    const [fetching, setFetching] = useState(true);
     const [error, setError] = useState("");
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -22,17 +24,37 @@ export default function NewInformation() {
     useEffect(() => {
         const adminStr = localStorage.getItem('admin');
         if (!adminStr) { router.push('/admin/login'); return; }
-        loadCategories();
-    }, [router]);
 
-    const loadCategories = async () => {
-        try {
-            const data = await api.categories.getAll();
-            if (Array.isArray(data)) setCategories(data);
-        } catch (e) {
-            console.error("Failed to load categories", e);
-        }
-    };
+        const loadInitialData = async () => {
+            try {
+                const id = parseInt(params.id as string);
+                const [infoData, allCategories] = await Promise.all([
+                    api.info.getById(id),
+                    api.categories.getAll()
+                ]);
+
+                if (infoData) {
+                    setFormData({
+                        title: infoData.title,
+                        content: infoData.content,
+                        categoryId: infoData.category?.id?.toString() || ""
+                    });
+                    if (infoData.image) {
+                        setImagePreview(formatBase64Image(infoData.image));
+                    }
+                }
+
+                if (Array.isArray(allCategories)) setCategories(allCategories);
+            } catch (e) {
+                console.error(e);
+                setError("Failed to load information page data");
+            } finally {
+                setFetching(false);
+            }
+        };
+
+        loadInitialData();
+    }, [router, params.id]);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -48,6 +70,7 @@ export default function NewInformation() {
         setError("");
 
         try {
+            const id = parseInt(params.id as string);
             const data = new FormData();
             const infoJson = {
                 title: formData.title,
@@ -60,15 +83,21 @@ export default function NewInformation() {
                 data.append('image', selectedImage);
             }
 
-            await api.info.create(data);
+            await api.info.update(id, data);
             router.push('/admin/information');
         } catch (err) {
             if (err instanceof ApiError) setError(err.message);
-            else setError("Failed to create information page");
+            else setError("Failed to update information page");
         } finally {
             setLoading(false);
         }
     };
+
+    if (fetching) return (
+        <div className="min-h-screen bg-[#0A190E] flex items-center justify-center">
+            <div className="w-10 h-10 border-t-2 border-[#38A36D] animate-spin rounded-full"></div>
+        </div>
+    );
 
     return (
         <main className="min-h-screen bg-[#0A190E] text-white font-sans">
@@ -77,7 +106,7 @@ export default function NewInformation() {
                     <div className="flex items-center gap-4">
                         <Link href="/admin/information" className="text-white/50 hover:text-white transition-colors text-sm">← Information</Link>
                         <h1 className="text-2xl font-black tracking-tighter font-heading">
-                            New <span className="text-[#38A36D]">Information Page</span>
+                            Edit <span className="text-[#38A36D]">Information Page</span>
                         </h1>
                     </div>
                 </div>
@@ -157,7 +186,7 @@ export default function NewInformation() {
                             type="submit" disabled={loading}
                             className="flex-1 py-5 bg-emerald-600 text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {loading ? "Creating..." : "Create Information Page"}
+                            {loading ? "Updating..." : "Update Information Page"}
                         </button>
                         <Link
                             href="/admin/information"

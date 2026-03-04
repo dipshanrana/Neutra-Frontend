@@ -4,12 +4,15 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api, ApiError, Product } from "@/lib/api";
+import { Image as ImageIcon, X } from "lucide-react";
 
 export default function NewBlog() {
     const router = useRouter();
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [formData, setFormData] = useState({
         title: "",
         content: "",
@@ -30,6 +33,14 @@ export default function NewBlog() {
         } catch (e) { console.error(e); }
     };
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+            setSelectedImage(file);
+            setImagePreview(URL.createObjectURL(file));
+        }
+    };
+
     const toggleProduct = (id: number) => {
         setFormData(prev => ({
             ...prev,
@@ -45,12 +56,20 @@ export default function NewBlog() {
         setError("");
 
         try {
-            await api.blogs.create({
+            const data = new FormData();
+            const blogJson = {
                 title: formData.title,
                 content: formData.content,
                 author: formData.author,
                 relatedProducts: formData.relatedProductIds.map(id => ({ id } as Product))
-            });
+            };
+
+            data.append('blog', new Blob([JSON.stringify(blogJson)], { type: 'application/json' }));
+            if (selectedImage) {
+                data.append('image', selectedImage);
+            }
+
+            await api.blogs.create(data);
             router.push('/admin/blogs');
         } catch (err) {
             if (err instanceof ApiError) setError(err.message);
@@ -81,6 +100,31 @@ export default function NewBlog() {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-8">
+                    {/* Image Upload */}
+                    <div>
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D] mb-3">Feature Image</label>
+                        <div className="relative">
+                            {imagePreview ? (
+                                <div className="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 group">
+                                    <img src={imagePreview} className="w-full h-full object-cover" alt="Preview" />
+                                    <button
+                                        type="button"
+                                        onClick={() => { setSelectedImage(null); setImagePreview(null); }}
+                                        className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-red-600 transition-colors rounded-full"
+                                    >
+                                        <X className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            ) : (
+                                <label className="flex flex-col items-center justify-center w-full aspect-video border-2 border-dashed border-white/10 rounded-2xl cursor-pointer hover:bg-white/5 hover:border-[#38A36D]/30 transition-all">
+                                    <ImageIcon className="w-12 h-12 text-white/20 mb-4" />
+                                    <span className="text-xs font-bold uppercase tracking-widest text-white/40">Drop featured image or click</span>
+                                    <input type="file" className="hidden" accept="image/*" onChange={handleImageChange} />
+                                </label>
+                            )}
+                        </div>
+                    </div>
+
                     <div>
                         <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D] mb-3">Blog Title</label>
                         <input
@@ -127,8 +171,8 @@ export default function NewBlog() {
                                         type="button"
                                         onClick={() => toggleProduct(p.id!)}
                                         className={`px-4 py-3 rounded-xl border text-sm text-left transition-all ${formData.relatedProductIds.includes(p.id!)
-                                                ? 'bg-emerald-600/20 border-[#38A36D]/50 text-[#38A36D]'
-                                                : 'bg-white/5 border-white/10 text-white/60 hover:border-white/20'
+                                            ? 'bg-emerald-600/20 border-[#38A36D]/50 text-[#38A36D]'
+                                            : 'bg-white/5 border-white/10 text-white/60 hover:border-white/20'
                                             }`}
                                     >
                                         {formData.relatedProductIds.includes(p.id!) ? '✓ ' : ''}{p.name}

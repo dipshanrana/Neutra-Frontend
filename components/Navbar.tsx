@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import { api, Category } from "@/lib/api";
 
 const SvgSearch = ({ className, strokeWidth = 1.5 }: { className?: string, strokeWidth?: number }) => (
@@ -30,8 +31,18 @@ const SvgMenu = ({ className, strokeWidth = 1.5 }: { className?: string, strokeW
 )
 
 export function Navbar() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [categories, setCategories] = useState<Category[]>([]);
   const [showCategories, setShowCategories] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -114,16 +125,18 @@ export function Navbar() {
           {/* Right Icon Nav */}
           <div className="hidden md:flex items-center space-x-6 pl-4">
             {/* Premium Search Box */}
-            <div className="relative group flex items-center">
+            <form onSubmit={handleSearch} className="relative group flex items-center">
               <input
                 type="text"
                 placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-5 pr-12 py-2.5 rounded-full border border-[#1D3557]/10 bg-[#F1FAEE]/30 text-sm text-[#1D3557] font-sans w-48 focus:outline-none focus:border-[#34A0A4]/50 focus:bg-white transition-all duration-300 placeholder:text-[#1D3557]/40 shadow-[0_2px_10px_rgba(29,53,87,0.02)]"
               />
-              <button className="absolute right-4 text-[#1D3557]/50 hover:text-emerald-700 transition-colors">
+              <button type="submit" className="absolute right-4 text-[#1D3557]/50 hover:text-emerald-700 transition-colors">
                 <SvgSearch className="w-[18px] h-[18px]" strokeWidth={1.5} />
               </button>
-            </div>
+            </form>
 
             <button className="text-[#1D3557] hover:text-emerald-700 transition-colors">
               <SvgUser className="w-[20px] h-[20px]" strokeWidth={1.5} />
@@ -132,7 +145,15 @@ export function Navbar() {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-6">
-            <button className="text-[#1D3557] hover:text-emerald-700 transition-colors">
+            <button
+              onClick={() => {
+                const query = prompt("Enter search query:");
+                if (query) {
+                  router.push(`/products?search=${encodeURIComponent(query)}`);
+                }
+              }}
+              className="text-[#1D3557] hover:text-emerald-700 transition-colors"
+            >
               <SvgSearch className="w-5 h-5" strokeWidth={1.5} />
             </button>
             <button className="text-[#1D3557] hover:text-emerald-700">

@@ -59,7 +59,7 @@ export default function CustomerRegister() {
             if (err instanceof ApiError) {
                 setError(err.message);
             } else {
-                setError("Protocol initialization failed. User identity may already exist.");
+                setError("Process initialization failed. User identity may already exist.");
             }
         } finally {
             setLoading(false);

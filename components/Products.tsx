@@ -150,7 +150,7 @@ export function Products() {
 
                                         {/* CTA Button */}
                                         <span className="w-full py-4 rounded-full bg-emerald-600 text-white font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-emerald-700 hover:shadow-[0_15px_30px_rgba(5,150,105,0.2)] transition-all duration-500 flex items-center justify-center gap-2 group-hover:-translate-y-1">
-                                            Explore Protocol
+                                            Explore Product
                                         </span>
                                     </div>
                                 </Link>

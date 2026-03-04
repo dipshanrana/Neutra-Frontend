@@ -113,7 +113,7 @@ export default function AdminUsers() {
                                 <input required type="password" value={newAdminPassword} onChange={e => setNewAdminPassword(e.target.value)} className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-[#38A36D]" placeholder="••••••••" />
                             </div>
                             <div className="md:col-span-2 flex justify-end gap-4 mt-2">
-                                <button type="button" onClick={() => setIsCreatingAdmin(false)} className="px-6 py-3 border border-white/10 text-white rounded-xl text-[10px] uppercase font-bold tracking-[0.2em] hover:bg-white/5 transition-colors">Cancel Protocol</button>
+                                <button type="button" onClick={() => setIsCreatingAdmin(false)} className="px-6 py-3 border border-white/10 text-white rounded-xl text-[10px] uppercase font-bold tracking-[0.2em] hover:bg-white/5 transition-colors">Cancel</button>
                                 <button type="submit" className="px-6 py-3 bg-emerald-600 text-[#0A190E] rounded-xl text-[10px] uppercase font-black tracking-[0.2em] hover:bg-white hover:shadow-[0_0_20px_rgba(56,163,109,0.4)] transition-all">Execute Registration</button>
                             </div>
                         </form>

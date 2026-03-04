@@ -327,6 +327,10 @@ export interface Product {
   }[];
   freebies?: string[];
   howToUse?: string[];
+  faqs?: {
+    question: string;
+    answer: string;
+  }[];
 }
 
 export const productApi = {
@@ -380,6 +384,7 @@ export interface Blog {
   title: string;
   content: string;
   author: string;
+  image?: string;
   relatedProducts?: Product[];
 }
 
@@ -390,10 +395,21 @@ export const blogApi = {
   getById: (id: number) =>
     apiFetch<Blog>(`/blogs/${id}`),
 
-  create: (blog: Blog) =>
+  create: (data: Blog | FormData) =>
     apiFetch<Blog>('/blogs', {
       method: 'POST',
-      body: JSON.stringify(blog),
+      body: data instanceof FormData ? data : JSON.stringify(data),
+    }, true),
+
+  update: (id: number, data: Blog | FormData) =>
+    apiFetch<Blog>(`/blogs/${id}`, {
+      method: 'PUT',
+      body: data instanceof FormData ? data : JSON.stringify(data),
+    }, true),
+
+  delete: (id: number) =>
+    apiFetch<void>(`/blogs/${id}`, {
+      method: 'DELETE',
     }, true),
 };
 
@@ -403,6 +419,7 @@ export interface Information {
   id?: number;
   title: string;
   content: string;
+  image?: string;
   category?: Category;
 }
 
@@ -413,10 +430,21 @@ export const infoApi = {
   getById: (id: number) =>
     apiFetch<Information>(`/information/${id}`),
 
-  create: (info: Information) =>
+  create: (data: Information | FormData) =>
     apiFetch<Information>('/information', {
       method: 'POST',
-      body: JSON.stringify(info),
+      body: data instanceof FormData ? data : JSON.stringify(data),
+    }, true),
+
+  update: (id: number, data: Information | FormData) =>
+    apiFetch<Information>(`/information/${id}`, {
+      method: 'PUT',
+      body: data instanceof FormData ? data : JSON.stringify(data),
+    }, true),
+
+  delete: (id: number) =>
+    apiFetch<void>(`/information/${id}`, {
+      method: 'DELETE',
     }, true),
 };
 

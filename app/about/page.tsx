@@ -14,7 +14,7 @@ export default function AboutPage() {
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center mb-24 max-w-4xl mx-auto mt-12">
-                        <span className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-600 font-heading mb-6 inline-block">The Protocol</span>
+                        <span className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-600 font-heading mb-6 inline-block">The Product</span>
                         <h1 className="text-5xl md:text-7xl lg:text-8xl font-medium tracking-tight text-[#1D3557] font-heading leading-[1] mb-8">
                             Engineering <br />
                             <span className="text-emerald-600 italic font-light">Longevity.</span>
@@ -60,7 +60,7 @@ export default function AboutPage() {
 
                     <div className="bg-emerald-600 rounded-[3rem] p-12 lg:p-24 text-center text-white relative overflow-hidden shadow-2xl">
                         <div className="absolute inset-0 bg-gradient-to-br from-[#34A0A4]/20 to-transparent mix-blend-overlay"></div>
-                        <h2 className="text-4xl md:text-6xl font-medium tracking-tight mb-8 font-heading relative z-10">Start Your Protocol.</h2>
+                        <h2 className="text-4xl md:text-6xl font-medium tracking-tight mb-8 font-heading relative z-10">Start Your Journey.</h2>
                         <p className="max-w-2xl mx-auto text-white/70 font-light text-lg mb-12 relative z-10">
                             Join over 50,000 clinicians, athletes, and biohackers utilizing NuCore technologies to elevate their baseline performance state.
                         </p>

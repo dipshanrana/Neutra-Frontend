@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Space_Mono } from "next/font/google";
+import { Cormorant_Garamond, Space_Mono, Outfit, Inter } from "next/font/google";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -13,6 +13,18 @@ const spaceMono = Space_Mono({
   variable: "--font-space-mono",
   subsets: ["latin"],
   weight: ["400", "700"],
+});
+
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
@@ -30,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${cormorant.variable} ${spaceMono.variable} font-sans antialiased bg-[#ffffff] text-[#1D3557]`}
+        className={`${cormorant.variable} ${spaceMono.variable} ${outfit.variable} ${inter.variable} font-sans antialiased bg-[#ffffff] text-[#1D3557]`}
       >
         <AnalyticsTracker />
         {children}

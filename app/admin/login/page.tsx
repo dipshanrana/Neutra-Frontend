@@ -72,7 +72,7 @@ export default function AdminLogin() {
                     <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white/5 group-hover:border-white/30 transition-all">
                         <SvgArrowLeft className="w-4 h-4" />
                     </div>
-                    <span className="text-xs font-bold uppercase tracking-widest font-heading">Exit Protocol</span>
+                    <span className="text-xs font-bold uppercase tracking-widest font-heading">Exit</span>
                 </Link>
                 <div className="text-xs font-black uppercase tracking-[0.4em] text-white/50 font-heading">
                     Sys<span className="text-[#38A36D]">Admin</span>

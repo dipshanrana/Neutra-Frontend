@@ -120,7 +120,7 @@ export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
 
                                 <div className="flex justify-between items-start mb-16 relative z-10">
                                     <span className="text-xs font-black font-number text-[#1D3557]/20 group-hover:text-emerald-700 transition-colors duration-500 tracking-[0.4em]">
-                                        PROTOCOL 0{index + 1}
+                                        PRODUCT 0{index + 1}
                                     </span>
                                     <div className="w-14 h-14 rounded-full border border-[#1D3557]/10 flex items-center justify-center text-[#1D3557]/20 group-hover:bg-emerald-600 group-hover:border-[#1D3557] group-hover:text-white transition-all duration-700 transform group-hover:rotate-45 shadow-sm">
                                         <SvgArrowRight className="w-6 h-6" />

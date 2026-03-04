@@ -1,4 +1,10 @@
-﻿const SvgArrowRight = ({ className, strokeWidth = 1.5 }: { className?: string, strokeWidth?: number }) => (
+﻿"use client";
+
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { api, Category } from "@/lib/api";
+
+const SvgArrowRight = ({ className, strokeWidth = 1.5 }: { className?: string, strokeWidth?: number }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor" strokeWidth={strokeWidth}>
     <path d="M5 12H19M19 12L12 5M19 12L12 19" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
@@ -27,6 +33,20 @@ const SvgLinkedin = ({ className, strokeWidth = 1.5 }: { className?: string, str
 )
 
 export function Footer() {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await api.categories.getAll();
+        setCategories(data);
+      } catch (err) {
+        console.error("Failed to load footer categories", err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
   return (
     <footer className="bg-emerald-600 pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-[#F1FAEE]">
@@ -62,10 +82,19 @@ export function Footer() {
             <div>
               <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#82C49C] font-heading mb-8">Shop</h4>
               <ul className="space-y-4 font-sans text-sm font-light">
-                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Vitamins</a></li>
-                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Proteins</a></li>
-                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Omegas</a></li>
-                <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Minerals</a></li>
+                {categories.length > 0 ? (
+                  categories.slice(0, 4).map((cat) => (
+                    <li key={cat.id}>
+                      <Link href={`/products?category=${encodeURIComponent(cat.name)}`} className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">
+                        {cat.name}
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                    <li><a href="#" className="hover:text-emerald-700 transition-colors text-[#F1FAEE]/80">Loading...</a></li>
+                  </>
+                )}
               </ul>
             </div>
 

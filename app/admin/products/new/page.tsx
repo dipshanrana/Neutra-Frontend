@@ -82,7 +82,8 @@ export default function ProductForm() {
         supplementFacts: [] as { nutrientName: string, amountPerServing: string, amount: string }[],
         freebies: [] as string[],
         reviews: [] as { username: string, stars: number, comment: string }[],
-        howToUse: ["", "", "", ""]
+        howToUse: ["", "", "", ""],
+        faqs: [] as { question: string, answer: string }[]
     });
 
     // File states for multipart submission
@@ -155,7 +156,8 @@ export default function ProductForm() {
                 reviews: product.reviews && product.reviews.length > 0 ? product.reviews : [],
                 howToUse: product.howToUse && product.howToUse.length > 0
                     ? [...product.howToUse, ...Array(Math.max(0, 4 - product.howToUse.length)).fill("")]
-                    : ["", "", "", ""]
+                    : ["", "", "", ""],
+                faqs: product.faqs && product.faqs.length > 0 ? product.faqs : []
             });
         } catch (err) {
             setError("Failed to load product");
@@ -312,7 +314,8 @@ export default function ProductForm() {
                 supplementFacts: formData.supplementFacts.filter(sf => sf.nutrientName.trim() !== ""),
                 freebies: formData.freebies.filter(f => f.trim() !== ""),
                 reviews: formData.reviews.filter(r => r.username.trim() !== "" && r.comment.trim() !== ""),
-                howToUse: formData.howToUse.map(step => step.trim())
+                howToUse: formData.howToUse.map(step => step.trim()),
+                faqs: formData.faqs.filter(f => f.question.trim() !== "")
             };
 
             const multiFormData = new FormData();
@@ -994,6 +997,65 @@ export default function ProductForm() {
                             className="text-xs text-[#38A36D] hover:text-white/80 transition-colors font-medium uppercase tracking-wider"
                         >
                             + Add Review
+                        </button>
+                    </div>
+
+                    {/* ==================== FAQs SECTION ==================== */}
+                    <div className="space-y-4 pt-8 border-t border-white/10">
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D]">Frequently Asked Questions</label>
+                        {formData.faqs.map((faq, index) => (
+                            <div key={index} className="p-5 bg-white/5 border border-white/10 rounded-2xl space-y-4 relative group">
+                                <button
+                                    type="button"
+                                    onClick={() => setFormData(prev => ({
+                                        ...prev,
+                                        faqs: prev.faqs.filter((_, i) => i !== index)
+                                    }))}
+                                    className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-xl transition-all opacity-0 group-hover:opacity-100"
+                                >
+                                    <SvgX className="w-4 h-4" />
+                                </button>
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-[9px] font-bold uppercase tracking-wider text-white/30 mb-2">Question</label>
+                                        <input
+                                            type="text"
+                                            value={faq.question}
+                                            onChange={(e) => {
+                                                const newFaqs = [...formData.faqs];
+                                                newFaqs[index].question = e.target.value;
+                                                setFormData(prev => ({ ...prev, faqs: newFaqs }));
+                                            }}
+                                            className="w-full px-5 py-3.5 bg-black/20 border border-white/10 rounded-xl focus:outline-none focus:border-[#38A36D] transition-colors text-sm text-white placeholder-white/10"
+                                            placeholder="e.g. Is this product vegan-friendly?"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[9px] font-bold uppercase tracking-wider text-white/30 mb-2">Answer</label>
+                                        <textarea
+                                            value={faq.answer}
+                                            onChange={(e) => {
+                                                const newFaqs = [...formData.faqs];
+                                                newFaqs[index].answer = e.target.value;
+                                                setFormData(prev => ({ ...prev, faqs: newFaqs }));
+                                            }}
+                                            rows={3}
+                                            className="w-full px-5 py-4 bg-black/20 border border-white/10 rounded-xl focus:outline-none focus:border-[#38A36D] transition-colors text-sm text-white placeholder-white/10 resize-none"
+                                            placeholder="e.g. Yes, our Whey Protein Isolate is processed specifically to be suitable for vegetarians..."
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                        <button
+                            type="button"
+                            onClick={() => setFormData(prev => ({ ...prev, faqs: [...prev.faqs, { question: "", answer: "" }] }))}
+                            className="w-full py-4 border border-dashed border-white/10 rounded-2xl text-xs text-white/30 hover:text-[#38A36D] hover:border-[#38A36D]/30 transition-all flex flex-col items-center justify-center gap-2 group"
+                        >
+                            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#38A36D]/10 transition-colors">
+                                <SvgPlus className="w-4 h-4" />
+                            </div>
+                            <span className="uppercase font-black tracking-widest">Add FAQ Item</span>
                         </button>
                     </div>
 

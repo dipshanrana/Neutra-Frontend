@@ -11,6 +11,8 @@
   --font-sans: var(--font-space-mono), 'Courier New', monospace;
   --font-heading: var(--font-cormorant), Georgia, serif;
   --font-number: var(--font-space-mono), monospace;
+  --font-outfit: var(--font-outfit), sans-serif;
+  --font-inter: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 :root {
@@ -39,6 +41,14 @@ h6,
 .font-number {
   font-family: var(--font-number);
   font-feature-settings: "tnum" on, "lnum" on;
+}
+
+.font-outfit {
+  font-family: var(--font-outfit);
+}
+
+.font-inter {
+  font-family: var(--font-inter);
 }
 
 .text-brand-primary {
