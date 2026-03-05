@@ -75,18 +75,28 @@ async function apiFetch<T>(
 
     if (!response.ok) {
       let errorMessage = `HTTP error! status: ${response.status}`;
+
+      // Try to get detailed error from response
       try {
-        const errorData = await response.json();
-        errorMessage = errorData.error || errorMessage;
+        const text = await response.text();
+        try {
+          const errorData = JSON.parse(text);
+          errorMessage = errorData.error || errorData.message || errorMessage;
+        } catch {
+          // Fallback to raw text if not JSON
+          if (text && text.length < 200) errorMessage = text;
+        }
       } catch { }
 
-      // For GET requests that fail with 404/403/500, return empty gracefully
       const method = (options.method || 'GET').toUpperCase();
+
+      // For GET requests that fail with 404/403/500, return empty gracefully
       if (method === 'GET' && (response.status === 404 || response.status === 403 || response.status === 500)) {
-        console.warn(`[API] ${method} ${endpoint} → ${response.status}: ${errorMessage}`);
+        console.warn(`[API WARNING] Gracefully suppressed ${response.status} from ${method} ${endpoint}`);
         return [] as any;
       }
 
+      console.error(`[API ERROR] ${method} ${endpoint} (${response.status}):`, errorMessage);
       throw new ApiError(response.status, errorMessage);
     }
 
@@ -100,14 +110,13 @@ async function apiFetch<T>(
     if (error instanceof ApiError) {
       throw error;
     }
-    // Only swallow network errors for GET requests (data loading)
-    // POST/PUT/DELETE (login, create, update) MUST throw so the UI can show errors
     const method = (options.method || 'GET').toUpperCase();
+    console.error(`[NETWORK ERROR] ${method} ${endpoint}:`, error);
+
     if (method === 'GET') {
-      console.warn('[API] GET request failed, returning empty:', endpoint);
       return [] as any;
     }
-    throw new Error('Network error. Please check your connection.');
+    throw new Error(error instanceof Error ? error.message : 'Network error. Please check your connection.');
   }
 }
 
@@ -258,6 +267,7 @@ export interface Category {
   id?: number;
   name: string;
   svg: string;
+  image?: string; // Base64 string from backend
 }
 
 export const categoryApi = {
@@ -267,16 +277,16 @@ export const categoryApi = {
   getById: (id: number) =>
     apiFetch<Category>(`/categories/${id}`),
 
-  create: (category: Category) =>
+  create: (formData: FormData) =>
     apiFetch<Category>('/categories', {
       method: 'POST',
-      body: JSON.stringify(category),
+      body: formData,
     }, true),
 
-  update: (id: number, category: Category) =>
+  update: (id: number, formData: FormData) =>
     apiFetch<Category>(`/categories/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(category),
+      body: formData,
     }, true),
 
   delete: (id: number) =>

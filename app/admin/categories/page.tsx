@@ -14,7 +14,7 @@ const SvgArrowLeft = ({ className }: { className?: string }) => (
 const SvgPlus = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
         <path d="M12 5V19M5 12H19" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-</svg>
+    </svg>
 );
 
 const SvgTrash = ({ className }: { className?: string }) => (
@@ -36,10 +36,16 @@ export default function AdminCategories() {
     const [isEditing, setIsEditing] = useState<number | null>(null);
     const [editName, setEditName] = useState("");
     const [editSvg, setEditSvg] = useState("");
+    const [editBadge, setEditBadge] = useState("");
+    const [editShortDesc, setEditShortDesc] = useState("");
+    const [editImageFile, setEditImageFile] = useState<File | null>(null);
 
     const [isCreating, setIsCreating] = useState(false);
     const [newName, setNewName] = useState("");
     const [newSvg, setNewSvg] = useState("");
+    const [newBadge, setNewBadge] = useState("");
+    const [newShortDesc, setNewShortDesc] = useState("");
+    const [newImageFile, setNewImageFile] = useState<File | null>(null);
 
     useEffect(() => {
         const adminStr = localStorage.getItem('admin');
@@ -71,31 +77,54 @@ export default function AdminCategories() {
         try {
             await api.categories.delete(id);
             setCategories(categories.filter(c => c.id !== id));
-        } catch (err) {
-            alert("Failed to delete category");
+        } catch (err: any) {
+            console.error("Delete Category Error:", err);
+            alert(`Failed to delete category: ${err.message || "Unknown error"}`);
         }
     };
 
     const handleCreate = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const newCat = await api.categories.create({ name: newName, svg: newSvg });
+            const formData = new FormData();
+            const categoryBlob = new Blob([JSON.stringify({ name: newName, svg: newSvg, badge: newBadge, shortDescription: newShortDesc })], { type: 'application/json' });
+            formData.append('category', categoryBlob);
+            if (newImageFile) {
+                formData.append('image', newImageFile);
+            }
+
+            const newCat = await api.categories.create(formData);
             setCategories([...categories, newCat]);
             setIsCreating(false);
             setNewName("");
             setNewSvg("");
-        } catch (err) {
-            alert("Failed to create category");
+            setNewBadge("");
+            setNewShortDesc("");
+            setNewImageFile(null);
+        } catch (err: any) {
+            console.error("Create Category Error:", err);
+            alert(`Failed to create category: ${err.message || "Unknown error"}`);
         }
     };
 
     const handleUpdate = async (id: number) => {
         try {
-            const updated = await api.categories.update(id, { name: editName, svg: editSvg });
+            const formData = new FormData();
+            const categoryBlob = new Blob([JSON.stringify({ id, name: editName, svg: editSvg, badge: editBadge, shortDescription: editShortDesc })], { type: 'application/json' });
+            formData.append('category', categoryBlob);
+            if (editImageFile) {
+                formData.append('image', editImageFile);
+            }
+
+            const updated = await api.categories.update(id, formData);
             setCategories(categories.map(c => c.id === id ? updated : c));
             setIsEditing(null);
-        } catch (err) {
-            alert("Failed to update category");
+            setEditBadge("");
+            setEditShortDesc("");
+            setEditImageFile(null);
+        } catch (err: any) {
+            console.error("Update Category Error:", err);
+            alert(`Failed to update category: ${err.message || "Unknown error"}`);
         }
     };
 
@@ -130,13 +159,41 @@ export default function AdminCategories() {
                     <div className="mb-12 bg-white/5 border border-white/10 rounded-2xl p-8">
                         <h2 className="text-xl font-medium mb-6">Create New Category</h2>
                         <form onSubmit={handleCreate} className="space-y-4">
-                            <div>
-                                <label className="block text-xs uppercase text-white/40 mb-2">Category Name</label>
-                                <input required value={newName} onChange={e => setNewName(e.target.value)} className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-[#38A36D]" placeholder="e.g. Vitamins" />
-                            </div>
-                            <div>
-                                <label className="block text-xs uppercase text-white/40 mb-2">SVG Icon Code (Optional)</label>
-                                <textarea value={newSvg} onChange={e => setNewSvg(e.target.value)} className="w-full h-32 bg-black/40 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-[#38A36D] font-mono text-xs" placeholder="<svg>...</svg>" />
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs uppercase text-white/40 mb-2">Category Name</label>
+                                        <input required value={newName} onChange={e => setNewName(e.target.value)} className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-[#38A36D]" placeholder="e.g. Vitamins" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs uppercase text-white/40 mb-2">Category Brand Image</label>
+                                        <div className="flex items-center gap-4">
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={e => setNewImageFile(e.target.files?.[0] || null)}
+                                                className="block w-full text-sm text-white/40 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:uppercase file:bg-white/10 file:text-white hover:file:bg-white/20"
+                                            />
+                                            {newImageFile && (
+                                                <div className="w-16 h-16 rounded-xl bg-black/40 border border-white/10 overflow-hidden shrink-0">
+                                                    <img src={URL.createObjectURL(newImageFile)} className="w-full h-full object-cover" />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-xs uppercase text-white/40 mb-2">SVG Icon Code (Optional)</label>
+                                    <textarea value={newSvg} onChange={e => setNewSvg(e.target.value)} className="w-full h-40 bg-black/40 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-[#38A36D] font-mono text-xs" placeholder="<svg>...</svg>" />
+                                    <div className="mt-4">
+                                        <label className="block text-xs uppercase text-white/40 mb-2">Badge</label>
+                                        <input value={newBadge} onChange={e => setNewBadge(e.target.value)} className="w-full bg-black/40 border border-white/10 p-2 rounded-xl text-white" placeholder="Badge (e.g., BESTSELLER)" />
+                                    </div>
+                                    <div className="mt-4">
+                                        <label className="block text-xs uppercase text-white/40 mb-2">Short Description</label>
+                                        <input value={newShortDesc} onChange={e => setNewShortDesc(e.target.value)} className="w-full bg-black/40 border border-white/10 p-2 rounded-xl text-white" placeholder="Short description" />
+                                    </div>
+                                </div>
                             </div>
                             <div className="flex justify-end gap-4 mt-6">
                                 <button type="button" onClick={() => setIsCreating(false)} className="px-6 py-3 border border-white/10 text-white rounded-xl text-xs uppercase font-bold hover:bg-white/5">Cancel</button>
@@ -146,53 +203,100 @@ export default function AdminCategories() {
                     </div>
                 )}
 
-                <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-                    <table className="w-full text-left">
-                        <thead className="bg-white/5 text-xs uppercase text-white/40 font-bold border-b border-white/10">
+                <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+                    <table className="w-full text-left border-collapse">
+                        <thead className="bg-[#111] text-[11px] uppercase text-white/40 tracking-widest font-black border-b border-white/10">
                             <tr>
-                                <th className="p-6">ID</th>
-                                <th className="p-6">Name</th>
-                                <th className="p-6">Icon Preview</th>
-                                <th className="p-6 text-right">Actions</th>
+                                <th className="p-5 pl-8 font-medium">Image</th>
+                                <th className="p-5 font-medium">Category Name</th>
+                                <th className="p-5 font-medium">Dynamic Content</th>
+                                <th className="p-5 pr-8 text-right font-medium">Actions</th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-white/5">
-                            {categories.map(cat => (
-                                <tr key={cat.id} className="hover:bg-white/[0.02] transition-colors">
-                                    <td className="p-6 font-mono text-white/60">#{cat.id}</td>
-                                    <td className="p-6">
-                                        {isEditing === cat.id ? (
-                                            <input value={editName} onChange={e => setEditName(e.target.value)} className="bg-black/50 border border-[#38A36D] rounded px-3 py-2 text-white outline-none" />
-                                        ) : (
-                                            <span className="font-medium text-lg tracking-tight">{cat.name}</span>
+                        <tbody className="divide-y divide-white/5 bg-black/20">
+                            {categories.map((cat) => (
+                                <tr key={cat.id} className="hover:bg-white/[0.04] transition-colors group">
+                                    <td className="p-5 pl-8 align-top">
+                                        <div className="relative group/img w-[80px] h-[80px]">
+                                            <div className="w-full h-full rounded-xl bg-black/60 border border-white/5 flex items-center justify-center overflow-hidden shadow-inner">
+                                                {cat.image ? (
+                                                    <img src={cat.image.startsWith('data:') ? cat.image : `data:image/png;base64,${cat.image}`} alt={cat.name} className="w-full h-[150%] object-contain object-bottom pt-2" />
+                                                ) : (
+                                                    <span className="text-[10px] text-white/20 uppercase font-black">No img</span>
+                                                )}
+                                            </div>
+                                            {isEditing === cat.id && (
+                                                <div className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 group-hover/img:opacity-100 transition-opacity rounded-xl backdrop-blur-sm cursor-pointer border border-[#38A36D]">
+                                                    <label className="cursor-pointer p-2 w-full h-full flex items-center justify-center">
+                                                        <SvgPlus className="w-6 h-6 text-[#38A36D]" />
+                                                        <input type="file" className="hidden" accept="image/*" onChange={e => setEditImageFile(e.target.files?.[0] || null)} />
+                                                    </label>
+                                                </div>
+                                            )}
+                                        </div>
+                                        {isEditing === cat.id && editImageFile && (
+                                            <div className="mt-2 text-[10px] text-[#38A36D] font-black uppercase tracking-wider text-center">
+                                                File Ready
+                                            </div>
                                         )}
                                     </td>
-                                    <td className="p-6">
+                                    <td className="p-5 align-top">
                                         {isEditing === cat.id ? (
-                                            <textarea value={editSvg} onChange={e => setEditSvg(e.target.value)} className="w-full h-20 bg-black/50 border border-[#38A36D] rounded px-3 py-2 text-white font-mono text-xs outline-none" />
+                                            <input value={editName} onChange={e => setEditName(e.target.value)} className="bg-black/80 border border-white/20 focus:border-[#38A36D] rounded-lg px-4 py-3 text-white outline-none w-full text-sm font-medium transition-colors" placeholder="Category Name" />
                                         ) : (
-                                            <div className="w-10 h-10 text-[#38A36D] [&>svg]:w-10 [&>svg]:h-10 [&>svg]:block" dangerouslySetInnerHTML={{ __html: cat.svg || '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10" stroke-width="1.5"/></svg>' }} />
+                                            <div>
+                                                <span className="font-bold text-xl tracking-tight text-white mb-1 block uppercase font-heading">{cat.name}</span>
+                                            </div>
                                         )}
                                     </td>
-                                    <td className="p-6 text-right">
+                                    <td className="p-5 align-top">
                                         {isEditing === cat.id ? (
-                                            <div className="flex justify-end gap-2">
-                                                <button onClick={() => handleUpdate(cat.id!)} className="text-[#38A36D] hover:text-white font-bold text-xs uppercase tracking-wider px-3 py-1 border border-[#38A36D] rounded">Save</button>
-                                                <button onClick={() => setIsEditing(null)} className="text-white/40 hover:text-white font-bold text-xs uppercase tracking-wider px-3 py-1 border border-white/10 rounded">Cancel</button>
+                                            <div className="space-y-3">
+                                                <input value={editBadge} onChange={e => setEditBadge(e.target.value)} className="w-full bg-black/80 border border-white/20 focus:border-[#38A36D] rounded-lg px-4 py-2 text-white text-sm outline-none transition-colors" placeholder="Badge (e.g., BESTSELLER)" />
+                                                <input value={editShortDesc} onChange={e => setEditShortDesc(e.target.value)} className="w-full bg-black/80 border border-white/20 focus:border-[#38A36D] rounded-lg px-4 py-2 text-white text-sm outline-none transition-colors" placeholder="Short description" />
                                             </div>
                                         ) : (
-                                            <div className="flex justify-end gap-4">
-                                                <button onClick={() => { setIsEditing(cat.id!); setEditName(cat.name); setEditSvg(cat.svg || ""); }} className="text-white/40 hover:text-white transition-colors">
-                                                    <SvgEdit className="w-5 h-5" />
+                                            <div className="flex flex-col gap-2">
+                                                {(cat as any).badge ? (
+                                                    <span className="inline-flex max-w-max items-center px-2 py-1 bg-[#E21837]/10 text-[#E21837] text-[10px] font-black uppercase tracking-wider rounded border border-[#E21837]/20">
+                                                        Badge: {(cat as any).badge}
+                                                    </span>
+                                                ) : <span className="text-white/20 text-xs italic">No Badge</span>}
+
+                                                {(cat as any).shortDescription ? (
+                                                    <span className="text-sm text-white/60">
+                                                        {(cat as any).shortDescription}
+                                                    </span>
+                                                ) : <span className="text-white/20 text-xs italic">No Description</span>}
+                                            </div>
+                                        )}
+                                    </td>
+                                    <td className="p-5 pr-8 text-right align-top">
+                                        {isEditing === cat.id ? (
+                                            <div className="flex justify-end gap-3 pt-1">
+                                                <button onClick={() => setIsEditing(null)} className="text-white/40 hover:text-white font-bold text-xs uppercase tracking-wider px-4 py-2 border border-white/10 hover:bg-white/5 rounded-lg transition-colors">Cancel</button>
+                                                <button onClick={() => handleUpdate(cat.id!)} className="bg-[#38A36D] text-[#0A190E] hover:bg-emerald-400 font-black text-xs uppercase tracking-wider px-4 py-2 border border-[#38A36D] rounded-lg transition-colors shadow-lg shadow-[#38A36D]/20">Save</button>
+                                            </div>
+                                        ) : (
+                                            <div className="flex justify-end gap-3 pt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <button onClick={() => { setIsEditing(cat.id!); setEditName(cat.name); setEditSvg(cat.svg || ""); setEditBadge((cat as any).badge || ""); setEditShortDesc((cat as any).shortDescription || ""); setEditImageFile(null); }} className="p-2 bg-white/5 text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-all">
+                                                    <SvgEdit className="w-4 h-4" />
                                                 </button>
-                                                <button onClick={() => handleDelete(cat.id!)} className="text-red-500/70 hover:text-red-500 transition-colors">
-                                                    <SvgTrash className="w-5 h-5" />
+                                                <button onClick={() => handleDelete(cat.id!)} className="p-2 bg-red-500/10 text-red-400 hover:text-red-300 hover:bg-red-500/20 rounded-lg transition-all">
+                                                    <SvgTrash className="w-4 h-4" />
                                                 </button>
                                             </div>
                                         )}
                                     </td>
                                 </tr>
                             ))}
+                            {categories.length === 0 && (
+                                <tr>
+                                    <td colSpan={4} className="p-12 text-center text-white/40 font-medium">
+                                        No categories found. Create your first category above!
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

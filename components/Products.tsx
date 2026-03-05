@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { productApi, Product, getProductMainImage } from "@/lib/api";
+import { Heart, Star } from "lucide-react";
 
 const SvgArrowUpRight = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
@@ -27,7 +28,7 @@ export function Products() {
             try {
                 const data: Product[] = await productApi.getAll();
                 if (Array.isArray(data) && data.length > 0) {
-                    setProducts(data.slice(0, 3));
+                    setProducts(data.slice(0, 4));
                 }
             } catch (e) {
                 console.error("Failed to fetch products", e);
@@ -41,7 +42,7 @@ export function Products() {
     return (
         <section className="pt-12 pb-16 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-24">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
                     <div className="max-w-xl">
                         <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-600 font-heading mb-6">Complete Your Routine</h2>
                         <h3 className="text-4xl md:text-5xl font-medium tracking-tight text-[#1D3557] font-heading leading-tight">
@@ -54,104 +55,100 @@ export function Products() {
                 </div>
 
                 {loading ? (
-                    <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
-                        {[1, 2, 3].map(i => (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                        {[1, 2, 3, 4].map(i => (
                             <div key={i} className="animate-pulse">
-                                <div className="aspect-[4/5] bg-[#F1FAEE] rounded-[2rem] mb-8"></div>
-                                <div className="h-6 bg-[#F1FAEE] rounded w-3/4 mb-3"></div>
-                                <div className="h-4 bg-[#F1FAEE] rounded w-full mb-2"></div>
-                                <div className="h-4 bg-[#F1FAEE] rounded w-2/3"></div>
+                                <div className="aspect-square bg-[#F5F5F6] rounded-sm mb-4"></div>
+                                <div className="h-4 bg-[#F5F5F6] rounded w-3/4 mb-3"></div>
+                                <div className="h-3 bg-[#F5F5F6] rounded w-full mb-2"></div>
+                                <div className="h-8 bg-[#F5F5F6] rounded w-full mt-4"></div>
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                         {products.length > 0 ? products.map((p) => {
-                            const image = getProductMainImage(p);
-                            const allImages = p.featuredImages || p.images || [];
-                            const categoryName = typeof p.category === 'string' ? p.category : p.category?.name || 'Supplement';
-                            const benefits = p.benefits && p.benefits.length > 0 ? p.benefits.slice(0, 3) : [];
+                            const imageSrc = getProductMainImage(p);
                             const currentSp = p.singleProductSp ?? p.sp;
                             const currentMp = p.singleProductMp ?? p.mp;
-                            const hasDiscount = p.discount > 0;
-                            const hasPriceReduction = currentMp > currentSp;
+                            const savePct = currentMp > currentSp ? Math.round(((currentMp - currentSp) / currentMp) * 100) : 0;
+                            const reviews = p.reviews ?? [];
+                            const avgRating = reviews.length ? +(reviews.reduce((a, r) => a + r.stars, 0) / reviews.length).toFixed(1) : null;
 
                             return (
-                                <Link href={`/products/${p.id}`} key={p.id} className="group cursor-pointer flex flex-col h-full">
-                                    {/* Image Container */}
-                                    <div className="relative aspect-[4/5] bg-[#F1FAEE]/60 rounded-t-[2rem] rounded-b-none overflow-hidden mb-6 flex items-end justify-center transition-shadow duration-500 border-x border-t border-[#1D3557]/5">
-                                        {/* Category Label */}
-                                        <span className="absolute top-6 left-6 text-[10px] font-bold uppercase tracking-wider text-emerald-600 font-heading z-10">
-                                            {categoryName}
-                                        </span>
-
-                                        {/* Discount Badge */}
-                                        {hasDiscount && (
-                                            <span className="absolute top-6 right-6 px-4 py-2 bg-emerald-600 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full shadow-lg z-10 backdrop-blur-sm border border-white/10">
-                                                {p.discount}% OFF
-                                            </span>
-                                        )}
-
-                                        {/* Product Image */}
-                                        <div className="relative w-full h-full transition-transform duration-700 group-hover:scale-105">
-                                            {image.startsWith('http') || image.startsWith('data:') ? (
-                                                <img src={image} className="w-full h-full object-cover mix-blend-multiply" alt={p.name} />
-                                            ) : (
-                                                <Image src={image} fill className="object-cover mix-blend-multiply" alt={p.name} />
-                                            )}
-                                        </div>
-
-                                        {/* Image Count Badge */}
-                                        {allImages.length > 1 && (
-                                            <span className="absolute bottom-6 right-6 px-2.5 py-1 bg-black/30 backdrop-blur-sm rounded-full text-white text-[9px] font-bold tracking-wide z-10">
-                                                +{allImages.length - 1} more
-                                            </span>
-                                        )}
-                                    </div>
-
-                                    {/* Product Info */}
-                                    <div className="flex-1 flex flex-col">
-                                        {/* Name */}
-                                        <h4 className="text-xl font-medium text-[#1D3557] font-heading tracking-tight leading-tight group-hover:text-emerald-700 transition-colors mb-2">
-                                            {p.name}
-                                        </h4>
-
-                                        {/* Price Row */}
-                                        <div className="flex items-baseline gap-3 mb-4">
-                                            <span className="text-2xl font-medium text-[#1D3557] font-number tracking-tighter">
-                                                <span className="text-sm mr-0.5 opacity-60">Rs.</span>
-                                                {currentSp?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                            </span>
-                                            {hasPriceReduction && (
-                                                <span className="text-xs text-[#1D3557]/30 font-number line-through decoration-1">
-                                                    Rs. {currentMp?.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        {/* Description (truncated) */}
-                                        <p className="text-[#1D3557]/55 font-sans text-sm font-light leading-relaxed mb-4 line-clamp-2 flex-1">
-                                            {p.description}
-                                        </p>
-
-                                        {/* Benefits (up to 3) */}
-                                        {benefits.length > 0 && (
-                                            <div className="space-y-1.5 mb-5">
-                                                {benefits.map((b, i) => (
-                                                    <div key={i} className="flex items-center gap-2">
-                                                        <div className="w-4 h-4 shrink-0 rounded-full bg-emerald-50 flex items-center justify-center">
-                                                            <SvgCheck className="w-2.5 h-2.5 text-emerald-600" />
-                                                        </div>
-                                                        <span className="text-xs text-[#1D3557]/60 truncate">{b.nutrientName}</span>
-                                                    </div>
-                                                ))}
+                                <Link
+                                    key={p.id}
+                                    href={`/products/${p.id}`}
+                                    className="group bg-[#f6f6f8] border border-transparent hover:border-stone-200 hover:shadow-lg rounded-md overflow-hidden flex flex-col transition-all cursor-pointer"
+                                >
+                                    {/* Card image */}
+                                    <div className="relative bg-transparent aspect-square flex items-center justify-center mb-5 overflow-hidden">
+                                        {savePct > 0 && (
+                                            <div className="absolute top-0 left-0 bg-[#b91c1c] text-white font-sans text-[11px] font-bold px-3 pt-1.5 pb-1 uppercase tracking-wider z-10">
+                                                SALE
                                             </div>
                                         )}
+                                        <button className="absolute bottom-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center text-[#522c83] hover:text-[#b91c1c] transition-colors shadow-[0_2px_8px_rgba(0,0,0,0.08)] z-10" onClick={(e) => { e.preventDefault(); }}>
+                                            <Heart className="w-4 h-4" />
+                                        </button>
 
-                                        {/* CTA Button */}
-                                        <span className="w-full py-4 rounded-full bg-emerald-600 text-white font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-emerald-700 hover:shadow-[0_15px_30px_rgba(5,150,105,0.2)] transition-all duration-500 flex items-center justify-center gap-2 group-hover:-translate-y-1">
-                                            Explore Product
+                                        <div className="relative w-full h-full transition-transform duration-500 group-hover:scale-105">
+                                            {imageSrc.startsWith("http") || imageSrc.startsWith("data:") ? (
+                                                <img
+                                                    src={imageSrc}
+                                                    alt={p.name}
+                                                    className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm"
+                                                />
+                                            ) : (
+                                                <Image
+                                                    src={imageSrc}
+                                                    fill
+                                                    alt={p.name}
+                                                    className="object-cover mix-blend-multiply drop-shadow-sm"
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {/* Card body */}
+                                    <div className="flex flex-col flex-1 px-4 pb-4">
+                                        <h3 className="font-sans text-[#166534] text-[16px] leading-snug mb-1 group-hover:underline decoration-[#166534]/30 transition-all font-medium">
+                                            {p.name}
+                                        </h3>
+
+                                        <span className="font-sans text-[13px] text-stone-600 mb-3 block uppercase tracking-wide">
+                                            {typeof p.category === "string" ? p.category : p.category?.name ?? "Supplement"}
                                         </span>
+
+                                        <div className="mt-auto pt-2">
+                                            {/* Stars */}
+                                            <div className="flex items-center gap-1 mb-3">
+                                                <div className="flex gap-0.5">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <Star key={i} className={`w-3.5 h-3.5 ${i < Math.round(avgRating ?? 4.5) ? "fill-[#F5A623] text-[#F5A623]" : "text-stone-300 fill-stone-300"}`} />
+                                                    ))}
+                                                </div>
+                                                <span className="font-sans text-stone-500 text-[12px] ml-1">{avgRating ? avgRating.toFixed(1) : "4.5"} ({reviews.length > 0 ? reviews.length : 43})</span>
+                                            </div>
+
+                                            {/* Price Row */}
+                                            <div className="mb-4">
+                                                <div className="font-sans font-bold text-[#b91c1c] text-[16px] mb-0.5 tracking-tight">
+                                                    Rs. {currentSp?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                                </div>
+                                                <div className="h-4">
+                                                    {currentMp > currentSp && (
+                                                        <span className="font-sans text-stone-500 text-[12px]">
+                                                            Reg. Rs. {currentMp?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <span className="w-full block text-center bg-[#fbbf24] hover:bg-[#f5b102] text-[#451a03] font-sans font-medium text-[15px] py-2.5 transition-colors rounded-sm shadow-sm cursor-pointer">
+                                                Add to Cart
+                                            </span>
+                                        </div>
                                     </div>
                                 </Link>
                             );

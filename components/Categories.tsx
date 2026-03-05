@@ -4,50 +4,6 @@ import React, { useEffect, useState } from "react";
 import { categoryApi } from "@/lib/api";
 import Link from "next/link";
 
-const SvgArrowRight = ({ className }: { className?: string }) => (
-    <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
-        <path d="M4 12H20M20 12L13 5M20 12L13 19" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-)
-
-const SvgPill = ({ className }: { className?: string }) => (
-    <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
-        <rect x="6" y="6" width="12" height="12" rx="6" transform="rotate(-45 12 12)" strokeWidth="1" />
-        <line x1="9.5" y1="9.5" x2="14.5" y2="14.5" strokeWidth="1" strokeLinecap="round" />
-    </svg>
-)
-
-const SvgHexagon = ({ className }: { className?: string }) => (
-    <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
-        <path d="M12 2.5L20.5 7.5V16.5L12 21.5L3.5 16.5V7.5L12 2.5Z" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="12" cy="12" r="3" strokeWidth="1" />
-    </svg>
-)
-
-const SvgDrop = ({ className }: { className?: string }) => (
-    <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
-        <path d="M12 21.5C16.6944 21.5 20.5 17.6944 20.5 13C20.5 10.5 17.5 7.5 12 2.5C6.5 7.5 3.5 10.5 3.5 13C3.5 17.6944 7.30558 21.5 12 21.5Z" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-)
-
-const SvgDNA = ({ className }: { className?: string }) => (
-    <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
-        <path d="M4 4C4 4 9 5 12 12C15 19 20 20 20 20" strokeWidth="1" strokeLinecap="round" />
-        <path d="M20 4C20 4 15 5 12 12C9 19 4 20 4 20" strokeWidth="1" strokeLinecap="round" />
-        <line x1="8" y1="8" x2="16" y2="8" strokeWidth="1" strokeLinecap="round" />
-        <line x1="8" y1="16" x2="16" y2="16" strokeWidth="1" strokeLinecap="round" />
-        <line x1="11" y1="12" x2="13" y2="12" strokeWidth="1" strokeLinecap="round" />
-    </svg>
-)
-
-const iconList = [SvgPill, SvgHexagon, SvgDrop, SvgDNA];
-const defaultDescs = [
-    "Foundational micronutrients engineered for maximum bioavailability.",
-    "Ultra-filtered isolates optimized for immediate muscle repair.",
-    "Cold-pressed, heavy-metal free lipids tailored for cognitive supremacy.",
-    "Cellular ATP activators. Zero jitters, just clean kinetic output."
-];
-
 export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
     const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -57,12 +13,11 @@ export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
             try {
                 const data = await categoryApi.getAll();
                 if (Array.isArray(data) && data.length > 0) {
-                    const mapped = data.map((cat: any, index: number) => ({
-                        id: `0${index + 1}`.slice(-2),
+                    const mapped = data.map((cat: any) => ({
                         name: typeof cat === 'string' ? cat : cat.name,
-                        svg: typeof cat === 'string' ? null : cat.svg,
-                        desc: defaultDescs[index % defaultDescs.length],
-                        icon: iconList[index % iconList.length],
+                        image: typeof cat === 'string' ? null : cat.image,
+                        badge: typeof cat === 'string' ? null : cat.badge,
+                        shortDescription: typeof cat === 'string' ? null : cat.shortDescription,
                     }));
                     setCategories(mapped);
                 }
@@ -75,82 +30,96 @@ export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
         fetchCategories();
     }, []);
 
-    return (
-        <section className="py-24 bg-white font-sans relative overflow-hidden">
-            {/* Ambient Background Elements */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-600/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#82C49C]/5 rounded-full blur-[150px] translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
-
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                {!hideHeader && (
-                    <div className="mb-20">
-                        <div className="flex items-center gap-4 mb-4">
-                            <span className="h-px w-12 bg-emerald-600"></span>
-                            <span className="text-emerald-600 font-black uppercase tracking-[0.4em] text-[10px]">Taxonomy of Performance</span>
-                        </div>
-                        <h2 className="text-5xl md:text-7xl font-medium tracking-tight text-[#1D3557] font-heading leading-[1.05] mb-8">
-                            Biological <span className="text-emerald-600 italic font-light">Classification.</span>
-                        </h2>
-                        <p className="text-[#1D3557]/50 font-sans text-xl font-light max-w-2xl leading-relaxed">
-                            Every formula is systematically categorized by its primary cellular interaction mechanism. Navigate our library by specific physiological pathways.
-                        </p>
+    if (loading && !categories.length) {
+        return (
+            <div className="py-16 bg-[#F4F5F7] flex justify-center gap-6 overflow-x-auto px-6">
+                {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="flex flex-col w-full max-w-[280px] animate-pulse">
+                        <div className="aspect-[4/4] bg-black/10 w-full mb-8"></div>
+                        <div className="h-8 w-3/4 bg-black/10 mx-auto rounded mb-4"></div>
+                        <div className="h-4 w-1/2 bg-black/10 mx-auto rounded"></div>
                     </div>
-                )}
+                ))}
+            </div>
+        );
+    }
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-px bg-emerald-600/10 border border-[#1D3557]/10 rounded-[3rem] overflow-hidden shadow-2xl">
-                    {loading ? (
-                        [1, 2, 3, 4].map(i => (
-                            <div key={i} className="bg-white p-12 lg:p-20 min-h-[450px] animate-pulse">
-                                <div className="h-4 bg-[#F1FAEE] rounded w-1/4 mb-16"></div>
-                                <div className="h-20 w-20 bg-[#F1FAEE] rounded-3xl mb-12"></div>
-                                <div className="h-10 bg-[#F1FAEE] rounded w-2/3 mb-6"></div>
-                                <div className="h-4 bg-[#F1FAEE] rounded w-full"></div>
-                            </div>
-                        ))
-                    ) : categories.length > 0 ? categories.map((cat, index) => {
-                        const IconComponent = cat.icon;
+    // Display the first 4 categories to match the grid layout design
+    const displayCategories = categories.slice(0, 4);
+
+    return (
+        <section className="py-8 md:py-12 bg-[#F4F5F7] font-sans">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Section Heading */}
+                <div className="text-center mb-8">
+                    <h2 className="text-[#3E526D] text-[18px] sm:text-[20px] tracking-[0.05em] uppercase font-normal">
+                        Shop By Category
+                    </h2>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 gap-y-16">
+                    {displayCategories.map((cat, index) => {
+                        const hasBadge = !!cat.badge;
+
+                        let imgSrc = "/multi-vit.png";
+                        if (cat.image) {
+                            if (cat.image.startsWith('http') || cat.image.startsWith('data:')) {
+                                imgSrc = cat.image;
+                            } else {
+                                imgSrc = `data:image/png;base64,${cat.image}`;
+                            }
+                        }
+
                         return (
                             <Link
                                 href={`/products?category=${cat.name}`}
                                 key={index}
-                                className="bg-white p-12 lg:p-20 group cursor-pointer hover:bg-[#fcfdfc] transition-all duration-700 relative flex flex-col h-full min-h-[450px] overflow-hidden"
+                                className="flex flex-col group transition-all duration-300 h-full"
                             >
-                                {/* Hover background effect */}
-                                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-[#F1FAEE] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                                {/* Top Image Container */}
+                                <div className="relative w-full bg-[#151515] mb-8" style={{ aspectRatio: '5/4' }}>
+                                    {/* Red Bottom Border */}
+                                    <div className="absolute bottom-0 left-0 right-0 h-[10px] bg-[#E21837] z-10"></div>
 
-                                <div className="flex justify-between items-start mb-16 relative z-10">
-                                    <span className="text-xs font-black font-number text-[#1D3557]/20 group-hover:text-emerald-700 transition-colors duration-500 tracking-[0.4em]">
-                                        PRODUCT 0{index + 1}
-                                    </span>
-                                    <div className="w-14 h-14 rounded-full border border-[#1D3557]/10 flex items-center justify-center text-[#1D3557]/20 group-hover:bg-emerald-600 group-hover:border-[#1D3557] group-hover:text-white transition-all duration-700 transform group-hover:rotate-45 shadow-sm">
-                                        <SvgArrowRight className="w-6 h-6" />
-                                    </div>
+                                    {/* Category Image - Large, overlaps the bottom, starts behind badge */}
+                                    <img
+                                        src={imgSrc}
+                                        alt={cat.name}
+                                        className="absolute left-1/2 -translate-x-1/2 w-[125%] max-w-none h-[140%] object-contain object-bottom group-hover:scale-[1.04] transition-transform duration-500 will-change-transform z-20 pointer-events-none drop-shadow-[0_20px_20px_rgba(0,0,0,0.5)]"
+                                        style={{ bottom: '-25%' }}
+                                    />
+
+                                    {/* Red Badge - Top Right, Overlaps everything (z-30) */}
+                                    {hasBadge && (
+                                        <div className="absolute top-4 right-4 md:top-6 md:right-6 bg-[#E21837] text-white text-[11px] md:text-[13px] font-black uppercase tracking-tighter leading-[1.05] rounded-full flex flex-col items-center justify-center text-center shadow-lg z-30 w-[68px] h-[68px] md:w-[80px] md:h-[80px] px-1 pointer-events-none">
+                                            {cat.badge.split(' ').map((word: string, i: number) => (
+                                                <span key={i}>{word}</span>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="mt-auto relative z-10">
-                                    <div className="text-[#1D3557]/20 group-hover:text-emerald-700 transition-all duration-700 mb-10 transform group-hover:scale-110 origin-left">
-                                        {cat.svg ? (
-                                            <span
-                                                className="block w-20 h-20 [&>svg]:w-20 [&>svg]:h-20 [&>svg]:block"
-                                                dangerouslySetInnerHTML={{ __html: cat.svg }}
-                                            />
-                                        ) : (
-                                            <IconComponent className="w-20 h-20" />
-                                        )}
-                                    </div>
-                                    <h3 className="text-4xl lg:text-5xl font-medium text-[#1D3557] font-heading tracking-tight mb-6 leading-tight group-hover:translate-x-2 transition-transform duration-700">
+
+                                {/* Bottom Content */}
+                                <div className="flex flex-col flex-1 px-2 mt-6 lg:mt-8 items-center text-center z-30 relative">
+                                    <h3 className="text-[24px] lg:text-[28px] xl:text-[32px] font-bold font-heading text-black uppercase tracking-tighter leading-none mb-3 max-w-[95%]">
                                         {cat.name}
                                     </h3>
-                                    <p className="text-[#1D3557]/40 font-light font-sans text-lg leading-relaxed group-hover:text-[#1D3557]/70 transition-colors duration-700 max-w-md">
-                                        {cat.desc}
-                                    </p>
+
+                                    {cat.shortDescription && (
+                                        <p className="text-[12px] font-black text-[#E21837] uppercase tracking-wide mb-5">
+                                            {cat.shortDescription}
+                                        </p>
+                                    )}
+
+                                    <div className={cat.shortDescription ? "mt-1" : "mt-5"}>
+                                        <span className="text-[13px] font-black text-black border-b-[2.5px] border-black pb-[2px] uppercase tracking-widest group-hover:text-[#E21837] group-hover:border-[#E21837] transition-colors">
+                                            SHOP NOW
+                                        </span>
+                                    </div>
                                 </div>
                             </Link>
                         );
-                    }) : (
-                        <div className="col-span-2 bg-white text-center py-24">
-                            <p className="text-[#1D3557]/40 font-sans text-xl font-light">Laboratory database offline. No entries found.</p>
-                        </div>
-                    )}
+                    })}
                 </div>
             </div>
         </section>

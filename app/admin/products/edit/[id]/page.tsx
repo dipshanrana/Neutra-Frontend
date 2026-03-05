@@ -228,7 +228,7 @@ export default function ProductForm() {
         try {
             const formDataUpload = new FormData();
             formDataUpload.append('file', file);
-            const token = localStorage.getItem('admin') ? JSON.parse(localStorage.getItem('admin')!).token : null;
+            const token = getAdminToken();
             const uploadRes = await fetch(`${API_BASE_URL}/products/upload`, {
                 method: 'POST',
                 headers: token ? { 'Authorization': `Bearer ${token}` } : {},
@@ -289,8 +289,8 @@ export default function ProductForm() {
                     ? { name: formData.categoryName, svg: formData.categorySvg }
                     : { name: formData.categoryName, svg: formData.categorySvg || "" },
                 description: formData.description,
-                mp: formData.mp ? parseFloat(formData.mp) : 0,
-                sp: formData.sp ? parseFloat(formData.sp) : 0,
+                mp: formData.mp ? parseFloat(formData.mp) : (formData.singleProductMp ? parseFloat(formData.singleProductMp) : 0),
+                sp: formData.sp ? parseFloat(formData.sp) : (formData.singleProductSp ? parseFloat(formData.singleProductSp) : 0),
                 singleProductMp: formData.singleProductMp ? parseFloat(formData.singleProductMp) : undefined,
                 singleProductSp: formData.singleProductSp ? parseFloat(formData.singleProductSp) : undefined,
                 twoProductMp: formData.twoProductMp ? parseFloat(formData.twoProductMp) : undefined,
@@ -303,15 +303,15 @@ export default function ProductForm() {
                 singleProductImage: formData.singleProductImage && formData.singleProductImage.startsWith('http') ? formData.singleProductImage : undefined,
                 twoProductImage: formData.twoProductImage && formData.twoProductImage.startsWith('http') ? formData.twoProductImage : undefined,
                 threeProductImage: formData.threeProductImage && formData.threeProductImage.startsWith('http') ? formData.threeProductImage : undefined,
-                benefits: formData.benefits.filter(b => b.nutrientName.trim() !== ""),
+                benefits: formData.benefits.filter(b => b.nutrientName && b.nutrientName.trim() !== ""),
                 link: formData.link,
                 servingSize: formData.servingSize,
                 capsulesPerContainer: formData.capsulesPerContainer,
-                supplementFacts: formData.supplementFacts.filter(sf => sf.nutrientName.trim() !== ""),
-                freebies: formData.freebies.filter(f => f.trim() !== ""),
-                reviews: formData.reviews.filter(r => r.username.trim() !== "" && r.comment.trim() !== ""),
-                howToUse: formData.howToUse.map(step => step.trim()),
-                faqs: formData.faqs.filter(f => f.question.trim() !== "")
+                supplementFacts: formData.supplementFacts.filter(sf => sf.nutrientName && sf.nutrientName.trim() !== ""),
+                freebies: formData.freebies.filter(f => f && f.trim() !== ""),
+                reviews: formData.reviews.filter(r => r.username && r.username.trim() !== "" && r.comment && r.comment.trim() !== ""),
+                howToUse: formData.howToUse.map(step => step ? step.trim() : "").filter(step => step !== ""),
+                faqs: formData.faqs.filter(f => f.question && f.question.trim() !== "")
             };
 
             const multiFormData = new FormData();
@@ -332,11 +332,12 @@ export default function ProductForm() {
             }
 
             router.push('/admin/products');
-        } catch (err) {
+        } catch (err: any) {
+            console.error("Save Product Error:", err);
             if (err instanceof ApiError) {
                 setError(err.message);
             } else {
-                setError("Failed to save product");
+                setError(err.message || "Failed to save product");
             }
         } finally {
             setLoading(false);

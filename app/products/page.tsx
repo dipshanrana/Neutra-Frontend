@@ -6,9 +6,8 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { PreFooter } from "@/components/PreFooter";
 import { api, Product, Category, getProductMainImage } from "@/lib/api";
-import { Search, SlidersHorizontal, ShoppingCart, Star, Check } from "lucide-react";
+import { Search, SlidersHorizontal, ShoppingCart, Star, Check, Heart } from "lucide-react";
 
 
 
@@ -140,7 +139,7 @@ function ShopContent() {
             </div>
 
             {/* ── Product Grid ─── */}
-            <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-8 lg:px-12 py-12 pb-20">
+            <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-20">
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
                         <div className="w-10 h-10 border-[3px] border-emerald-200 border-t-emerald-600 rounded-full animate-spin" />
@@ -151,7 +150,7 @@ function ShopContent() {
                         <p className="font-sans text-stone-500">Try adjusting your search or filter criteria.</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 xl:gap-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                         {products.map((p) => {
                             const imageSrc = getProductMainImage(p);
                             const catName = typeof p.category === "string" ? p.category : p.category?.name ?? "";
@@ -166,66 +165,75 @@ function ShopContent() {
                                 <Link
                                     key={p.id}
                                     href={`/products/${p.id}`}
-                                    className="group bg-white border border-stone-200 rounded-2xl overflow-hidden hover:shadow-lg hover:border-emerald-200 transition-all flex flex-col"
+                                    className="group bg-[#f6f6f8] border border-transparent hover:border-stone-200 hover:shadow-lg rounded-md overflow-hidden flex flex-col transition-all cursor-pointer"
                                 >
                                     {/* Card image */}
-                                    <div className="relative bg-[#FAF8F3] aspect-square flex items-center justify-center p-8">
+                                    <div className="relative bg-transparent aspect-square flex items-center justify-center mb-5 overflow-hidden">
                                         {savePct > 0 && (
-                                            <div className="absolute top-3 left-3 bg-emerald-500 text-white font-heading font-semibold text-[10px] px-2.5 py-1 rounded-full uppercase">
-                                                -{savePct}%
+                                            <div className="absolute top-0 left-0 bg-[#b91c1c] text-white font-sans text-[11px] font-bold px-3 pt-1.5 pb-1 uppercase tracking-wider z-10">
+                                                SALE
                                             </div>
                                         )}
-                                        {catName && (
-                                            <div className="absolute top-3 right-3 bg-white/80 text-stone-500 font-heading font-semibold text-[10px] px-2 py-1 rounded-full uppercase tracking-wide border border-stone-100">
-                                                {catName}
-                                            </div>
-                                        )}
-                                        {imageSrc.startsWith("http") || imageSrc.startsWith("data:") ? (
-                                            <img
-                                                src={imageSrc}
-                                                alt={p.name}
-                                                className="w-full h-full object-contain mix-blend-multiply group-hover:scale-[1.06] transition-transform duration-500"
-                                            />
-                                        ) : (
-                                            <Image
-                                                src={imageSrc}
-                                                fill
-                                                alt={p.name}
-                                                className="object-contain mix-blend-multiply group-hover:scale-[1.06] transition-transform duration-500 p-8"
-                                            />
-                                        )}
+                                        <button className="absolute bottom-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center text-[#522c83] hover:text-[#b91c1c] transition-colors shadow-[0_2px_8px_rgba(0,0,0,0.08)] z-10" onClick={(e) => { e.preventDefault(); }}>
+                                            <Heart className="w-4 h-4" />
+                                        </button>
+
+                                        <div className="relative w-full h-full transition-transform duration-500 group-hover:scale-105">
+                                            {imageSrc.startsWith("http") || imageSrc.startsWith("data:") ? (
+                                                <img
+                                                    src={imageSrc}
+                                                    alt={p.name}
+                                                    className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm"
+                                                />
+                                            ) : (
+                                                <Image
+                                                    src={imageSrc}
+                                                    fill
+                                                    alt={p.name}
+                                                    className="object-cover mix-blend-multiply drop-shadow-sm"
+                                                />
+                                            )}
+                                        </div>
                                     </div>
 
                                     {/* Card body */}
-                                    <div className="p-5 flex flex-col flex-1">
-                                        {/* Stars */}
-                                        {avgRating !== null && (
-                                            <div className="flex items-center gap-1 mb-2">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <Star key={i} strokeWidth={0} className={`w-3 h-3 ${i < Math.round(avgRating) ? "fill-amber-400" : "fill-stone-200"}`} />
-                                                ))}
-                                                <span className="font-sans text-stone-400 text-xs ml-1">({reviews.length})</span>
-                                            </div>
-                                        )}
-
-                                        <h3 className="font-heading font-semibold text-[#2A401E] text-[1rem] leading-tight mb-1 group-hover:text-emerald-600 transition-colors">
+                                    <div className="flex flex-col flex-1 px-4 pb-4">
+                                        <h3 className="font-sans text-[#166534] text-[16px] leading-snug mb-1 group-hover:underline decoration-[#166534]/30 transition-all font-medium">
                                             {p.name}
                                         </h3>
-                                        <span className="font-heading font-semibold text-[10px] text-emerald-600 uppercase tracking-widest block mb-3">
-                                            {catName}
+
+                                        <span className="font-sans text-[13px] text-stone-600 mb-3 block uppercase tracking-wide">
+                                            {typeof p.category === "string" ? p.category : p.category?.name ?? "Supplement"}
                                         </span>
 
-                                        <div className="flex items-center justify-between mt-auto pt-2">
-                                            <div className="flex items-baseline gap-2">
-                                                <span className="font-heading font-semibold text-[#2A401E] text-lg">NPR {currentSp.toLocaleString()}</span>
-                                                {currentMp > currentSp && (
-                                                    <span className="font-sans text-stone-400 text-sm line-through">NPR {currentMp.toLocaleString()}</span>
-                                                )}
+                                        <div className="mt-auto pt-2">
+                                            {/* Stars */}
+                                            <div className="flex items-center gap-1 mb-3">
+                                                <div className="flex gap-0.5">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <Star key={i} className={`w-3.5 h-3.5 ${i < Math.round(avgRating ?? 4.5) ? "fill-[#F5A623] text-[#F5A623]" : "text-stone-300 fill-stone-300"}`} />
+                                                    ))}
+                                                </div>
+                                                <span className="font-sans text-stone-500 text-[12px] ml-1">{avgRating ? avgRating.toFixed(1) : "4.5"} ({reviews.length > 0 ? reviews.length : 43})</span>
                                             </div>
-                                            <button className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-heading font-semibold text-[10px] uppercase tracking-wide px-3.5 py-2 rounded-full transition-colors shadow-sm">
-                                                <ShoppingCart className="w-3.5 h-3.5" />
-                                                Buy
-                                            </button>
+
+                                            {/* Price Row */}
+                                            <div className="mb-4">
+                                                <div className="font-sans font-bold text-[#b91c1c] text-[16px] mb-0.5 tracking-tight">
+                                                    Rs. {currentSp?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                                </div>
+                                                <div className="h-4">
+                                                    {currentMp > currentSp && (
+                                                        <span className="font-sans text-stone-500 text-[12px]">
+                                                            Reg. Rs. {currentMp?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            </div>
+
+                                            <span className="w-full block text-center bg-[#fbbf24] hover:bg-[#f5b102] text-[#451a03] font-sans font-medium text-[15px] py-2.5 transition-colors rounded-sm shadow-sm cursor-pointer">
+                                                Add to Cart
+                                            </span>
                                         </div>
                                     </div>
                                 </Link>
@@ -235,7 +243,6 @@ function ShopContent() {
                 )}
             </main>
 
-            <PreFooter />
             <Footer />
         </div>
     );
