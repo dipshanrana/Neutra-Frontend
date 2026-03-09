@@ -203,7 +203,7 @@ export default function EditBlog() {
                                         type="button"
                                         onClick={() => toggleProduct(p.id!)}
                                         className={`px-4 py-3 rounded-xl border text-sm text-left transition-all ${formData.relatedProductIds.includes(p.id!)
-                                            ? 'bg-emerald-600/20 border-[#38A36D]/50 text-[#38A36D]'
+                                            ? 'bg-brand-primary/20 border-[#38A36D]/50 text-[#38A36D]'
                                             : 'bg-white/5 border-white/10 text-white/60 hover:border-white/20'
                                             }`}
                                     >
@@ -219,7 +219,7 @@ export default function EditBlog() {
                     <div className="flex gap-4 pt-6 border-t border-white/10">
                         <button
                             type="submit" disabled={loading}
-                            className="flex-1 py-5 bg-emerald-600 text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 py-5 bg-brand-primary text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? "Updating..." : "Update Blog Post"}
                         </button>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -40,14 +40,14 @@ export default function AdminInformation() {
             <header className="border-b border-white/10 bg-black/20 backdrop-blur-sm sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
                     <div className="flex items-center gap-4">
-                        <Link href="/admin/dashboard" className="text-white/50 hover:text-white transition-colors text-sm">← Dashboard</Link>
+                        <Link href="/admin/dashboard" className="text-white/50 hover:text-white transition-colors text-sm">? Dashboard</Link>
                         <h1 className="text-2xl font-black tracking-tighter font-heading">
                             Manage <span className="text-[#38A36D]">Information</span>
                         </h1>
                     </div>
                     <Link
                         href="/admin/information/new"
-                        className="px-6 py-3 bg-emerald-600 text-[#0A190E] rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-white transition-colors"
+                        className="px-6 py-3 bg-[#D4AF37] text-[#0A190E] rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-white transition-colors"
                     >
                         + New Page
                     </Link>
@@ -65,7 +65,7 @@ export default function AdminInformation() {
                     <div className="text-center py-24">
                         <p className="text-white/40 text-lg mb-4">No information pages yet.</p>
                         <Link href="/admin/information/new" className="text-[#38A36D] hover:underline font-medium">
-                            Create your first information page →
+                            Create your first information page ?
                         </Link>
                     </div>
                 ) : (
@@ -76,7 +76,7 @@ export default function AdminInformation() {
                                     <div className="flex-1">
                                         <h3 className="text-xl font-medium mb-2 tracking-tight">{info.title}</h3>
                                         {info.category && (
-                                            <span className="inline-block px-3 py-1 bg-emerald-600/10 border border-[#38A36D]/20 rounded-full text-[10px] font-bold text-[#38A36D] uppercase tracking-wider mb-3">
+                                            <span className="inline-block px-3 py-1 bg-[#D4AF37]/10 border border-[#38A36D]/20 rounded-full text-[10px] font-bold text-[#38A36D] uppercase tracking-wider mb-3">
                                                 {info.category.name}
                                             </span>
                                         )}
@@ -114,3 +114,4 @@ export default function AdminInformation() {
         </main>
     );
 }
+

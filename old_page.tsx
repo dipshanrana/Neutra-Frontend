@@ -13,7 +13,7 @@ import {
     Leaf, FlaskConical, Award
 } from "lucide-react";
 
-/* ── Star Rating ─────────────────────────────── */
+/* -- Star Rating ------------------------------- */
 function StarRating({ rating, count, size = "sm" }: { rating: number; count?: number; size?: "sm" | "lg" }) {
     const sz = size === "lg" ? "w-5 h-5" : "w-4 h-4";
     return (
@@ -31,7 +31,7 @@ function StarRating({ rating, count, size = "sm" }: { rating: number; count?: nu
     );
 }
 
-/* ── Main Content ─────────────────────────────── */
+/* -- Main Content ------------------------------- */
 function ProductDetailContent() {
     const params = useParams();
     const [product, setProduct] = useState<Product | null>(null);
@@ -66,14 +66,14 @@ function ProductDetailContent() {
 
     if (loading) return (
         <div className="flex-1 flex items-center justify-center min-h-screen bg-[#FAF8F3]">
-            <div className="w-10 h-10 border-[3px] border-emerald-200 border-t-emerald-600 rounded-full animate-spin" />
+            <div className="w-10 h-10 border-[3px] border-emerald-200 border-t-brand-primary rounded-full animate-spin" />
         </div>
     );
 
     if (!product) return (
         <div className="flex-1 flex flex-col items-center justify-center text-center py-48 bg-[#FAF8F3]">
-            <h1 className="font-heading text-5xl font-semibold text-[#2A401E] mb-4">Not Found</h1>
-            <Link href="/products" className="mt-2 px-8 py-3.5 bg-emerald-600 text-white rounded-full font-heading font-medium hover:bg-emerald-700 transition-colors">
+            <h1 className="font-heading text-[#252422]xl font-semibold text-[#2A401E] mb-4">Not Found</h1>
+            <Link href="/products" className="mt-2 px-8 py-3.5 bg-[#D4AF37] text-white rounded-full font-heading font-medium hover:bg-[#B8860B] transition-colors">
                 Back to Products
             </Link>
         </div>
@@ -110,7 +110,7 @@ function ProductDetailContent() {
     return (
         <div className="flex-1 bg-[#FAF8F3]">
 
-            {/* ── BREADCRUMB ─────────────────── */}
+            {/* -- BREADCRUMB ------------------- */}
             <div className="bg-white border-b border-stone-200">
                 <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-10 h-11 flex items-center">
                     <nav className="flex items-center gap-2 text-[13px] text-stone-400 font-sans font-medium">
@@ -123,7 +123,7 @@ function ProductDetailContent() {
                 </div>
             </div>
 
-            {/* ── HERO: two-column — image left, buy panel right ── */}
+            {/* -- HERO: two-column � image left, buy panel right -- */}
             <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-10 py-10 lg:py-12">
                 <div className="flex flex-col lg:flex-row gap-10 xl:gap-12 items-stretch">
 
@@ -133,7 +133,7 @@ function ProductDetailContent() {
                         <div className="lg:h-[700px]">
                             <div className="flex flex-col-reverse lg:flex-row gap-4 lg:gap-6 h-full">
 
-                                {/* Thumbnails List — Vertically stacked on desktop, horizontal on mobile */}
+                                {/* Thumbnails List � Vertically stacked on desktop, horizontal on mobile */}
                                 <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto w-full lg:w-[88px] shrink-0 pb-2 lg:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
                                     {images.map((src, idx) => {
                                         const isActive = selectedImg ? src === selectedImg : (idx === 0 && !selectedImg && !bundleImage);
@@ -155,7 +155,7 @@ function ProductDetailContent() {
                                     })}
                                 </div>
 
-                                {/* Main Hero Slot — Large Display */}
+                                {/* Main Hero Slot � Large Display */}
                                 <div className="relative flex-1 aspect-square lg:aspect-auto h-full bg-stone-50 rounded-[2rem] overflow-hidden border border-stone-100/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] group flex items-center justify-center p-8 lg:p-12 cursor-crosshair">
                                     {/* Elegant background effects */}
                                     <div className="absolute inset-0 bg-gradient-to-tr from-[#FAF8F3] via-white to-[#F2F5F0]"></div>
@@ -173,7 +173,7 @@ function ProductDetailContent() {
                                         )}
                                         {cat && (
                                             <div className="bg-white/90 backdrop-blur-md text-[#2A401E] font-sans text-[9px] sm:text-[10px] px-4 py-1.5 rounded-full uppercase tracking-[0.25em] border border-stone-200/60 font-bold shadow-[0_2px_8px_rgba(0,0,0,0.04)] w-fit flex items-center gap-1.5">
-                                                <span className="w-1 h-1 rounded-full bg-emerald-500"></span>
+                                                <span className="w-1 h-1 rounded-full bg-brand-accent"></span>
                                                 {cat}
                                             </div>
                                         )}
@@ -212,7 +212,7 @@ function ProductDetailContent() {
                             <div className="bg-white rounded-2xl border border-stone-100 p-8 shadow-sm">
                                 <div className="flex items-center gap-3 mb-6">
                                     <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
-                                        <RotateCcw className="w-5 h-5 text-emerald-600" />
+                                        <RotateCcw className="w-5 h-5 text-[#D4AF37]" />
                                     </div>
                                     <div>
                                         <span className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.2em] block mb-0.5">Application</span>
@@ -233,7 +233,7 @@ function ProductDetailContent() {
                                     <div className="bg-[#FAF8F3]/50 rounded-2xl p-6 border border-stone-100 flex flex-col justify-center">
                                         <div className="flex items-center gap-3 mb-4">
                                             <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                                                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                                                <ShieldCheck className="w-4 h-4 text-[#D4AF37]" />
                                             </div>
                                             <span className="font-heading text-[#2A401E] font-medium">Expert Recommendation</span>
                                         </div>
@@ -255,7 +255,7 @@ function ProductDetailContent() {
 
                                 {/* Product header */}
                                 <div className="p-6 pb-5 border-b border-stone-100">
-                                    <span className="font-sans text-[9px] text-emerald-700 uppercase tracking-[0.28em] block mb-2">{cat}</span>
+                                    <span className="font-sans text-[9px] text-brand-secondary uppercase tracking-[0.28em] block mb-2">{cat}</span>
                                     <h1 className="font-heading text-[#2A401E] text-[1.85rem] leading-[1.1] tracking-tight mb-3">
                                         {product.name}
                                     </h1>
@@ -267,7 +267,7 @@ function ProductDetailContent() {
                                 {/* Pricing */}
                                 <div className="px-6 pt-5 pb-4 border-b border-stone-100">
                                     <div className="flex items-end gap-4 mb-2">
-                                        {/* Sale price — NPR label + big number */}
+                                        {/* Sale price � NPR label + big number */}
                                         <div>
                                             <span className="font-sans text-[9px] text-stone-400 uppercase tracking-[0.3em] block mb-0.5">NPR</span>
                                             <span className="font-heading text-[#2A401E] text-[2.6rem] leading-none tracking-tight">
@@ -311,7 +311,7 @@ function ProductDetailContent() {
                                     </div>
                                 )}
 
-                                {/* CTA — full width, no qty selector */}
+                                {/* CTA � full width, no qty selector */}
                                 <div className="px-6 py-5 border-b border-stone-100 space-y-3">
                                     <button className="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-amber-950 rounded-xl py-3.5 font-sans font-bold text-[14px] uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-[0_4px_20px_rgba(251,191,36,0.3)] hover:shadow-[0_6px_25px_rgba(251,191,36,0.4)] active:scale-[0.98]">
                                         <ShoppingCart className="w-4 h-4" />
@@ -330,7 +330,7 @@ function ProductDetailContent() {
                                         {freebies.length > 0 ? (
                                             freebies.map((text, i) => (
                                                 <div key={i} className="flex items-center gap-2 font-sans text-[12px] text-stone-600">
-                                                    <Check className="w-3.5 h-3.5 text-emerald-600" strokeWidth={2.5} />
+                                                    <Check className="w-3.5 h-3.5 text-[#D4AF37]" strokeWidth={2.5} />
                                                     {text}
                                                 </div>
                                             ))
@@ -382,12 +382,12 @@ function ProductDetailContent() {
                                                         setBundleQty(b.qty as 1 | 2 | 3);
                                                         setSelectedImg(imgSrc);
                                                     }}
-                                                    className={`relative flex items-center justify-between p-3.5 sm:p-4 rounded-2xl transition-all duration-200 border-2 text-left w-full group ${isActive ? "border-emerald-600 bg-emerald-50/40 shadow-[0_4px_15px_rgba(56,163,109,0.08)]" : "border-stone-100 bg-white hover:border-stone-200"}`}
+                                                    className={`relative flex items-center justify-between p-3.5 sm:p-4 rounded-2xl transition-all duration-200 border-2 text-left w-full group ${isActive ? "border-[#D4AF37] bg-emerald-50/40 shadow-[0_4px_15px_rgba(56,163,109,0.08)]" : "border-stone-100 bg-white hover:border-stone-200"}`}
                                                 >
                                                     <div className="flex items-center gap-3 sm:gap-4">
                                                         {/* Radio indicator */}
-                                                        <div className={`w-5 h-5 rounded-full border flex flex-shrink-0 items-center justify-center ${isActive ? "border-emerald-600" : "border-stone-300 group-hover:border-stone-400"}`}>
-                                                            {isActive && <div className="w-2.5 h-2.5 rounded-full bg-emerald-600"></div>}
+                                                        <div className={`w-5 h-5 rounded-full border flex flex-shrink-0 items-center justify-center ${isActive ? "border-[#D4AF37]" : "border-stone-300 group-hover:border-stone-400"}`}>
+                                                            {isActive && <div className="w-2.5 h-2.5 rounded-full bg-[#D4AF37]"></div>}
                                                         </div>
 
                                                         {/* Thumbnail */}
@@ -413,7 +413,7 @@ function ProductDetailContent() {
                                                             Rs. {b.sp.toLocaleString()}
                                                         </span>
                                                         {b.qty > 1 && bundleSavePct > 0 ? (
-                                                            <span className="font-sans text-[10px] sm:text-[11px] text-emerald-600 font-bold mt-0.5">Save {bundleSavePct}%</span>
+                                                            <span className="font-sans text-[10px] sm:text-[11px] text-[#D4AF37] font-bold mt-0.5">Save {bundleSavePct}%</span>
                                                         ) : (
                                                             b.mp > b.sp ? (
                                                                 <span className="font-sans text-[10px] sm:text-[11px] text-stone-400 line-through mt-0.5">Rs. {b.mp.toLocaleString()}</span>
@@ -426,7 +426,7 @@ function ProductDetailContent() {
                                     </div>
                                 </div>
 
-                                {/* Quick Benefit checklist — below Shop Now */}
+                                {/* Quick Benefit checklist � below Shop Now */}
                                 {benefits.length > 0 && (
                                     <div className="px-6 py-4 border-b border-stone-100 space-y-3">
                                         {benefits.slice(0, 4).map((b, i) => (
@@ -456,7 +456,7 @@ function ProductDetailContent() {
                                 )}
 
 
-                                {/* Trust tiles — inside the card */}
+                                {/* Trust tiles � inside the card */}
                                 <div className="px-6 py-4 border-t border-stone-100">
                                     <div className="grid grid-cols-3 gap-2">
                                         {[
@@ -480,7 +480,7 @@ function ProductDetailContent() {
                 </div>
             </div>
 
-            {/* ── DETAILS SECTION — full width below hero ── */}
+            {/* -- DETAILS SECTION � full width below hero -- */}
             <div className="border-t border-stone-200 bg-white">
                 <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-10 py-10 space-y-8">
 
@@ -501,7 +501,7 @@ function ProductDetailContent() {
                     {product.description && (benefits.length > 0 || facts.length > 0) && (
                         <div className="flex items-center gap-4">
                             <div className="flex-1 h-px bg-stone-100" />
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
                             <div className="flex-1 h-px bg-stone-100" />
                         </div>
                     )}
@@ -581,7 +581,7 @@ function ProductDetailContent() {
                         <>
                             <div className="flex items-center gap-4">
                                 <div className="flex-1 h-px bg-stone-100" />
-                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
                                 <div className="flex-1 h-px bg-stone-100" />
                             </div>
                             <div className="border border-stone-100 rounded-2xl overflow-hidden">
@@ -634,7 +634,7 @@ function ProductDetailContent() {
                                                         ))}
                                                     </div>
                                                 </div>
-                                                <span className="font-sans text-[9px] text-stone-300 uppercase tracking-widest">✓</span>
+                                                <span className="font-sans text-[9px] text-stone-300 uppercase tracking-widest">?</span>
                                             </div>
                                             <p className="font-sans text-stone-500 text-[14px] leading-relaxed">{r.comment}</p>
                                         </div>
@@ -647,17 +647,17 @@ function ProductDetailContent() {
                 </div>
             </div>
 
-            {/* ── RELATED FORMULAS ─────────────────────── */}
+            {/* -- RELATED FORMULAS ----------------------- */}
             {related.length > 0 && (
                 <div className="bg-white border-t border-stone-200">
                     <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-10 py-16">
                         <div className="flex items-end justify-between mb-10">
                             <div>
-                                <span className="font-heading font-semibold text-[10px] text-emerald-600 uppercase tracking-[0.28em] block mb-2">Architectural Synergy</span>
+                                <span className="font-heading font-semibold text-[10px] text-[#D4AF37] uppercase tracking-[0.28em] block mb-2">Architectural Synergy</span>
                                 <h2 className="font-heading font-semibold text-[#2A401E] text-4xl tracking-tight">Related Protocols</h2>
                             </div>
-                            <Link href="/products" className="hidden sm:block font-sans text-sm font-semibold text-stone-400 hover:text-emerald-600 transition-colors underline-offset-4 hover:underline">
-                                View all →
+                            <Link href="/products" className="hidden sm:block font-sans text-sm font-semibold text-stone-400 hover:text-[#D4AF37] transition-colors underline-offset-4 hover:underline">
+                                View all ?
                             </Link>
                         </div>
 
@@ -672,7 +672,7 @@ function ProductDetailContent() {
                                         {/* Card image */}
                                         <div className="relative bg-[#FAF8F3] aspect-square flex items-center justify-center p-8">
                                             {relSave > 0 && (
-                                                <div className="absolute top-3 left-3 bg-emerald-500 text-white font-heading font-semibold text-[10px] px-2.5 py-1 rounded-full uppercase">
+                                                <div className="absolute top-3 left-3 bg-brand-accent text-white font-heading font-semibold text-[10px] px-2.5 py-1 rounded-full uppercase">
                                                     -{relSave}%
                                                 </div>
                                             )}
@@ -687,7 +687,7 @@ function ProductDetailContent() {
                                         </div>
                                         {/* Card body */}
                                         <div className="p-5">
-                                            {/* Stars — only from real backend reviews */}
+                                            {/* Stars � only from real backend reviews */}
                                             {(() => {
                                                 const relReviews = p.reviews ?? [];
                                                 if (!relReviews.length) return null;
@@ -701,10 +701,10 @@ function ProductDetailContent() {
                                                     </div>
                                                 );
                                             })()}
-                                            <h3 className="font-heading font-semibold text-[#2A401E] text-[1rem] leading-tight mb-1 group-hover:text-emerald-600 transition-colors">
+                                            <h3 className="font-heading font-semibold text-[#2A401E] text-[1rem] leading-tight mb-1 group-hover:text-[#D4AF37] transition-colors">
                                                 {p.name}
                                             </h3>
-                                            <span className="font-heading font-semibold text-[10px] text-emerald-600 uppercase tracking-widest block mb-3">
+                                            <span className="font-heading font-semibold text-[10px] text-[#D4AF37] uppercase tracking-widest block mb-3">
                                                 {relCat}
                                             </span>
                                             <div className="flex items-center justify-between mt-auto pt-2">
@@ -714,7 +714,7 @@ function ProductDetailContent() {
                                                         <span className="font-sans text-stone-400 text-sm line-through">NPR {relMp.toLocaleString()}</span>
                                                     )}
                                                 </div>
-                                                <button className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-heading font-semibold text-[10px] uppercase tracking-wide px-3.5 py-2 rounded-full transition-colors shadow-sm">
+                                                <button className="flex items-center gap-1.5 bg-[#D4AF37] hover:bg-[#B8860B] text-white font-heading font-semibold text-[10px] uppercase tracking-wide px-3.5 py-2 rounded-full transition-colors shadow-sm">
                                                     <ShoppingCart className="w-3.5 h-3.5" />
                                                     Buy
                                                 </button>
@@ -731,14 +731,14 @@ function ProductDetailContent() {
     );
 }
 
-/* ── Page Wrapper ─────────────────────────────── */
+/* -- Page Wrapper ------------------------------- */
 export default function ProductDetailPage() {
     return (
         <div className="min-h-screen flex flex-col bg-[#FAF8F3] selection:bg-emerald-100 selection:text-emerald-900">
             <Navbar />
             <Suspense fallback={
                 <div className="flex-1 flex items-center justify-center min-h-[60vh] bg-[#FAF8F3]">
-                    <div className="w-10 h-10 border-[3px] border-emerald-100 border-t-emerald-600 rounded-full animate-spin" />
+                    <div className="w-10 h-10 border-[3px] border-emerald-100 border-t-brand-primary rounded-full animate-spin" />
                 </div>
             }>
                 <ProductDetailContent />
@@ -748,3 +748,4 @@ export default function ProductDetailPage() {
         </div>
     );
 }
+

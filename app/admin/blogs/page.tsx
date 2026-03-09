@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -40,14 +40,14 @@ export default function AdminBlogs() {
             <header className="border-b border-white/10 bg-black/20 backdrop-blur-sm sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
                     <div className="flex items-center gap-4">
-                        <Link href="/admin/dashboard" className="text-white/50 hover:text-white transition-colors text-sm">← Dashboard</Link>
+                        <Link href="/admin/dashboard" className="text-white/50 hover:text-white transition-colors text-sm">? Dashboard</Link>
                         <h1 className="text-2xl font-black tracking-tighter font-heading">
                             Manage <span className="text-[#38A36D]">Blogs</span>
                         </h1>
                     </div>
                     <Link
                         href="/admin/blogs/new"
-                        className="px-6 py-3 bg-emerald-600 text-[#0A190E] rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-white transition-colors"
+                        className="px-6 py-3 bg-[#D4AF37] text-[#0A190E] rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-white transition-colors"
                     >
                         + New Blog
                     </Link>
@@ -65,7 +65,7 @@ export default function AdminBlogs() {
                     <div className="text-center py-24">
                         <p className="text-white/40 text-lg mb-4">No blog posts yet.</p>
                         <Link href="/admin/blogs/new" className="text-[#38A36D] hover:underline font-medium">
-                            Create your first blog post →
+                            Create your first blog post ?
                         </Link>
                     </div>
                 ) : (
@@ -80,7 +80,7 @@ export default function AdminBlogs() {
                                         {blog.relatedProducts && blog.relatedProducts.length > 0 && (
                                             <div className="mt-4 flex gap-2 flex-wrap">
                                                 {blog.relatedProducts.map(p => (
-                                                    <span key={p.id} className="px-3 py-1 bg-emerald-600/10 border border-[#38A36D]/20 rounded-full text-[10px] font-bold text-[#38A36D] uppercase tracking-wider">
+                                                    <span key={p.id} className="px-3 py-1 bg-[#D4AF37]/10 border border-[#38A36D]/20 rounded-full text-[10px] font-bold text-[#38A36D] uppercase tracking-wider">
                                                         {p.name}
                                                     </span>
                                                 ))}
@@ -119,3 +119,4 @@ export default function AdminBlogs() {
         </main>
     );
 }
+

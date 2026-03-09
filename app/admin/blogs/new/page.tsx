@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -84,7 +84,7 @@ export default function NewBlog() {
             <header className="border-b border-white/10 bg-black/20 backdrop-blur-sm sticky top-0 z-50">
                 <div className="max-w-4xl mx-auto px-6 py-6 flex justify-between items-center">
                     <div className="flex items-center gap-4">
-                        <Link href="/admin/blogs" className="text-white/50 hover:text-white transition-colors text-sm">← Blogs</Link>
+                        <Link href="/admin/blogs" className="text-white/50 hover:text-white transition-colors text-sm">? Blogs</Link>
                         <h1 className="text-2xl font-black tracking-tighter font-heading">
                             New <span className="text-[#38A36D]">Blog Post</span>
                         </h1>
@@ -171,11 +171,11 @@ export default function NewBlog() {
                                         type="button"
                                         onClick={() => toggleProduct(p.id!)}
                                         className={`px-4 py-3 rounded-xl border text-sm text-left transition-all ${formData.relatedProductIds.includes(p.id!)
-                                            ? 'bg-emerald-600/20 border-[#38A36D]/50 text-[#38A36D]'
+                                            ? 'bg-[#D4AF37]/20 border-[#38A36D]/50 text-[#38A36D]'
                                             : 'bg-white/5 border-white/10 text-white/60 hover:border-white/20'
                                             }`}
                                     >
-                                        {formData.relatedProductIds.includes(p.id!) ? '✓ ' : ''}{p.name}
+                                        {formData.relatedProductIds.includes(p.id!) ? '? ' : ''}{p.name}
                                     </button>
                                 ))}
                             </div>
@@ -187,7 +187,7 @@ export default function NewBlog() {
                     <div className="flex gap-4 pt-6 border-t border-white/10">
                         <button
                             type="submit" disabled={loading}
-                            className="flex-1 py-5 bg-emerald-600 text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 py-5 bg-[#D4AF37] text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? "Publishing..." : "Publish Blog Post"}
                         </button>
@@ -203,3 +203,4 @@ export default function NewBlog() {
         </main>
     );
 }
+

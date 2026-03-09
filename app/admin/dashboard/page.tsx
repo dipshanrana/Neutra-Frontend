@@ -136,32 +136,32 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
                         <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-12 bg-emerald-600/20 rounded-xl flex items-center justify-center">
+                            <div className="w-12 h-12 bg-[#D4AF37]/20 rounded-xl flex items-center justify-center">
                                 <SvgBox className="w-6 h-6 text-[#38A36D]" />
                             </div>
                             <h3 className="text-sm uppercase tracking-widest text-white/40 font-bold">Products</h3>
                         </div>
-                        <p className="text-5xl font-medium tracking-tight">{stats.products}</p>
+                        <p className="text-[#252422]xl font-medium tracking-tight">{stats.products}</p>
                     </div>
 
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
                         <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-12 bg-emerald-600/20 rounded-xl flex items-center justify-center">
+                            <div className="w-12 h-12 bg-[#D4AF37]/20 rounded-xl flex items-center justify-center">
                                 <SvgTag className="w-6 h-6 text-[#38A36D]" />
                             </div>
                             <h3 className="text-sm uppercase tracking-widest text-white/40 font-bold">Categories</h3>
                         </div>
-                        <p className="text-5xl font-medium tracking-tight">{stats.categories}</p>
+                        <p className="text-[#252422]xl font-medium tracking-tight">{stats.categories}</p>
                     </div>
 
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
                         <div className="flex items-center gap-4 mb-4">
-                            <div className="w-12 h-12 bg-emerald-600/20 rounded-xl flex items-center justify-center">
+                            <div className="w-12 h-12 bg-[#D4AF37]/20 rounded-xl flex items-center justify-center">
                                 <SvgUsers className="w-6 h-6 text-[#38A36D]" />
                             </div>
                             <h3 className="text-sm uppercase tracking-widest text-white/40 font-bold">Users</h3>
                         </div>
-                        <p className="text-5xl font-medium tracking-tight">{stats.users}</p>
+                        <p className="text-[#252422]xl font-medium tracking-tight">{stats.users}</p>
                     </div>
 
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-8 md:col-span-3 lg:col-span-3">
@@ -205,7 +205,7 @@ export default function AdminDashboard() {
                         <h2 className="text-2xl font-medium mb-2 tracking-tight">Manage Products</h2>
                         <p className="text-white/60 text-sm font-light">Add, edit, or remove products from your catalog</p>
                         <div className="mt-6 inline-flex items-center gap-2 text-[#38A36D] text-sm font-medium group-hover:gap-4 transition-all">
-                            Go to Products →
+                            Go to Products ?
                         </div>
                     </Link>
 
@@ -217,7 +217,7 @@ export default function AdminDashboard() {
                         <h2 className="text-2xl font-medium mb-2 tracking-tight">Manage Categories</h2>
                         <p className="text-white/60 text-sm font-light">Create and organize your product categories</p>
                         <div className="mt-6 inline-flex items-center gap-2 text-[#38A36D] text-sm font-medium group-hover:gap-4 transition-all">
-                            Go to Categories →
+                            Go to Categories ?
                         </div>
                     </Link>
 
@@ -236,7 +236,7 @@ export default function AdminDashboard() {
                         <h2 className="text-2xl font-medium mb-2 tracking-tight">Manage Blogs</h2>
                         <p className="text-white/60 text-sm font-light">Create and manage blog posts with product links</p>
                         <div className="mt-6 inline-flex items-center gap-2 text-[#38A36D] text-sm font-medium group-hover:gap-4 transition-all">
-                            Go to Blogs →
+                            Go to Blogs ?
                         </div>
                     </Link>
 
@@ -254,7 +254,7 @@ export default function AdminDashboard() {
                         <h2 className="text-2xl font-medium mb-2 tracking-tight">Manage Information</h2>
                         <p className="text-white/60 text-sm font-light">Create informational pages linked to categories</p>
                         <div className="mt-6 inline-flex items-center gap-2 text-[#38A36D] text-sm font-medium group-hover:gap-4 transition-all">
-                            Go to Information →
+                            Go to Information ?
                         </div>
                     </Link>
 
@@ -266,7 +266,7 @@ export default function AdminDashboard() {
                         <h2 className="text-2xl font-medium mb-2 tracking-tight">View Users</h2>
                         <p className="text-white/60 text-sm font-light">View all registered users and admins</p>
                         <div className="mt-6 inline-flex items-center gap-2 text-[#38A36D] text-sm font-medium group-hover:gap-4 transition-all">
-                            Go to Users →
+                            Go to Users ?
                         </div>
                     </Link>
 
@@ -283,7 +283,7 @@ export default function AdminDashboard() {
                         <h2 className="text-2xl font-medium mb-2 tracking-tight">View Store</h2>
                         <p className="text-white/60 text-sm font-light">Preview the customer-facing website</p>
                         <div className="mt-6 inline-flex items-center gap-2 text-[#38A36D] text-sm font-medium group-hover:gap-4 transition-all">
-                            Go to Store →
+                            Go to Store ?
                         </div>
                     </Link>
                 </div>
@@ -291,3 +291,4 @@ export default function AdminDashboard() {
         </main>
     );
 }
+

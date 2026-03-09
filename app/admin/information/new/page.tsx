@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -75,7 +75,7 @@ export default function NewInformation() {
             <header className="border-b border-white/10 bg-black/20 backdrop-blur-sm sticky top-0 z-50">
                 <div className="max-w-4xl mx-auto px-6 py-6 flex justify-between items-center">
                     <div className="flex items-center gap-4">
-                        <Link href="/admin/information" className="text-white/50 hover:text-white transition-colors text-sm">← Information</Link>
+                        <Link href="/admin/information" className="text-white/50 hover:text-white transition-colors text-sm">? Information</Link>
                         <h1 className="text-2xl font-black tracking-tighter font-heading">
                             New <span className="text-[#38A36D]">Information Page</span>
                         </h1>
@@ -155,7 +155,7 @@ export default function NewInformation() {
                     <div className="flex gap-4 pt-6 border-t border-white/10">
                         <button
                             type="submit" disabled={loading}
-                            className="flex-1 py-5 bg-emerald-600 text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 py-5 bg-[#D4AF37] text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? "Creating..." : "Create Information Page"}
                         </button>
@@ -171,3 +171,4 @@ export default function NewInformation() {
         </main>
     );
 }
+

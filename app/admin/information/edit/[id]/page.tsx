@@ -184,7 +184,7 @@ export default function EditInformation() {
                     <div className="flex gap-4 pt-6 border-t border-white/10">
                         <button
                             type="submit" disabled={loading}
-                            className="flex-1 py-5 bg-emerald-600 text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 py-5 bg-brand-primary text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {loading ? "Updating..." : "Update Information Page"}
                         </button>

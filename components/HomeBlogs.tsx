@@ -67,7 +67,7 @@ export function HomeBlogs() {
 
                                 <div className="flex flex-col flex-1 text-left">
                                     <Link href={`/blog/${blog.id}`}>
-                                        <h3 className="text-[18px] sm:text-[20px] font-extrabold text-[#10243E] leading-[1.3] mb-4 group-hover:text-emerald-700 transition-colors font-outfit uppercase tracking-tight line-clamp-2">
+                                        <h3 className="text-[18px] sm:text-[20px] font-extrabold text-[#10243E] leading-[1.3] mb-4 group-hover:text-brand-secondary transition-colors font-outfit uppercase tracking-tight line-clamp-2">
                                             {blog.title}
                                         </h3>
                                     </Link>
@@ -78,7 +78,7 @@ export function HomeBlogs() {
 
                                     <Link
                                         href={`/blog/${blog.id}`}
-                                        className="inline-block text-[#0066CC] font-bold text-[14px] hover:text-emerald-600 transition-colors w-fit"
+                                        className="inline-block text-[#0066CC] font-bold text-[14px] hover:text-[#D4AF37] transition-colors w-fit"
                                     >
                                         Check It Out
                                     </Link>
@@ -91,3 +91,4 @@ export function HomeBlogs() {
         </section>
     );
 }
+

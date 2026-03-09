@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -44,12 +44,12 @@ export function Products() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
                     <div className="max-w-xl">
-                        <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-600 font-heading mb-6">Complete Your Routine</h2>
-                        <h3 className="text-4xl md:text-5xl font-medium tracking-tight text-[#1D3557] font-heading leading-tight">
+                        <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37] font-heading mb-6">Complete Your Routine</h2>
+                        <h3 className="text-4xl md:text-[#252422]xl font-medium tracking-tight text-[#252422] font-heading leading-tight">
                             Purpose-built formulas for every physiological need.
                         </h3>
                     </div>
-                    <Link href="/products" className="hidden md:inline-flex items-center gap-2 pb-1.5 border-b border-[#1D3557]/30 text-[#1D3557] font-sans font-medium hover:text-emerald-700 hover:border-emerald-600 transition-colors">
+                    <Link href="/products" className="hidden md:inline-flex items-center gap-2 pb-1.5 border-b border-[#252422]/30 text-[#252422] font-sans font-medium hover:text-brand-secondary hover:border-[#D4AF37] transition-colors">
                         Shop Entire Collection <SvgArrowUpRight className="w-4 h-4" />
                     </Link>
                 </div>
@@ -133,15 +133,22 @@ export function Products() {
 
                                             {/* Price Row */}
                                             <div className="mb-4">
-                                                <div className="font-sans font-bold text-[#b91c1c] text-[16px] mb-0.5 tracking-tight">
-                                                    Rs. {currentSp?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                                </div>
-                                                <div className="h-4">
-                                                    {currentMp > currentSp && (
-                                                        <span className="font-sans text-stone-500 text-[12px]">
-                                                            Reg. Rs. {currentMp?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                                {currentMp > currentSp && (
+                                                    <div className="flex items-center gap-1.5 mb-1">
+                                                        <span className="font-sans text-stone-500 text-[12px] uppercase">MRP :</span>
+                                                        <span className="font-sans text-stone-400 text-[12px] line-through decoration-stone-300">
+                                                            ₹ {currentMp?.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                                         </span>
-                                                    )}
+                                                    </div>
+                                                )}
+                                                <div className="flex items-baseline gap-1.5">
+                                                    <span className="font-sans font-bold text-[#1D3557] text-[15px]">Price:</span>
+                                                    <span className="font-sans font-bold text-[#1D3557] text-[20px]">
+                                                        ₹ {currentSp?.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                    </span>
+                                                </div>
+                                                <div className="text-[11px] text-[#D4AF37] font-medium mt-0.5">
+                                                    Inclusive of all taxes
                                                 </div>
                                             </div>
 
@@ -154,12 +161,13 @@ export function Products() {
                             );
                         }) : (
                             <div className="col-span-3 text-center py-12">
-                                <p className="text-[#1D3557]/60 font-sans text-lg">No products available at the moment.</p>
+                                <p className="text-[#252422]/60 font-sans text-lg">No products available at the moment.</p>
                             </div>
                         )}
                     </div>
                 )}
             </div>
-        </section>
+        </section >
     )
 }
+

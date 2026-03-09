@@ -66,14 +66,14 @@ function ShopContent() {
     };
 
     return (
-        <div className="min-h-screen bg-[#FAF8F3] flex flex-col font-sans selection:bg-emerald-600 selection:text-white">
+        <div className="min-h-screen bg-[#FAF8F3] flex flex-col font-sans selection:bg-[#D4AF37] selection:text-white">
             <Navbar />
 
-            {/* ── Page Header ─── */}
+            {/* -- Page Header --- */}
             <div className="bg-white border-b border-stone-200 pt-24 pb-10 text-center px-4 mt-[70px]">
                 <div className="max-w-2xl mx-auto">
-                    <span className="font-heading font-semibold text-[10px] text-emerald-700 uppercase tracking-[0.3em] block mb-3">Premium Collection</span>
-                    <h1 className="font-heading font-semibold text-[#2A401E] text-4xl sm:text-5xl tracking-tight mb-3">
+                    <span className="font-heading font-semibold text-[10px] text-brand-secondary uppercase tracking-[0.3em] block mb-3">Premium Collection</span>
+                    <h1 className="font-heading font-semibold text-[#2A401E] text-4xl sm:text-[#252422]xl tracking-tight mb-3">
                         Our Best Products
                     </h1>
                     <p className="font-sans text-stone-500 text-base font-medium max-w-xl mx-auto">
@@ -82,7 +82,7 @@ function ShopContent() {
                 </div>
             </div>
 
-            {/* ── Filter Bar ─── */}
+            {/* -- Filter Bar --- */}
             <div className="bg-white border-b border-stone-200 sticky top-[70px] z-40 shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3">
                     <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 items-center">
@@ -95,7 +95,7 @@ function ShopContent() {
                                 value={searchQuery}
                                 onChange={e => { setSearchQuery(e.target.value); setSelectedCategory(""); setMinPrice(""); setMaxPrice(""); }}
                                 placeholder="Search products..."
-                                className="w-full pl-10 pr-4 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm placeholder:text-stone-400 font-sans font-medium focus:outline-none focus:border-emerald-500 transition-colors"
+                                className="w-full pl-10 pr-4 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm placeholder:text-stone-400 font-sans font-medium focus:outline-none focus:border-brand-accent transition-colors"
                             />
                         </div>
 
@@ -103,7 +103,7 @@ function ShopContent() {
                         <select
                             value={selectedCategory}
                             onChange={e => { setSelectedCategory(e.target.value); setSearchQuery(""); setMinPrice(""); setMaxPrice(""); }}
-                            className="px-4 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-emerald-500 transition-colors w-full sm:w-48"
+                            className="px-4 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-brand-accent transition-colors w-full sm:w-48"
                         >
                             <option value="">All Categories</option>
                             {categories.map(c => (
@@ -117,19 +117,19 @@ function ShopContent() {
                                 type="number" placeholder="Min NPR"
                                 value={minPrice}
                                 onChange={e => { setMinPrice(e.target.value); setSearchQuery(""); setSelectedCategory(""); }}
-                                className="w-28 px-3 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-emerald-500 transition-colors"
+                                className="w-28 px-3 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-brand-accent transition-colors"
                             />
                             <input
                                 type="number" placeholder="Max NPR"
                                 value={maxPrice}
                                 onChange={e => { setMaxPrice(e.target.value); setSearchQuery(""); setSelectedCategory(""); }}
-                                className="w-28 px-3 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-emerald-500 transition-colors"
+                                className="w-28 px-3 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-brand-accent transition-colors"
                             />
                         </div>
 
                         <button
                             type="submit"
-                            className="flex items-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-heading font-semibold text-[13px] uppercase tracking-wide transition-colors shadow-sm w-full sm:w-auto justify-center"
+                            className="flex items-center gap-2 px-6 py-2.5 bg-[#D4AF37] hover:bg-[#B8860B] text-white rounded-xl font-heading font-semibold text-[13px] uppercase tracking-wide transition-colors shadow-sm w-full sm:w-auto justify-center"
                         >
                             <SlidersHorizontal className="w-4 h-4" />
                             Filter
@@ -138,11 +138,11 @@ function ShopContent() {
                 </div>
             </div>
 
-            {/* ── Product Grid ─── */}
+            {/* -- Product Grid --- */}
             <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-20">
                 {loading ? (
                     <div className="flex justify-center items-center h-64">
-                        <div className="w-10 h-10 border-[3px] border-emerald-200 border-t-emerald-600 rounded-full animate-spin" />
+                        <div className="w-10 h-10 border-[3px] border-emerald-200 border-t-brand-primary rounded-full animate-spin" />
                     </div>
                 ) : products.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-64 bg-white rounded-2xl border border-stone-200">
@@ -219,15 +219,22 @@ function ShopContent() {
 
                                             {/* Price Row */}
                                             <div className="mb-4">
-                                                <div className="font-sans font-bold text-[#b91c1c] text-[16px] mb-0.5 tracking-tight">
-                                                    Rs. {currentSp?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                                </div>
-                                                <div className="h-4">
-                                                    {currentMp > currentSp && (
-                                                        <span className="font-sans text-stone-500 text-[12px]">
-                                                            Reg. Rs. {currentMp?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                                {currentMp > currentSp && (
+                                                    <div className="flex items-center gap-1.5 mb-1">
+                                                        <span className="font-sans text-stone-500 text-[12px] uppercase tracking-wider">MRP :</span>
+                                                        <span className="font-sans text-stone-400 text-[12px] line-through decoration-stone-300">
+                                                            ₹ {currentMp?.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
                                                         </span>
-                                                    )}
+                                                    </div>
+                                                )}
+                                                <div className="flex items-baseline gap-1.5">
+                                                    <span className="font-sans font-bold text-[#1D3557] text-[15px]">Price:</span>
+                                                    <span className="font-sans font-bold text-[#1D3557] text-[20px]">
+                                                        ₹ {currentSp?.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                    </span>
+                                                </div>
+                                                <div className="text-[11px] text-[#D4AF37] font-medium mt-0.5">
+                                                    Inclusive of all taxes
                                                 </div>
                                             </div>
 
@@ -252,10 +259,11 @@ export default function ShopAll() {
     return (
         <Suspense fallback={
             <div className="min-h-screen bg-[#FAF8F3] flex items-center justify-center">
-                <div className="w-10 h-10 border-[3px] border-emerald-200 border-t-emerald-600 rounded-full animate-spin" />
+                <div className="w-10 h-10 border-[3px] border-emerald-200 border-t-brand-primary rounded-full animate-spin" />
             </div>
         }>
             <ShopContent />
         </Suspense>
     );
 }
+

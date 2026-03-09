@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
@@ -719,7 +719,7 @@ export default function ProductForm() {
                                     }))}
                                     className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-black/20 rounded-lg text-white/40 hover:text-white transition-colors text-xs font-bold"
                                 >
-                                    ✕
+                                    ?
                                 </button>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                     <input
@@ -803,7 +803,7 @@ export default function ProductForm() {
                                     }))}
                                     className="absolute top-2 right-2 sm:hidden w-8 h-8 flex flex-shrink-0 items-center justify-center bg-black/20 rounded-lg text-white/40 hover:text-white transition-colors text-xs font-bold"
                                 >
-                                    ✕
+                                    ?
                                 </button>
                                 <input
                                     type="text"
@@ -846,7 +846,7 @@ export default function ProductForm() {
                                     }))}
                                     className="hidden sm:block px-4 py-3 bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 transition-colors text-white/40 text-xs font-bold"
                                 >
-                                    ✕
+                                    ?
                                 </button>
                             </div>
                         ))}
@@ -883,7 +883,7 @@ export default function ProductForm() {
                                     }))}
                                     className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors text-white/40 text-xs font-bold"
                                 >
-                                    ✕
+                                    ?
                                 </button>
                             </div>
                         ))}
@@ -922,7 +922,7 @@ export default function ProductForm() {
                                             }))}
                                             className="px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors text-white/40 text-xs font-bold"
                                         >
-                                            ✕
+                                            ?
                                         </button>
                                     )}
                                 </div>
@@ -950,7 +950,7 @@ export default function ProductForm() {
                                     }))}
                                     className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-black/20 rounded-lg text-white/40 hover:text-white transition-colors text-xs font-bold"
                                 >
-                                    ✕
+                                    ?
                                 </button>
                                 <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                                     <input
@@ -1064,7 +1064,7 @@ export default function ProductForm() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-1 py-5 bg-emerald-600 text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_0_30px_rgba(56,163,109,0.3)]"
+                            className="flex-1 py-5 bg-[#D4AF37] text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_0_30px_rgba(56,163,109,0.3)]"
                         >
                             {loading ? "Saving..." : isEdit ? "Update Product" : "Create Product"}
                         </button>
@@ -1080,3 +1080,4 @@ export default function ProductForm() {
         </main >
     );
 }
+

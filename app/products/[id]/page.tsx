@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import Link from "next/link";
 import { useEffect, useState, Suspense } from "react";
 import { useParams } from "next/navigation";
-import { productApi, Product, formatBase64Image, getProductAllImages, getProductMainImage } from "@/lib/api";
+import { api, productApi, Product, formatBase64Image, getProductAllImages, getProductMainImage } from "@/lib/api";
 import {
     ShoppingCart, Star, ChevronRight, Truck, ShieldCheck,
     RotateCcw, Plus, Minus, Check, Heart,
@@ -39,15 +39,29 @@ function ProductDetailContent() {
     const [loading, setLoading] = useState(true);
     const [selectedImg, setSelectedImg] = useState<string | null>(null);
     const [bundleQty, setBundleQty] = useState<1 | 2 | 3>(1);
+    const [quantity, setQuantity] = useState(1);
+    const [relatedBlog, setRelatedBlog] = useState<any>(null);
 
     useEffect(() => {
         (async () => {
             try {
                 const id = parseInt(params.id as string);
                 if (!isNaN(id)) {
-                    const [data, all] = await Promise.all([productApi.getById(id), productApi.getAll()]);
+                    const [data, all, blogs] = await Promise.all([
+                        productApi.getById(id),
+                        productApi.getAll(),
+                        api.blogs.getAll()
+                    ]);
+
                     if (data && !Array.isArray(data)) {
                         setProduct(data);
+
+                        // Find a blog that mentions this product
+                        if (blogs && Array.isArray(blogs)) {
+                            const found = blogs.find(b => b.relatedProducts?.some(rp => rp.id === data.id));
+                            if (found) setRelatedBlog(found);
+                        }
+
                         if (all && Array.isArray(all)) {
                             const currentCatName = (typeof data.category === "string" ? data.category : data.category?.name || "").toLowerCase().trim();
                             const same = all.filter(p => {
@@ -66,14 +80,14 @@ function ProductDetailContent() {
 
     if (loading) return (
         <div className="flex-1 flex items-center justify-center min-h-screen bg-[#FAF8F3]">
-            <div className="w-10 h-10 border-[3px] border-emerald-200 border-t-emerald-600 rounded-full animate-spin" />
+            <div className="w-10 h-10 border-[3px] border-emerald-200 border-t-brand-primary rounded-full animate-spin" />
         </div>
     );
 
     if (!product) return (
         <div className="flex-1 flex flex-col items-center justify-center text-center py-48 bg-[#FAF8F3]">
             <h1 className="font-heading text-5xl font-semibold text-[#2A401E] mb-4">Not Found</h1>
-            <Link href="/products" className="mt-2 px-8 py-3.5 bg-emerald-600 text-white rounded-full font-heading font-medium hover:bg-emerald-700 transition-colors">
+            <Link href="/products" className="mt-2 px-8 py-3.5 bg-brand-primary text-white rounded-full font-heading font-medium hover:bg-brand-secondary transition-colors">
                 Back to Products
             </Link>
         </div>
@@ -110,7 +124,7 @@ function ProductDetailContent() {
         <div className="flex-1 bg-[#FAF8F3]">
             {/* ── BREADCRUMB ─────────────────── */}
             <div className="bg-white border-b border-stone-200">
-                <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-10 h-11 flex items-center">
+                <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 h-11 flex items-center">
                     <nav className="flex items-center gap-2 text-[13px] text-stone-400 font-sans font-medium">
                         <Link href="/" className="hover:text-[#2A401E] transition-colors">Home</Link>
                         <ChevronRight className="w-3.5 h-3.5 opacity-40" />
@@ -121,9 +135,41 @@ function ProductDetailContent() {
                 </div>
             </div>
 
-            {/* ── HERO ─────────────────── */}
-            <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-10 py-10 lg:py-12">
-                <div className="flex flex-col lg:flex-row gap-10 xl:gap-12 items-stretch">
+            {/* Decorative Full-Width Cover Section */}
+            <div className="relative bg-gradient-to-br from-emerald-50/40 via-stone-50/20 to-amber-50/20 border-b border-stone-200/40">
+                <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 py-6">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-white border border-stone-200 flex items-center justify-center shadow-sm">
+                                <Leaf className="w-5 h-5 text-brand-primary" />
+                            </div>
+                            <div>
+                                <p className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.3em]">Premium Quality</p>
+                                <p className="font-sans text-[13px] text-stone-700 font-semibold">100% Natural Ingredients</p>
+                            </div>
+                        </div>
+                        <div className="hidden sm:flex items-center gap-6">
+                            <div className="flex items-center gap-2">
+                                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                                <span className="font-sans text-[12px] text-stone-600">Lab Tested</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Award className="w-4 h-4 text-emerald-600" />
+                                <span className="font-sans text-[12px] text-stone-600">Premium Grade</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* Decorative bottom wave */}
+                <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-stone-300/30 to-transparent"></div>
+            </div>
+
+            {/* ── MAIN SURFACE: Hero + Content ── */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 mt-8 mb-16">
+                <div className="bg-white rounded-[3rem] border border-stone-200/60 shadow-[0_8px_40px_rgba(0,0,0,0.03)] overflow-hidden">
+                    {/* HERO SECTION */}
+                    <div className="pt-12 lg:pt-16 pb-0">
+                        <div className="px-6 lg:px-12 flex flex-col lg:flex-row gap-10 xl:gap-12 items-stretch">
                     {/* LEFT COLUMN: Gallery & Extra Content */}
                     <div className="w-full lg:w-1/2 flex flex-col gap-10 min-w-0">
                         <div className="lg:h-[550px]">
@@ -142,7 +188,7 @@ function ProductDetailContent() {
                                                 <img
                                                     src={src}
                                                     alt={`${product.name} thumbnail ${idx + 1}`}
-                                                    className={`relative w-full h-full object-contain p-2 mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-110 ${isActive ? 'opacity-100 scale-105' : 'opacity-60 hover:opacity-100'}`}
+                                                    className={`relative w-full h-full object-contain p-2 mix-blend-multiply transition-opacity duration-500 ease-out ${isActive ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}
                                                 />
                                             </button>
                                         );
@@ -162,7 +208,7 @@ function ProductDetailContent() {
                                         </div>
                                     </div>
 
-                                    <div className="relative w-full h-full flex items-center justify-center transition-transform duration-[1200ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] group-hover:scale-[1.05]">
+                                    <div className="relative w-full h-full flex items-center justify-center">
                                         <img
                                             src={img}
                                             alt={product.name}
@@ -173,179 +219,190 @@ function ProductDetailContent() {
                             </div>
                         </div>
 
-                        {/* How to Use Section */}
-                        {howToUse.length > 0 && (
-                            <div className="bg-white rounded-2xl border border-stone-100 p-8 shadow-sm">
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
-                                        <RotateCcw className="w-5 h-5 text-emerald-600" />
-                                    </div>
-                                    <div>
-                                        <span className="font-sans text-[10px] text-stone-400 uppercase tracking-[0.2em] block mb-0.5">Application</span>
-                                        <h2 className="font-heading text-[#2A401E] text-2xl font-semibold">How to Use</h2>
-                                    </div>
-                                </div>
-                                <div className="grid sm:grid-cols-2 gap-8">
-                                    <div className="space-y-4">
-                                        {howToUse.map((step, idx) => (
-                                            <div key={idx} className="flex gap-4">
-                                                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-stone-100 flex items-center justify-center font-heading text-[12px] text-stone-500 font-bold">
-                                                    {idx + 1}
-                                                </div>
-                                                <p className="font-sans text-stone-600 text-[15px] leading-relaxed pt-0.5">{step}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <div className="bg-[#FAF8F3]/50 rounded-2xl p-6 border border-stone-100 flex flex-col justify-center">
-                                        <div className="flex items-center gap-3 mb-4">
-                                            <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                                                <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                                            </div>
-                                            <span className="font-heading text-[#2A401E] font-medium">Expert Recommendation</span>
-                                        </div>
-                                        <p className="font-sans text-stone-500 text-[13px] italic leading-relaxed">
-                                            Consistency is key. Follow the product usage regularly for best results.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
                     </div>
 
                     {/* RIGHT: Buy Panel */}
                     <div className="w-full lg:w-1/2 shrink-0">
                         <div className="lg:sticky lg:top-6 space-y-4">
                             <div className="bg-white rounded-2xl border border-stone-200 overflow-hidden">
-                                <div className="p-6 pb-5 border-b border-stone-100">
-                                    <span className="font-sans text-[9px] text-emerald-700 uppercase tracking-[0.28em] block mb-2">{cat}</span>
-                                    <h1 className="font-heading text-[#2A401E] text-[1.85rem] leading-[1.1] tracking-tight mb-3">
-                                        {product.name}
-                                    </h1>
-                                    {reviews.length > 0 && (
-                                        <StarRating rating={avgRating} count={reviews.length} />
-                                    )}
-                                </div>
-
-                                <div className="px-6 pt-5 pb-4 border-b border-stone-100 flex items-end justify-between">
-                                    <div className="flex flex-col">
-                                        <div className="flex items-end gap-3 mb-2">
-                                            <div>
-                                                <span className="font-sans text-[9px] text-stone-400 uppercase tracking-[0.3em] block mb-0.5">NPR</span>
-                                                <span className="font-heading text-[#2A401E] text-[2.6rem] leading-none tracking-tight">
-                                                    {displaySp.toLocaleString()}
-                                                </span>
-                                            </div>
-                                            {displayMp > displaySp && (
-                                                <div className="mb-1.5">
-                                                    <span className="font-sans text-stone-400 font-medium text-[1.2rem] line-through decoration-stone-300 decoration-2">
-                                                        {displayMp.toLocaleString()}
-                                                    </span>
-                                                </div>
-                                            )}
+                                <div className="p-5 pb-4 border-b border-stone-100">
+                                    <div className="flex flex-col gap-1.5 mb-2.5">
+                                        <div className="flex items-center gap-2 text-[12px] text-stone-400 font-sans">
+                                            <Link href="/" className="hover:text-brand-primary">Home</Link>
+                                            <span>/</span>
+                                            <Link href="/products" className="hover:text-brand-primary">{cat}</Link>
                                         </div>
-                                        {savePct > 0 && (
-                                            <div>
-                                                <span className="inline-flex items-center gap-1 bg-emerald-50 border border-emerald-200 text-emerald-800 font-sans text-[11px] uppercase tracking-[0.12em] px-3 py-1 rounded-full">
-                                                    Save {savePct}%
-                                                </span>
+                                        <h1 className="font-heading text-[#2A401E] text-[1.6rem] leading-[1.2] tracking-tight">
+                                            {product.name}
+                                        </h1>
+                                        <div className="flex items-center gap-1">
+                                            <span className="font-sans text-[13px] text-stone-500">By</span>
+                                            <Link href={relatedBlog ? `/blog/${relatedBlog.id}` : "/blogs"} className="font-sans text-[13px] text-brand-primary font-semibold hover:underline flex items-center gap-0.5">
+                                                {product.name.split(' ')[0]} {product.name.split(' ')[1]} <ChevronRight className="w-3.5 h-3.5" />
+                                            </Link>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex items-center gap-2.5">
+                                            <div className="flex items-center gap-0.5">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <Star key={i} strokeWidth={0}
+                                                        className={`w-4 h-4 ${i < Math.round(avgRating || 4.5) ? "fill-[#00A39E]" : "fill-stone-200"}`} />
+                                                ))}
+                                            </div>
+                                            <span className="font-sans text-[13px] font-bold text-[#252422]">
+                                                {avgRating ? avgRating.toFixed(1) : "4.8"} <span className="text-stone-400 font-medium ml-1">({reviews.length > 0 ? reviews.length : 44} Reviews)</span>
+                                            </span>
+                                        </div>
+
+                                        {/* Freebies Section in Header */}
+                                        {product.freebies && product.freebies.length > 0 && (
+                                            <div className="flex flex-col items-end gap-1.5 pt-1">
+                                                <div className="flex items-center gap-1.5">
+                                                    {product.freebies.map((freebie, idx) => (
+                                                        <div key={idx} className="flex items-center gap-1.5 bg-brand-primary/[0.03] border border-brand-primary/10 px-2 py-1 rounded-md">
+                                                            <div className="w-4 h-4 rounded-full bg-brand-accent flex items-center justify-center">
+                                                                <Award className="w-2.5 h-2.5 text-white" />
+                                                            </div>
+                                                            <span className="font-sans text-[11px] text-[#2A401E] font-bold whitespace-nowrap">{freebie}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             </div>
                                         )}
                                     </div>
-                                    <div className="mb-2">
-                                        <h3 className="font-heading font-bold text-[#2A401E] text-[15px] uppercase tracking-wider text-right">Select Supply</h3>
-                                    </div>
                                 </div>
 
-                                {/* Bundle selection */}
-                                <div className="p-6 border-b border-stone-100 bg-gradient-to-b from-[#FAF8F3]/60 to-[#FAF8F3]/20">
-                                    <div className="flex flex-col gap-3">
-                                        {[
-                                            { qty: 1, label: "1 Pack", sub: "1 Month Supply", key: "singleProductImage", sp: product.singleProductSp ?? product.sp, mp: product.singleProductMp ?? product.mp },
-                                            { qty: 2, label: "2 Packs", sub: "2 Month Supply", key: "twoProductImage", sp: product.twoProductSp ?? (product.singleProductSp ?? product.sp) * 2, mp: product.twoProductMp ?? (product.singleProductMp ?? product.mp) * 2 },
-                                            { qty: 3, label: "3 Packs", sub: "3 Month Supply", key: "threeProductImage", sp: product.threeProductSp ?? (product.singleProductSp ?? product.sp) * 3, mp: product.threeProductMp ?? (product.singleProductMp ?? product.mp) * 3 },
-                                        ].map((b) => {
-                                            const rawSrc = (product as any)[b.key];
-                                            let imgSrc = rawSrc && rawSrc.trim() !== "" ? formatBase64Image(rawSrc) : formatBase64Image(product.images?.[0] || "");
-                                            const isActive = bundleQty === b.qty;
-                                            const bSavePct = b.mp > b.sp ? Math.round(((b.mp - b.sp) / b.mp) * 100) : 0;
-
-                                            return (
-                                                <button
-                                                    key={b.qty}
-                                                    onClick={() => {
-                                                        setBundleQty(b.qty as 1 | 2 | 3);
-                                                        setSelectedImg(imgSrc);
-                                                    }}
-                                                    className={`relative flex items-center justify-between p-3.5 sm:p-4 rounded-2xl transition-all duration-200 border-2 text-left w-full group ${isActive ? "border-emerald-600 bg-emerald-50/40" : "border-stone-100 bg-white hover:border-stone-200"}`}
-                                                >
-                                                    <div className="flex items-center gap-3 sm:gap-4">
-                                                        <div className={`w-5 h-5 rounded-full border flex shrink-0 items-center justify-center ${isActive ? "border-emerald-600" : "border-stone-300"}`}>
-                                                            {isActive && <div className="w-2.5 h-2.5 rounded-full bg-emerald-600"></div>}
-                                                        </div>
-                                                        <img src={imgSrc} alt={b.label} className="w-12 h-12 object-contain mix-blend-multiply bg-[#FAF8F3] rounded p-1" />
-                                                        <div>
-                                                            <span className={`font-inter font-medium block ${isActive ? "text-[#2A401E]" : "text-stone-700"}`}>{b.label}</span>
-                                                            <span className="font-sans text-[11px] text-stone-500">{b.sub}</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="text-right flex flex-col items-end">
-                                                        <span className="font-inter font-medium text-[#2A401E]">Rs. {b.sp.toLocaleString()}</span>
-                                                        {bSavePct > 0 && <span className="font-sans text-[11px] text-emerald-600 font-bold uppercase">Save {bSavePct}%</span>}
-                                                    </div>
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-
-                                {/* Shop Now */}
-                                <div className="px-6 py-5 border-b border-stone-100 space-y-3">
-                                    <a
-                                        href={(() => {
-                                            if (!product.link || product.link === "#" || product.link === "") return "#";
-                                            return product.link.startsWith("http") ? product.link : `https://${product.link}`;
-                                        })()}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="w-full bg-[#fbbf24] hover:bg-[#f5b102] text-[#451a03] rounded-xl py-4 font-heading font-bold text-[15px] uppercase tracking-widest flex items-center justify-center gap-3 transition-all shadow-lg active:scale-[0.97]"
-                                    >
-                                        <ShoppingCart className="w-5 h-5" />
-                                        <span>Shop Now</span>
-                                        <ExternalLink className="w-4 h-4 opacity-70" />
-                                    </a>
-                                    <div className="flex items-center justify-center gap-2 pt-2.5 opacity-60">
-                                        <svg viewBox="0 0 32 20" className="w-8 h-auto drop-shadow-sm"><rect width="32" height="20" rx="3" fill="#1A1F71" /><text x="4" y="13.5" fill="#fff" fontFamily="Arial" fontWeight="900" fontSize="8" fontStyle="italic">VISA</text></svg>
-                                        <svg viewBox="0 0 32 20" className="w-8 h-auto drop-shadow-sm"><rect width="32" height="20" rx="3" fill="#1C1C1C" /><circle cx="12" cy="10" r="5" fill="#EB001B" /><circle cx="20" cy="10" r="5" fill="#F79E1B" opacity="0.9" /></svg>
-                                        <svg viewBox="0 0 32 20" className="w-8 h-auto drop-shadow-sm"><rect width="32" height="20" rx="3" fill="#016FD0" /><text x="4.5" y="13.5" fill="#fff" fontFamily="Arial" fontWeight="bold" fontSize="7">AMEX</text></svg>
-                                        <svg viewBox="0 0 32 20" className="w-8 h-auto drop-shadow-sm"><rect width="32" height="20" rx="3" fill="#FF8200" /><text x="2" y="13" fill="#fff" fontFamily="Arial" fontWeight="bold" fontSize="5.5">DISCOVER</text></svg>
-                                        <svg viewBox="0 0 32 20" className="w-8 h-auto drop-shadow-sm"><rect width="32" height="20" rx="3" fill="#003087" /><text x="3" y="13.5" fill="#179BD7" fontFamily="Arial" fontWeight="bold" fontSize="7" fontStyle="italic">Pay<tspan fill="#fff">Pal</tspan></text></svg>
-                                    </div>
-                                </div>
-
-                                {/* Trust Tiles */}
-                                <div className="px-6 py-4 border-t border-stone-100">
-                                    <div className="grid grid-cols-3 gap-2">
-                                        {[
-                                            { icon: ShieldCheck, label: "Lab Tested" },
-                                            { icon: FlaskConical, label: "Pure Formula" },
-                                            { icon: Award, label: "Premium" },
-                                        ].map(({ icon: Icon, label }) => (
-                                            <div key={label} className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl bg-[#FAF8F3] border border-stone-100">
-                                                <Icon className="w-4 h-4 text-[#2A401E]" strokeWidth={1.5} />
-                                                <span className="font-sans text-[9px] text-[#2A401E] uppercase tracking-wide text-center">{label}</span>
+                                <div className="px-5 py-3 border-b border-stone-100">
+                                    <div className="flex flex-col gap-0.5 mb-2">
+                                        <span className="font-sans text-stone-400 text-[13px]">MRP : <span className="line-through">₹ {displayMp.toLocaleString()}</span></span>
+                                        <div className="flex items-center gap-2">
+                                            <span className="font-sans font-bold text-[#252422] text-[18px]">Price:</span>
+                                            <span className="font-sans font-bold text-[#252422] text-[24px]">₹ {displaySp.toLocaleString()}</span>
+                                            <span className="text-emerald-500 font-bold text-[14px]">{savePct}% off</span>
+                                            <div className="flex items-center gap-1 ml-2 text-stone-500 font-sans text-[12px]">
+                                                <span>Get {Math.round(displaySp * 0.02)} HK Cash</span>
+                                                <div className="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center text-[10px] text-white font-bold">₹</div>
                                             </div>
-                                        ))}
+                                        </div>
+                                        <div className="text-[11px] text-stone-400 font-sans font-medium">Inclusive of all taxes</div>
+                                    </div>
+
+                                </div>
+
+                                <div className="p-5 border-b border-stone-100">
+                                    <div className="flex items-end justify-between gap-6 mb-8">
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 uppercase tracking-widest px-1">
+                                                <ShieldCheck className="w-3.5 h-3.5" />
+                                                Secure Checkout
+                                            </div>
+                                            <div className="flex items-center gap-4 bg-stone-50/80 px-4 h-14 rounded-xl border border-stone-100 shadow-sm">
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-5 w-auto" alt="Mastercard" />
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" className="h-3 w-auto" alt="Visa" />
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" className="h-4 w-auto" alt="PayPal" />
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo_%282020%29.svg" className="h-4 w-auto" alt="GPay" />
+                                                <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" className="h-5 w-auto rounded-[1px]" alt="Amex" />
+                                            </div>
+                                        </div>
+                                        <button className="flex-1 h-14 bg-[#fb923c] text-white rounded-xl font-sans font-bold text-[16px] hover:bg-[#f97316] transition-all shadow-lg shadow-orange-200/50 flex items-center justify-center tracking-wide group">
+                                            Buy Now
+                                            <ChevronRight className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1" />
+                                        </button>
+                                    </div>
+
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-8 h-8 rounded-lg bg-stone-50 flex items-center justify-center border border-stone-100">
+                                                    <Truck className="w-4 h-4 text-stone-400" />
+                                                </div>
+                                                <span className="font-sans font-bold text-[14px] text-stone-700">Select Variant</span>
+                                            </div>
+                                            <div className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded-md border border-emerald-100 uppercase tracking-wider">
+                                                In Stock
+                                            </div>
+                                        </div>
+                                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                                            {[
+                                                { qty: 1, label: "1 Pack", sp: product.singleProductSp ?? product.sp },
+                                                { qty: 2, label: "2 Packs", sp: product.twoProductSp },
+                                                { qty: 3, label: "3 Packs", sp: product.threeProductSp },
+                                            ].filter(b => b.sp && b.sp > 0).map((b) => {
+                                                const isActive = bundleQty === b.qty;
+                                                return (
+                                                    <button
+                                                        key={b.qty}
+                                                        onClick={() => setBundleQty(b.qty as 1 | 2 | 3)}
+                                                        className={`flex flex-col items-center justify-center py-3 rounded-xl border transition-all duration-200 text-center gap-1.5 ${isActive ? "border-brand-primary bg-emerald-50/20" : "border-stone-100 bg-white hover:border-stone-200"}`}
+                                                    >
+                                                        <span className={`font-sans font-bold text-[13px] ${isActive ? "text-[#2A401E]" : "text-stone-700"}`}>{b.label}</span>
+                                                        <span className="font-sans text-[11px] text-stone-400">₹ {(b.sp as number).toLocaleString()}</span>
+                                                    </button>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    {/* HOW TO USE SECTION */}
+                    {howToUse.length > 0 && (
+                        <div className="px-6 lg:px-12 pt-16 pb-16 lg:pb-20">
+                            <div className="p-0">
+                        <div className="flex flex-col lg:flex-row gap-12">
+                            <div className="lg:w-1/3">
+                                <div className="flex items-center gap-4 mb-6">
+                                    <div className="w-12 h-12 rounded-2xl bg-white border border-stone-200 flex items-center justify-center shadow-sm">
+                                        <RotateCcw className="w-6 h-6 text-brand-primary" />
+                                    </div>
+                                    <div>
+                                        <span className="font-sans text-[11px] text-stone-400 uppercase tracking-[0.3em] block mb-1">Guidance</span>
+                                        <h2 className="font-sans text-[#2A401E] text-3xl font-bold">How to Use</h2>
+                                    </div>
+                                </div>
+                                <p className="font-sans text-stone-600 text-[14px] leading-[1.9]">
+                                    Our experts recommend following these clear steps to ensure maximum efficacy and best results from this formula.
+                                </p>
+                            </div>
+
+                            <div className="lg:w-2/3 grid sm:grid-cols-2 gap-8 lg:gap-12">
+                                <div className="space-y-6">
+                                    {howToUse.map((step, idx) => (
+                                        <div key={idx} className="flex gap-5 group">
+                                            <div className="flex-shrink-0 w-8 h-8 rounded-xl bg-white border border-stone-200 flex items-center justify-center font-sans text-[14px] text-[#2A401E] font-bold group-hover:bg-brand-primary group-hover:text-white group-hover:border-brand-primary transition-all shadow-sm">
+                                                {String(idx + 1).padStart(2, '0')}
+                                            </div>
+                                            <p className="font-sans text-stone-600 text-[14px] leading-[1.9] pt-0.5">{step}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="bg-white rounded-3xl p-8 border border-stone-200/60 flex flex-col justify-center relative overflow-hidden shadow-sm">
+                                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                                        <FlaskConical className="w-24 h-24 text-brand-primary" />
+                                    </div>
+                                    <div className="flex items-center gap-3 mb-5">
+                                        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm">
+                                            <ShieldCheck className="w-5 h-5 text-brand-primary" />
+                                        </div>
+                                        <span className="font-sans text-[#2A401E] text-lg font-bold">Pro Tip</span>
+                                    </div>
+                                    <p className="font-sans text-stone-600 text-[14px] leading-[1.9] relative z-10 font-medium italic">
+                                        "To achieve the most significant benefits, maintain a consistent routine. Most users report better results after 2-3 weeks of regular use."
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* ── DETAILS SECTION — full width below hero ── */}
             <div className="border-t border-stone-200 bg-white">
-                <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-10 py-10 space-y-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 py-10 space-y-8">
 
                     {/* Description */}
                     {product.description && (
@@ -364,7 +421,7 @@ function ProductDetailContent() {
                     {product.description && (benefits.length > 0 || facts.length > 0) && (
                         <div className="flex items-center gap-4">
                             <div className="flex-1 h-px bg-stone-100" />
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-brand-accent" />
                             <div className="flex-1 h-px bg-stone-100" />
                         </div>
                     )}
@@ -444,7 +501,7 @@ function ProductDetailContent() {
                         <div className="pt-24 border-t border-stone-100">
                             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
                                 <div>
-                                    <span className="font-sans text-[11px] font-bold text-emerald-600 uppercase tracking-[0.3em] block mb-3">Community Feedback</span>
+                                    <span className="font-sans text-[11px] font-bold text-brand-primary uppercase tracking-[0.3em] block mb-3">Community Feedback</span>
                                     <h2 className="font-heading text-[#2A401E] text-4xl font-semibold tracking-tight">Verified Reviews</h2>
                                 </div>
                                 <div className="text-center sm:text-right">
@@ -470,7 +527,7 @@ function ProductDetailContent() {
                                             <div>
                                                 <div className="flex items-center gap-1.5 leading-none mb-1">
                                                     <span className="font-heading text-[#2A401E] font-bold text-base tracking-tight">{r.username}</span>
-                                                    <div className="w-3.5 h-3.5 rounded-full bg-emerald-500 flex items-center justify-center">
+                                                    <div className="w-3.5 h-3.5 rounded-full bg-brand-accent flex items-center justify-center">
                                                         <Check className="w-2 h-2 text-white" strokeWidth={5} />
                                                     </div>
                                                 </div>
@@ -528,10 +585,10 @@ function ProductDetailContent() {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                         <div className="flex items-end justify-between mb-10">
                             <div>
-                                <span className="font-heading font-semibold text-[10px] text-emerald-600 uppercase tracking-[0.28em] block mb-2">Architectural Synergy</span>
+                                <span className="font-heading font-semibold text-[10px] text-brand-primary uppercase tracking-[0.28em] block mb-2">Architectural Synergy</span>
                                 <h2 className="font-heading font-semibold text-[#2A401E] text-4xl tracking-tight">Related Products</h2>
                             </div>
-                            <Link href="/products" className="hidden sm:block font-sans text-sm font-semibold text-stone-400 hover:text-emerald-600 transition-colors underline-offset-4 hover:underline">
+                            <Link href="/products" className="hidden sm:block font-sans text-sm font-semibold text-stone-400 hover:text-brand-primary transition-colors underline-offset-4 hover:underline">
                                 View all →
                             </Link>
                         </div>
@@ -555,7 +612,7 @@ function ProductDetailContent() {
                                                 <Heart className="w-4 h-4" />
                                             </button>
 
-                                            <div className="relative w-full h-full transition-transform duration-500 group-hover:scale-105">
+                                            <div className="relative w-full h-full">
                                                 <img
                                                     src={getProductMainImage(p)}
                                                     alt={p.name}
@@ -594,20 +651,27 @@ function ProductDetailContent() {
 
                                                 {/* Price Row */}
                                                 <div className="mb-4">
-                                                    <div className="font-sans font-bold text-[#b91c1c] text-[16px] mb-0.5 tracking-tight">
-                                                        Rs. {relSp.toLocaleString()}
-                                                    </div>
-                                                    <div className="h-4">
-                                                        {relMp > relSp && (
-                                                            <span className="font-sans text-stone-500 text-[12px]">
-                                                                Reg. Rs. {relMp.toLocaleString()}
+                                                    {relMp > relSp && (
+                                                        <div className="flex items-center gap-1.5 mb-1">
+                                                            <span className="font-sans text-stone-500 text-[11px] uppercase">MRP :</span>
+                                                            <span className="font-sans text-stone-400 text-[11px] line-through decoration-stone-300">
+                                                                ₹ {relMp.toLocaleString()}
                                                             </span>
-                                                        )}
+                                                        </div>
+                                                    )}
+                                                    <div className="flex items-baseline gap-1.5">
+                                                        <span className="font-sans font-bold text-[#252422] text-[14px]">Price:</span>
+                                                        <span className="font-sans font-bold text-[#252422] text-[18px]">
+                                                            ₹ {relSp.toLocaleString()}
+                                                        </span>
+                                                    </div>
+                                                    <div className="text-[10px] text-brand-primary font-medium mt-0.5">
+                                                        Inclusive of all taxes
                                                     </div>
                                                 </div>
 
-                                                <span className="w-full block text-center bg-[#fbbf24] hover:bg-[#f5b102] text-[#451a03] font-sans font-medium text-[15px] py-2.5 transition-colors rounded-sm shadow-sm cursor-pointer">
-                                                    Add to Cart
+                                                <span className="w-full block text-center bg-[#fb923c] hover:bg-[#f97316] text-white font-sans font-medium text-[15px] py-2.5 transition-colors rounded-sm shadow-sm cursor-pointer">
+                                                    Buy Now
                                                 </span>
                                             </div>
                                         </div>
@@ -629,7 +693,7 @@ export default function ProductDetailPage() {
             <Navbar />
             <Suspense fallback={
                 <div className="flex-1 flex items-center justify-center min-h-[60vh] bg-[#FAF8F3]">
-                    <div className="w-10 h-10 border-[3px] border-emerald-100 border-t-emerald-600 rounded-full animate-spin" />
+                    <div className="w-10 h-10 border-[3px] border-emerald-100 border-t-brand-primary rounded-full animate-spin" />
                 </div>
             }>
                 <ProductDetailContent />

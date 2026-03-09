@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 
 export function OurStory() {
     return (
@@ -16,7 +16,7 @@ export function OurStory() {
 
             {/* Content */}
             <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center text-white">
-                <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 tracking-tight">
+                <h2 className="font-heading text-4xl md:text-[#252422]xl font-bold mb-6 tracking-tight">
                     Our Story
                 </h2>
                 <p className="font-sans text-[15px] md:text-[17px] leading-[1.8] mb-10 text-white max-w-[850px] mx-auto opacity-90 drop-shadow-md">
@@ -33,3 +33,4 @@ export function OurStory() {
         </section>
     );
 }
+

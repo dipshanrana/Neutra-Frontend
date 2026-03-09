@@ -1,4 +1,4 @@
-﻿import { Navbar } from "@/components/Navbar";
+import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Features } from "@/components/Features";
 import { Products } from "@/components/Products";
@@ -11,7 +11,7 @@ import { InformationOverview } from "@/components/InformationOverview";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#ffffff] selection:bg-emerald-600 selection:text-white">
+    <main className="min-h-screen bg-[#ffffff] selection:bg-[#D4AF37] selection:text-white">
       <Navbar />
       <Hero />
       <Products />
@@ -25,3 +25,4 @@ export default function Home() {
     </main>
   );
 }
+

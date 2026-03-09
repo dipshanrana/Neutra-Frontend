@@ -54,7 +54,7 @@ export default function InformationPage() {
     ];
 
     return (
-        <main className="min-h-screen bg-[#FBFBFA] selection:bg-emerald-600 selection:text-white flex flex-col font-inter">
+        <main className="min-h-screen bg-[#FBFBFA] selection:bg-[#D4AF37] selection:text-white flex flex-col font-inter">
             <Navbar />
 
             {/* Cinematic Sticky-Parallax Hero - Enhanced Layering */}
@@ -72,30 +72,30 @@ export default function InformationPage() {
                 <div className="max-w-7xl mx-auto px-6 relative z-10 w-full pt-20">
                     <div className="max-w-5xl">
                         <div className="flex items-center gap-6 mb-12 overflow-hidden group">
-                            <span className="flex items-center gap-2 text-emerald-500 font-black uppercase tracking-[0.5em] text-[10px] whitespace-nowrap bg-emerald-500/10 px-4 py-2 rounded-full border border-emerald-500/20">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span className="flex items-center gap-2 text-brand-accent font-black uppercase tracking-[0.5em] text-[10px] whitespace-nowrap bg-brand-accent/10 px-4 py-2 rounded-full border border-brand-accent/20">
+                                <span className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse"></span>
                                 DATA ARCHIVE V2.1
                             </span>
-                            <div className="h-[1px] flex-1 bg-gradient-to-r from-emerald-500/40 to-transparent"></div>
+                            <div className="h-[1px] flex-1 bg-gradient-to-r from-brand-accent/40 to-transparent"></div>
                         </div>
 
-                        <h1 className="text-7xl md:text-9xl lg:text-[160px] font-heading font-medium text-white leading-[0.75] tracking-tighter mb-16 select-none">
+                        <h1 className="text-[#252422]xl md:text-9xl lg:text-[160px] font-heading font-medium text-white leading-[0.75] tracking-tighter mb-16 select-none">
                             Deep <br />
-                            <span className="text-emerald-500 italic font-light lowercase">Physiology.</span>
+                            <span className="text-brand-accent italic font-light lowercase">Physiology.</span>
                         </h1>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-end">
-                            <p className="text-white/50 text-xl font-light leading-relaxed max-w-xl border-l-[1px] border-emerald-500/20 pl-10">
+                            <p className="text-white/50 text-xl font-light leading-relaxed max-w-xl border-l-[1px] border-brand-accent/20 pl-10">
                                 Our central repository for validated pharmacological products, clinical synthesis methodologies, and raw biochemical optimization modules.
                             </p>
                             <div className="hidden md:flex justify-end gap-16">
                                 <div className="text-right">
-                                    <p className="text-emerald-500 font-black tracking-widest text-[9px] uppercase mb-2">Total Modules</p>
-                                    <p className="text-white text-3xl font-heading font-medium tracking-tighter">{infoData.length.toString().padStart(2, '0')}</p>
+                                    <p className="text-brand-accent font-black tracking-widest text-[9px] uppercase mb-2">Total Modules</p>
+                                    <p className="text-white text-[#252422]xl font-heading font-medium tracking-tighter">{infoData.length.toString().padStart(2, '0')}</p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-emerald-500 font-black tracking-widest text-[9px] uppercase mb-2">Access Status</p>
-                                    <p className="text-white text-3xl font-heading font-medium tracking-tighter flex items-center gap-2">VERIFIED <ShieldCheck className="w-6 h-6 text-emerald-500" /></p>
+                                    <p className="text-brand-accent font-black tracking-widest text-[9px] uppercase mb-2">Access Status</p>
+                                    <p className="text-white text-[#252422]xl font-heading font-medium tracking-tighter flex items-center gap-2">VERIFIED <ShieldCheck className="w-6 h-6 text-brand-accent" /></p>
                                 </div>
                             </div>
                         </div>
@@ -104,7 +104,7 @@ export default function InformationPage() {
 
                 {/* Decorative Elements */}
                 <div className="absolute bottom-10 left-10 pointer-events-none opacity-20">
-                    <Database className="w-40 h-40 text-emerald-500" />
+                    <Database className="w-40 h-40 text-brand-accent" />
                 </div>
             </section>
 
@@ -117,7 +117,7 @@ export default function InformationPage() {
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
                                 className={`whitespace-nowrap px-8 py-3.5 rounded-[1.8rem] text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 ${activeCategory === cat
-                                    ? 'bg-[#1D3557] text-white shadow-xl shadow-[#1D3557]/20 scale-[1.02]'
+                                    ? 'bg-[#252422] text-white shadow-xl shadow-[#252422]/20 scale-[1.02]'
                                     : 'text-stone-400 hover:text-stone-900 hover:bg-stone-50'
                                     }`}
                             >
@@ -166,8 +166,8 @@ export default function InformationPage() {
                                     <div className="px-4">
                                         <div className="flex items-center justify-between mb-10">
                                             <div className="flex items-center gap-4">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-600">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-brand-accent"></div>
+                                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D4AF37]">
                                                     {typeof info.category === 'string' ? info.category : info.category?.name || "Uncategorized"}
                                                 </span>
                                             </div>
@@ -177,7 +177,7 @@ export default function InformationPage() {
                                             </div>
                                         </div>
 
-                                        <h3 className="text-4xl md:text-5xl font-heading font-medium text-[#1D3557] tracking-tight leading-[1.05] mb-8 break-words group-hover:text-emerald-700 transition-colors">
+                                        <h3 className="text-4xl md:text-[#252422]xl font-heading font-medium text-[#252422] tracking-tight leading-[1.05] mb-8 break-words group-hover:text-brand-secondary transition-colors">
                                             {info.title}
                                         </h3>
 
@@ -190,12 +190,12 @@ export default function InformationPage() {
                                                 <div className="flex flex-col">
                                                     <span className="text-[9px] text-stone-300 uppercase tracking-widest mb-1.5 font-bold italic">Integrity Verification</span>
                                                     <div className="flex items-center gap-2">
-                                                        <Fingerprint className="w-4 h-4 text-emerald-600" />
-                                                        <span className="text-[10px] font-black text-[#1D3557] uppercase tracking-tighter">DATA-MATCH: 100%</span>
+                                                        <Fingerprint className="w-4 h-4 text-[#D4AF37]" />
+                                                        <span className="text-[10px] font-black text-[#252422] uppercase tracking-tighter">DATA-MATCH: 100%</span>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button className="relative overflow-hidden px-10 py-5 bg-stone-900 text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] group/btn hover:bg-emerald-600 transition-all duration-500 pointer-events-none">
+                                            <button className="relative overflow-hidden px-10 py-5 bg-stone-900 text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] group/btn hover:bg-[#D4AF37] transition-all duration-500 pointer-events-none">
                                                 <span className="relative z-10 flex items-center gap-3 group-hover/btn:translate-x-2 transition-transform duration-500">
                                                     Launch Product <ArrowRight className="w-4 h-4" />
                                                 </span>
@@ -229,18 +229,18 @@ export default function InformationPage() {
 
                     <div className="max-w-3xl relative z-10">
                         <div className="flex items-center gap-5 mb-12">
-                            <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center border border-emerald-500/20">
-                                <Lock className="w-6 h-6 text-emerald-500" />
+                            <div className="w-12 h-12 bg-brand-accent/10 rounded-2xl flex items-center justify-center border border-brand-accent/20">
+                                <Lock className="w-6 h-6 text-brand-accent" />
                             </div>
                             <div>
                                 <h4 className="text-white text-xs font-black uppercase tracking-[0.4em]">Level 04 Security</h4>
-                                <p className="text-emerald-500/60 text-[10px] font-bold uppercase tracking-widest">RSA-4096 Encrypted</p>
+                                <p className="text-brand-accent/60 text-[10px] font-bold uppercase tracking-widest">RSA-4096 Encrypted</p>
                             </div>
                         </div>
 
                         <h2 className="text-6xl lg:text-8xl font-heading font-medium text-white tracking-tighter mb-12 leading-[0.85]">
                             Full Vault <br />
-                            <span className="text-emerald-500 italic font-light lowercase">access.</span>
+                            <span className="text-brand-accent italic font-light lowercase">access.</span>
                         </h2>
 
                         <p className="text-white/40 text-xl font-light leading-relaxed mb-16 max-w-xl">
@@ -248,13 +248,13 @@ export default function InformationPage() {
                         </p>
 
                         <div className="flex flex-wrap gap-8 items-center">
-                            <button className="group/cta relative px-16 py-8 bg-emerald-600 text-[#0A190E] rounded-full font-black uppercase tracking-[0.3em] text-[11px] overflow-hidden transition-all duration-500 hover:scale-105 shadow-2xl shadow-emerald-500/20">
+                            <button className="group/cta relative px-16 py-8 bg-[#D4AF37] text-[#0A190E] rounded-full font-black uppercase tracking-[0.3em] text-[11px] overflow-hidden transition-all duration-500 hover:scale-105 shadow-2xl shadow-brand-accent/20">
                                 <span className="relative z-10 flex items-center gap-4">
                                     Authenticate Access <Zap className="w-4 h-4 fill-current" />
                                 </span>
                                 <div className="absolute inset-0 bg-white translate-y-full group-hover/cta:translate-y-0 transition-transform duration-500"></div>
                             </button>
-                            <Link href="/contact" className="text-white/40 hover:text-emerald-400 transition-colors py-4 px-8 text-[11px] font-black uppercase tracking-[0.3em] border-b border-white/10 hover:border-emerald-500/50">
+                            <Link href="/contact" className="text-white/40 hover:text-emerald-400 transition-colors py-4 px-8 text-[11px] font-black uppercase tracking-[0.3em] border-b border-white/10 hover:border-brand-accent/50">
                                 Product Inquiry
                             </Link>
                         </div>
@@ -272,3 +272,4 @@ export default function InformationPage() {
         </main>
     );
 }
+

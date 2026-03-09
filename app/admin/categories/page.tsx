@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -146,7 +146,7 @@ export default function AdminCategories() {
                     </div>
                     <button
                         onClick={() => setIsCreating(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-[#0A190E] rounded-lg hover:bg-white font-bold text-xs uppercase transition-all"
+                        className="flex items-center gap-2 px-4 py-2 bg-[#D4AF37] text-[#0A190E] rounded-lg hover:bg-white font-bold text-xs uppercase transition-all"
                     >
                         <SvgPlus className="w-4 h-4" /> Add Category
                     </button>
@@ -197,7 +197,7 @@ export default function AdminCategories() {
                             </div>
                             <div className="flex justify-end gap-4 mt-6">
                                 <button type="button" onClick={() => setIsCreating(false)} className="px-6 py-3 border border-white/10 text-white rounded-xl text-xs uppercase font-bold hover:bg-white/5">Cancel</button>
-                                <button type="submit" className="px-6 py-3 bg-emerald-600 text-[#0A190E] rounded-xl text-xs uppercase font-bold hover:bg-white">Create</button>
+                                <button type="submit" className="px-6 py-3 bg-[#D4AF37] text-[#0A190E] rounded-xl text-xs uppercase font-bold hover:bg-white">Create</button>
                             </div>
                         </form>
                     </div>
@@ -305,3 +305,4 @@ export default function AdminCategories() {
         </main>
     )
 }
+

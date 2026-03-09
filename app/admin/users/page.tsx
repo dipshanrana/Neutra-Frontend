@@ -1,4 +1,4 @@
-ï»¿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -90,7 +90,7 @@ export default function AdminUsers() {
                     </div>
                     <button
                         onClick={() => setIsCreatingAdmin(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-[#0A190E] rounded-lg hover:bg-white font-bold text-xs uppercase transition-all"
+                        className="flex items-center gap-2 px-4 py-2 bg-[#D4AF37] text-[#0A190E] rounded-lg hover:bg-white font-bold text-xs uppercase transition-all"
                     >
                         <SvgUserPlus className="w-4 h-4" /> Delegate Admin
                     </button>
@@ -110,11 +110,11 @@ export default function AdminUsers() {
                             </div>
                             <div>
                                 <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D] mb-2 font-heading">Provision Passkey</label>
-                                <input required type="password" value={newAdminPassword} onChange={e => setNewAdminPassword(e.target.value)} className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-[#38A36D]" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" />
+                                <input required type="password" value={newAdminPassword} onChange={e => setNewAdminPassword(e.target.value)} className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-[#38A36D]" placeholder="••••••••" />
                             </div>
                             <div className="md:col-span-2 flex justify-end gap-4 mt-2">
                                 <button type="button" onClick={() => setIsCreatingAdmin(false)} className="px-6 py-3 border border-white/10 text-white rounded-xl text-[10px] uppercase font-bold tracking-[0.2em] hover:bg-white/5 transition-colors">Cancel</button>
-                                <button type="submit" className="px-6 py-3 bg-emerald-600 text-[#0A190E] rounded-xl text-[10px] uppercase font-black tracking-[0.2em] hover:bg-white hover:shadow-[0_0_20px_rgba(56,163,109,0.4)] transition-all">Execute Registration</button>
+                                <button type="submit" className="px-6 py-3 bg-[#D4AF37] text-[#0A190E] rounded-xl text-[10px] uppercase font-black tracking-[0.2em] hover:bg-white hover:shadow-[0_0_20px_rgba(56,163,109,0.4)] transition-all">Execute Registration</button>
                             </div>
                         </form>
                     </div>
@@ -135,7 +135,7 @@ export default function AdminUsers() {
                                     <td className="p-6 font-mono text-white/40 text-sm">#{user.id}</td>
                                     <td className="p-6 font-medium text-lg tracking-tight">{user.username}</td>
                                     <td className="p-6">
-                                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.1em] ${user.role === 'ADMIN' ? 'bg-emerald-600/20 text-[#38A36D] border border-[#38A36D]/30' : 'bg-white/5 text-white/60 border border-white/10'}`}>
+                                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-[0.1em] ${user.role === 'ADMIN' ? 'bg-[#D4AF37]/20 text-[#38A36D] border border-[#38A36D]/30' : 'bg-white/5 text-white/60 border border-white/10'}`}>
                                             {user.role}
                                         </span>
                                     </td>
@@ -154,3 +154,4 @@ export default function AdminUsers() {
         </main>
     )
 }
+

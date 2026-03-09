@@ -33,7 +33,7 @@ export function InformationOverview() {
 
                 {/* Section Title - Centered and Refined */}
                 <div className="text-center mb-20">
-                    <span className="text-emerald-600 font-bold text-[12px] uppercase tracking-[0.35em] mb-4 block">
+                    <span className="text-[#D4AF37] font-bold text-[12px] uppercase tracking-[0.35em] mb-4 block">
                         KNOWLEDGE BASE
                     </span>
                     <h2 className="text-[#1b3a32] text-[34px] md:text-[44px] font-bold font-heading tracking-tight leading-[1.1]">
@@ -59,7 +59,7 @@ export function InformationOverview() {
 
                             {/* Content Section */}
                             <div className="p-10 flex flex-col items-center text-center flex-1">
-                                <Link href={`/info/${item.id}`} className="block mb-8 group-hover:text-emerald-700 transition-colors">
+                                <Link href={`/info/${item.id}`} className="block mb-8 group-hover:text-brand-secondary transition-colors">
                                     <h3 className="text-[#333333] text-[20px] md:text-[23px] font-bold font-heading leading-snug tracking-tight">
                                         {item.title}
                                     </h3>
@@ -67,7 +67,7 @@ export function InformationOverview() {
 
                                 <Link
                                     href={`/info/${item.id}`}
-                                    className="mt-auto inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-14 shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-300 text-[14px] uppercase tracking-widest rounded-sm"
+                                    className="mt-auto inline-block bg-[#D4AF37] hover:bg-[#B8860B] text-white font-bold py-3.5 px-14 shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-300 text-[14px] uppercase tracking-widest rounded-sm"
                                 >
                                     Read more
                                 </Link>
@@ -79,3 +79,4 @@ export function InformationOverview() {
         </section>
     );
 }
+

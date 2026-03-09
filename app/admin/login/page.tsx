@@ -64,7 +64,7 @@ export default function AdminLogin() {
     return (
         <main className="min-h-screen bg-[#0A190E] font-sans flex flex-col relative overflow-hidden text-white">
             {/* Ambient Background */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-emerald-600/5 blur-[150px] pointer-events-none"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-[#D4AF37]/5 blur-[150px] pointer-events-none"></div>
 
             {/* Header */}
             <header className="absolute top-0 w-full p-8 z-10 flex justify-between items-center">
@@ -89,7 +89,7 @@ export default function AdminLogin() {
                         <div className="w-16 h-16 mx-auto bg-black/40 rounded-2xl flex items-center justify-center text-[#38A36D] mb-6 shadow-inner border border-white/5">
                             <SvgCommand className="w-8 h-8" />
                         </div>
-                        <h1 className="text-3xl font-medium tracking-tighter text-white font-heading mb-2">Command Center</h1>
+                        <h1 className="text-[#252422]xl font-medium tracking-tighter text-white font-heading mb-2">Command Center</h1>
                         <p className="text-white/40 text-[11px] uppercase tracking-[0.2em] font-black font-heading">Authorized Personnel Only</p>
                     </div>
 
@@ -120,14 +120,14 @@ export default function AdminLogin() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="w-full px-5 py-4 bg-black/40 border border-white/10 rounded-xl text-white placeholder-white/20 focus:outline-none focus:ring-1 focus:ring-[#38A36D] focus:border-[#38A36D] transition-all"
-                                placeholder="••••••••"
+                                placeholder="��������"
                             />
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-5 bg-emerald-600 text-[#0A190E] rounded-xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white hover:shadow-[0_0_30px_rgba(56,163,109,0.3)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+                            className="w-full py-5 bg-[#D4AF37] text-[#0A190E] rounded-xl font-black uppercase tracking-[0.2em] text-[10px] hover:bg-white hover:shadow-[0_0_30px_rgba(56,163,109,0.3)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-4"
                         >
                             {loading ? "Authenticating..." : "Establish Connection"}
                         </button>
@@ -138,3 +138,4 @@ export default function AdminLogin() {
         </main>
     );
 }
+

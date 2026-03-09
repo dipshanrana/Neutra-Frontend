@@ -90,7 +90,7 @@ export default function AdminProducts() {
                         </div>
                         <Link
                             href="/admin/products/new"
-                            className="flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-600/80 transition-colors font-medium"
+                            className="flex items-center gap-2 px-6 py-3 bg-[#D4AF37] text-white rounded-lg hover:bg-[#D4AF37]/80 transition-colors font-medium"
                         >
                             <SvgPlus className="w-5 h-5" />
                             Add Product
@@ -116,7 +116,7 @@ export default function AdminProducts() {
                         <p className="text-white/60 mb-4">No products found</p>
                         <Link
                             href="/admin/products/new"
-                            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-600/80 transition-colors font-medium"
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-[#D4AF37] text-white rounded-lg hover:bg-[#D4AF37]/80 transition-colors font-medium"
                         >
                             <SvgPlus className="w-5 h-5" />
                             Add Your First Product
@@ -156,6 +156,29 @@ export default function AdminProducts() {
                                                 {(product.singleProductMp ?? product.mp) > (product.singleProductSp ?? product.sp) && (
                                                     <p className="text-sm text-white/40 font-number line-through decoration-white/20">Rs. {(product.singleProductMp ?? product.mp).toLocaleString()}</p>
                                                 )}
+                                                {/* Capsule Information */}
+                                                {(product.servingSize || product.capsulesPerContainer) && (
+                                                    <div className="mt-4 pt-3 border-t border-[#38A36D]/20">
+                                                        <div className="space-y-2">
+                                                            {product.servingSize && (
+                                                                <div className="flex items-center justify-end gap-2">
+                                                                    <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">Serving</span>
+                                                                    <span className="text-xs text-white/80 font-semibold font-mono bg-white/5 px-2 py-0.5 rounded border border-white/10">
+                                                                        {product.servingSize}
+                                                                    </span>
+                                                                </div>
+                                                            )}
+                                                            {product.capsulesPerContainer && (
+                                                                <div className="flex items-center justify-end gap-2">
+                                                                    <span className="text-[10px] uppercase tracking-wider text-white/40 font-medium">Container</span>
+                                                                    <span className="text-xs text-[#38A36D] font-semibold font-mono bg-[#38A36D]/10 px-2 py-0.5 rounded border border-[#38A36D]/20">
+                                                                        {product.capsulesPerContainer}
+                                                                    </span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                         <p className="text-white/60 text-sm mb-4 line-clamp-2">{product.description}</p>
@@ -187,3 +210,4 @@ export default function AdminProducts() {
         </main>
     );
 }
+

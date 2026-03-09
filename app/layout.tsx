@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Cormorant_Garamond, Space_Mono, Outfit, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -42,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${cormorant.variable} ${spaceMono.variable} ${outfit.variable} ${inter.variable} font-sans antialiased bg-[#ffffff] text-[#1D3557]`}
+        className={`${cormorant.variable} ${spaceMono.variable} ${outfit.variable} ${inter.variable} font-sans antialiased bg-[#ffffff] text-[#252422]`}
       >
         <AnalyticsTracker />
         {children}

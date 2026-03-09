@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
@@ -1054,7 +1054,7 @@ export default function ProductForm() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-1 py-5 bg-emerald-600 text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_0_30px_rgba(56,163,109,0.3)]"
+                            className="flex-1 py-5 bg-brand-primary text-[#0A190E] rounded-xl hover:bg-white transition-colors font-black uppercase tracking-[0.15em] text-[11px] disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-[0_0_30px_rgba(56,163,109,0.3)]"
                         >
                             {loading ? "Saving..." : isEdit ? "Update Product" : "Create Product"}
                         </button>

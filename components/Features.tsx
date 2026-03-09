@@ -23,15 +23,15 @@ export function Features() {
         {/* Section Header - Slimmed Down */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
           <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#82C49C]/40 bg-white/60 backdrop-blur-sm text-[#2A6F40] text-xs font-bold uppercase tracking-[0.15em] font-sans mb-6 shadow-[0_2px_10px_rgba(42,111,64,0.06)]">
-              <SvgAward className="w-4 h-4 text-emerald-600" /> Systemic Standard
+            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-50/50 backdrop-blur-sm text-emerald-700 text-xs font-bold uppercase tracking-[0.15em] font-sans mb-6 shadow-[0_2px_10px_rgba(5,150,105,0.06)]">
+              <SvgAward className="w-4 h-4 text-emerald-500" /> Systemic Standard
             </span>
-            <h2 className="text-4xl md:text-5xl lg:text-7xl font-semibold tracking-tighter text-[#163A24] font-heading leading-[1.05]">
-              Clinical <span className="text-emerald-600 font-light">Excellence</span> <br className="hidden md:block" /> Verified.
+            <h2 className="text-4xl md:text-[#252422]xl lg:text-[#252422]xl font-semibold tracking-tighter text-[#163A24] font-heading leading-[1.05]">
+              Clinical <span className="text-emerald-400 font-light">Excellence</span> <br className="hidden md:block" /> Verified.
             </h2>
           </div>
           <p className="text-lg text-[#163A24]/75 font-sans font-normal leading-relaxed max-w-md pb-2">
-            Uncompromising synthesis of clinical research and ultra-pure biological inputs—designed to elevate your daily metabolic performance.
+            Uncompromising synthesis of clinical research and ultra-pure biological inputs�designed to elevate your daily metabolic performance.
           </p>
         </div>
 
@@ -54,12 +54,12 @@ export function Features() {
             {/* Premium Information Overlay - Smooth Synchronized Transition (Slowed down for premium feel) */}
             <div className="absolute inset-0 bg-[#0A190E]/95 opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-[cubic-bezier(0.2,1,0.3,1)] flex flex-col justify-center p-12 lg:p-16">
               <div className="transform translate-y-12 group-hover:translate-y-0 transition-transform duration-[1500ms] ease-[cubic-bezier(0.2,1,0.3,1)]">
-                <span className="text-emerald-500 font-bold text-xs uppercase tracking-[0.4em] mb-4 block">Potency Research</span>
+                <span className="text-brand-accent font-bold text-xs uppercase tracking-[0.4em] mb-4 block">Potency Research</span>
                 <h3 className="text-4xl lg:text-6xl font-medium text-white font-heading mb-6 leading-tight">Potency Matrix <br /> <span className="font-light italic text-emerald-400">Analysis</span></h3>
                 <p className="text-white/70 text-lg md:text-xl font-sans font-light max-w-xl mb-10 leading-relaxed">
                   Advanced molecular mapping identifies the exact pharmacological threshold for maximum metabolic up-regulation.
                 </p>
-                <Link href="/information" className="w-max bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-10 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-xl inline-block">
+                <Link href="/information" className="w-max bg-[#D4AF37] hover:bg-[#B8860B] text-white font-bold py-4 px-10 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-xl inline-block">
                   Learn More
                 </Link>
               </div>
@@ -67,7 +67,7 @@ export function Features() {
 
             {/* Static Content (Visible when NOT hovered) */}
             <div className="absolute inset-x-0 bottom-0 p-12 lg:p-16 flex flex-col justify-end group-hover:opacity-0 transition-all duration-700 pointer-events-none">
-              <h3 className="text-4xl lg:text-7xl font-medium text-white font-heading mb-2 tracking-tight leading-[1.05]">
+              <h3 className="text-4xl lg:text-[#252422]xl font-medium text-white font-heading mb-2 tracking-tight leading-[1.05]">
                 Clinically <br /> <span className="font-light italic text-emerald-400">Validated</span>
               </h3>
             </div>
@@ -107,14 +107,14 @@ export function Features() {
               <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-[1500ms] ease-[cubic-bezier(0.2,1,0.3,1)]">
                 <span className="text-emerald-400 font-bold text-[10px] uppercase tracking-widest mb-2 block">Standards</span>
                 <h4 className="text-2xl text-white font-heading mb-4">Protocol Testing</h4>
-                <Link href="/information" className="bg-white text-[#0A190E] text-[12px] font-bold px-6 py-2 rounded-full hover:bg-emerald-600 hover:text-white transition-colors inline-block">
+                <Link href="/information" className="bg-white text-[#0A190E] text-[12px] font-bold px-6 py-2 rounded-full hover:bg-[#D4AF37] hover:text-white transition-colors inline-block">
                   View Data
                 </Link>
               </div>
             </div>
 
             <div className="absolute inset-0 p-10 flex flex-col justify-center text-center group-hover:opacity-0 pointer-events-none transition-all duration-1000">
-              <h3 className="text-3xl font-medium text-white font-heading tracking-tight mb-2 leading-tight">Third-Party <br /> <span className="font-light italic text-[#76C893]">Verified</span></h3>
+              <h3 className="text-[#252422]xl font-medium text-white font-heading tracking-tight mb-2 leading-tight">Third-Party <br /> <span className="font-light italic text-[#76C893]">Verified</span></h3>
             </div>
           </div>
 
@@ -131,14 +131,14 @@ export function Features() {
               <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-[1500ms] ease-[cubic-bezier(0.2,1,0.3,1)]">
                 <span className="text-emerald-400 font-bold text-[10px] uppercase tracking-widest mb-2 block">Absorption</span>
                 <h4 className="text-2xl text-white font-heading mb-4">Fluid Kinetics</h4>
-                <Link href="/information" className="bg-emerald-600 text-white text-[12px] font-bold px-6 py-2 rounded-full hover:bg-emerald-700 transition-colors inline-block">
+                <Link href="/information" className="bg-[#D4AF37] text-white text-[12px] font-bold px-6 py-2 rounded-full hover:bg-[#B8860B] transition-colors inline-block">
                   Learn More
                 </Link>
               </div>
             </div>
 
             <div className="absolute inset-x-0 bottom-0 p-10 flex flex-col items-center text-center group-hover:opacity-0 pointer-events-none transition-all duration-1000">
-              <h3 className="text-3xl font-medium text-[#0A190E] font-heading tracking-tight mb-2">Max <br /> <span className="font-light italic text-[#38A36D]">Bioavailability</span></h3>
+              <h3 className="text-[#252422]xl font-medium text-[#0A190E] font-heading tracking-tight mb-2">Max <br /> <span className="font-light italic text-[#38A36D]">Bioavailability</span></h3>
             </div>
           </div>
 
@@ -155,7 +155,7 @@ export function Features() {
               <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-[1500ms] ease-[cubic-bezier(0.2,1,0.3,1)]">
                 <span className="text-emerald-300 font-bold text-[10px] uppercase tracking-widest mb-2 block">Sustainability</span>
                 <h4 className="text-2xl text-white font-heading mb-4">Eco Standards</h4>
-                <Link href="/information" className="bg-white text-emerald-900 text-[12px] font-bold px-6 py-2 rounded-full hover:bg-emerald-600 hover:text-white transition-colors inline-block">
+                <Link href="/information" className="bg-white text-emerald-900 text-[12px] font-bold px-6 py-2 rounded-full hover:bg-[#D4AF37] hover:text-white transition-colors inline-block">
                   Details
                 </Link>
               </div>
@@ -177,7 +177,7 @@ export function Features() {
           </p>
           <Link
             href="/our-story"
-            className="text-[#163A24] font-bold text-[15px] uppercase tracking-widest border-b-2 border-emerald-600 pb-1 hover:text-emerald-700 hover:border-emerald-800 transition-all"
+            className="text-[#163A24] font-bold text-[15px] uppercase tracking-widest border-b-2 border-[#D4AF37] pb-1 hover:text-brand-secondary hover:border-emerald-800 transition-all"
           >
             Learn about our clinical standards
           </Link>
@@ -187,3 +187,4 @@ export function Features() {
     </section>
   )
 }
+
