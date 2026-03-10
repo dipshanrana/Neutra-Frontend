@@ -94,7 +94,7 @@ export function Hero() {
                 {[1, 2, 3].map(i => <img key={i} src={`https://i.pravatar.cc/100?img=${i + 20}`} className="w-10 h-10 rounded-full border-2 border-white object-cover" alt="Reviewer" />)}
               </div>
               <div>
-                <div className="flex text-brand-accent mb-0.5 space-x-0.5">
+                <div className="flex text-[#D4AF37] mb-0.5 space-x-0.5">
                   {[1, 2, 3, 4, 5].map(i => <SvgStar key={i} className="w-[14px] h-[14px]" />)}
                 </div>
                 <div className="text-xs font-bold text-[#252422] font-sans mt-1">Over 50K+ Reviews</div>
@@ -106,4 +106,3 @@ export function Hero() {
     </section>
   );
 }
-

@@ -78,9 +78,9 @@ export function HomeBlogs() {
 
                                     <Link
                                         href={`/blog/${blog.id}`}
-                                        className="inline-block text-[#0066CC] font-bold text-[14px] hover:text-[#D4AF37] transition-colors w-fit"
+                                        className="inline-block text-[#38A36D] font-bold text-[14px] hover:text-[#1B4332] transition-colors w-fit"
                                     >
-                                        Check It Out
+                                        Read More
                                     </Link>
                                 </div>
                             </div>

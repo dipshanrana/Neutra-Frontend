@@ -26,7 +26,7 @@ export function Features() {
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/20 bg-emerald-50/50 backdrop-blur-sm text-emerald-700 text-xs font-bold uppercase tracking-[0.15em] font-sans mb-6 shadow-[0_2px_10px_rgba(5,150,105,0.06)]">
               <SvgAward className="w-4 h-4 text-emerald-500" /> Systemic Standard
             </span>
-            <h2 className="text-4xl md:text-[#252422]xl lg:text-[#252422]xl font-semibold tracking-tighter text-[#163A24] font-heading leading-[1.05]">
+            <h2 className="text-4xl md:text-[#252422]xl lg:text-[#252422]xl font-semibold tracking-tighter text-[#163A24] font-heading leading-[1.05] italic">
               Clinical <span className="text-emerald-400 font-light">Excellence</span> <br className="hidden md:block" /> Verified.
             </h2>
           </div>
@@ -59,7 +59,7 @@ export function Features() {
                 <p className="text-white/70 text-lg md:text-xl font-sans font-light max-w-xl mb-10 leading-relaxed">
                   Advanced molecular mapping identifies the exact pharmacological threshold for maximum metabolic up-regulation.
                 </p>
-                <Link href="/information" className="w-max bg-[#D4AF37] hover:bg-[#B8860B] text-white font-bold py-4 px-10 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-xl inline-block">
+                <Link href="/information" className="w-max bg-[#38A36D] hover:bg-[#2D8A56] text-white font-bold py-4 px-10 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-xl inline-block">
                   Learn More
                 </Link>
               </div>
@@ -131,7 +131,7 @@ export function Features() {
               <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-[1500ms] ease-[cubic-bezier(0.2,1,0.3,1)]">
                 <span className="text-emerald-400 font-bold text-[10px] uppercase tracking-widest mb-2 block">Absorption</span>
                 <h4 className="text-2xl text-white font-heading mb-4">Fluid Kinetics</h4>
-                <Link href="/information" className="bg-[#D4AF37] text-white text-[12px] font-bold px-6 py-2 rounded-full hover:bg-[#B8860B] transition-colors inline-block">
+                <Link href="/information" className="bg-[#38A36D] text-white text-[12px] font-bold px-6 py-2 rounded-full hover:bg-[#2D8A56] transition-colors inline-block">
                   Learn More
                 </Link>
               </div>

@@ -70,7 +70,6 @@ export default function ProductForm() {
         threeProductMp: "",
         threeProductSp: "",
         discount: "0",
-        images: [] as string[],
         featuredImages: ["", ""] as string[], // Previews/URLs (Exactly 2)
         singleProductImage: "",
         twoProductImage: "",
@@ -140,7 +139,6 @@ export default function ProductForm() {
                 threeProductMp: product.threeProductMp?.toString() ?? "",
                 threeProductSp: product.threeProductSp?.toString() ?? "",
                 discount: product.discount?.toString() ?? "0",
-                images: product.images && product.images.length > 0 ? product.images : [],
                 featuredImages: product.featuredImages && product.featuredImages.length > 0
                     ? [...product.featuredImages, ...Array(2).fill("")].slice(0, 2)
                     : ["", ""],
@@ -165,62 +163,6 @@ export default function ProductForm() {
         } finally {
             setLoadingData(false);
         }
-    };
-
-    // Upload a file to the backend or convert to data URL
-    const handleFileUpload = async (files: FileList | null) => {
-        if (!files || files.length === 0) return;
-        setUploading(true);
-
-        const newImages: string[] = [];
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-
-            // Validate file type
-            if (!file.type.startsWith('image/')) {
-                continue;
-            }
-
-            // Validate file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                setError(`File "${file.name}" exceeds 5MB limit`);
-                continue;
-            }
-
-            try {
-                // Try uploading to backend first
-                const formDataUpload = new FormData();
-                formDataUpload.append('file', file);
-
-                const token = getAdminToken();
-                const uploadRes = await fetch(`${API_BASE_URL}/products/upload`, {
-                    method: 'POST',
-                    headers: token ? { 'Authorization': `Bearer ${token}` } : {},
-                    body: formDataUpload,
-                });
-
-                if (uploadRes.ok) {
-                    const data = await uploadRes.json();
-                    // Backend returns the URL of the uploaded image
-                    newImages.push(data.url || data.imageUrl || data);
-                } else {
-                    // Fallback: convert to base64 data URL if backend upload fails
-                    const dataUrl = await fileToDataUrl(file);
-                    newImages.push(dataUrl);
-                }
-            } catch {
-                // Fallback: convert to base64 data URL
-                const dataUrl = await fileToDataUrl(file);
-                newImages.push(dataUrl);
-            }
-        }
-
-        setFormData(prev => ({
-            ...prev,
-            images: [...prev.images, ...newImages]
-        }));
-        setUploading(false);
     };
 
     const uploadIndividualFile = async (file: File): Promise<string | null> => {
@@ -253,23 +195,6 @@ export default function ProductForm() {
         });
     };
 
-    const removeImage = (index: number) => {
-        setFormData(prev => ({
-            ...prev,
-            images: prev.images.filter((_, i) => i !== index)
-        }));
-    };
-
-    const handleUrlAdd = () => {
-        const url = prompt("Enter image URL:");
-        if (url && url.trim()) {
-            setFormData(prev => ({
-                ...prev,
-                images: [...prev.images, url.trim()]
-            }));
-        }
-    };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
@@ -298,7 +223,6 @@ export default function ProductForm() {
                 threeProductMp: formData.threeProductMp ? parseFloat(formData.threeProductMp) : undefined,
                 threeProductSp: formData.threeProductSp ? parseFloat(formData.threeProductSp) : undefined,
                 discount: formData.discount ? parseFloat(formData.discount) : 0,
-                images: formData.images.filter(img => img.trim() !== ""),
                 // We don't send featuredImages, singleProductImage, etc. in the JSON if they are being sent as Files
                 // But for Edit mode, if we haven't changed the file, we might want to keep the URL.
                 // However, the backend doc says it expects File parts. If not included, existing is kept?
@@ -307,7 +231,7 @@ export default function ProductForm() {
                 singleProductImage: formData.singleProductImage && formData.singleProductImage.startsWith('http') ? formData.singleProductImage : undefined,
                 twoProductImage: formData.twoProductImage && formData.twoProductImage.startsWith('http') ? formData.twoProductImage : undefined,
                 threeProductImage: formData.threeProductImage && formData.threeProductImage.startsWith('http') ? formData.threeProductImage : undefined,
-                benefits: formData.benefits.filter(b => b.nutrientName && b.nutrientName.trim() !== ""),
+                benefits: formData.benefits.filter(b => b.benefitDescription && b.benefitDescription.trim() !== ""),
                 link: formData.link,
                 servingSize: formData.servingSize,
                 capsulesPerContainer: formData.capsulesPerContainer,
@@ -400,7 +324,7 @@ export default function ProductForm() {
                     <div>
                         <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D] mb-3">Purchase/Official Link</label>
                         <input
-                            type="url"
+                            type="text"
                             value={formData.link}
                             onChange={(e) => setFormData({ ...formData, link: e.target.value })}
                             className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#38A36D] transition-colors text-white placeholder-white/20"
@@ -669,41 +593,7 @@ export default function ProductForm() {
                             </div>
                         </div>
 
-                        {/* General Gallery Images */}
-                        <div className="space-y-4 pt-4">
-                            <label className="block text-[10px] font-black uppercase tracking-wider text-white/40">General Gallery Images</label>
-                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                                {formData.images.map((img, idx) => (
-                                    <div key={idx} className="relative aspect-square bg-white/5 border border-white/10 rounded-xl overflow-hidden group">
-                                        <img src={formatBase64Image(img)} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
-                                        <button
-                                            type="button"
-                                            onClick={() => removeImage(idx)}
-                                            className="absolute top-1 right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
-                                        >
-                                            <SvgX className="w-3 h-3 text-white" />
-                                        </button>
-                                    </div>
-                                ))}
-                                <div
-                                    onClick={() => fileInputRef.current?.click()}
-                                    className="aspect-square bg-white/5 border border-dashed border-white/10 rounded-xl flex items-center justify-center cursor-pointer hover:border-[#38A36D]/50 transition-all group"
-                                >
-                                    <div className="text-center">
-                                        <SvgPlus className="w-4 h-4 text-white/20 mx-auto group-hover:text-[#38A36D] transition-colors" />
-                                        <span className="text-[8px] text-white/20 uppercase font-bold tracking-tighter group-hover:text-[#38A36D] transition-colors block mt-1">Add Image</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <input
-                                type="file"
-                                ref={fileInputRef}
-                                className="hidden"
-                                multiple
-                                accept="image/*"
-                                onChange={(e) => handleFileUpload(e.target.files)}
-                            />
-                        </div>
+
                     </div>
 
                     {/* ==================== BENEFITS SECTION ==================== */}
@@ -721,21 +611,10 @@ export default function ProductForm() {
                                 >
                                     ?
                                 </button>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div className="space-y-3">
                                     <input
                                         type="text"
-                                        value={benefit.nutrientName}
-                                        onChange={(e) => {
-                                            const newBenefits = [...formData.benefits];
-                                            newBenefits[index].nutrientName = e.target.value;
-                                            setFormData(prev => ({ ...prev, benefits: newBenefits }));
-                                        }}
-                                        className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg focus:outline-none focus:border-[#38A36D] transition-colors text-sm text-white placeholder-white/20"
-                                        placeholder="Nutrient Name (e.g. Protein)"
-                                    />
-                                    <input
-                                        type="text"
-                                        value={benefit.svg}
+                                        value={benefit.svg || ""}
                                         onChange={(e) => {
                                             const newBenefits = [...formData.benefits];
                                             newBenefits[index].svg = e.target.value;
@@ -745,14 +624,14 @@ export default function ProductForm() {
                                         placeholder="SVG Icon Code (<svg>...</svg>)"
                                     />
                                     <textarea
-                                        value={benefit.benefitDescription}
+                                        value={benefit.benefitDescription || ""}
                                         onChange={(e) => {
                                             const newBenefits = [...formData.benefits];
                                             newBenefits[index].benefitDescription = e.target.value;
                                             setFormData(prev => ({ ...prev, benefits: newBenefits }));
                                         }}
                                         rows={2}
-                                        className="w-full md:col-span-2 px-4 py-3 bg-black/20 border border-white/10 rounded-lg focus:outline-none focus:border-[#38A36D] transition-colors text-sm text-white placeholder-white/20 resize-none"
+                                        className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg focus:outline-none focus:border-[#38A36D] transition-colors text-sm text-white placeholder-white/20 resize-none"
                                         placeholder="Benefit Description"
                                     />
                                 </div>

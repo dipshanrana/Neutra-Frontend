@@ -78,29 +78,28 @@ export default function AdminProducts() {
 
     return (
         <main className="min-h-screen bg-[#0A190E] text-white font-sans">
-            {/* Header */}
-            <header className="border-b border-white/10 bg-black/20 backdrop-blur-sm sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-6 py-6">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                            <Link href="/admin/dashboard" className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
-                                <SvgBack className="w-5 h-5" />
-                            </Link>
-                            <h1 className="text-2xl font-medium tracking-tight">Products Management</h1>
-                        </div>
-                        <Link
-                            href="/admin/products/new"
-                            className="flex items-center gap-2 px-6 py-3 bg-[#D4AF37] text-white rounded-lg hover:bg-[#D4AF37]/80 transition-colors font-medium"
-                        >
-                            <SvgPlus className="w-5 h-5" />
-                            Add Product
-                        </Link>
-                    </div>
-                </div>
-            </header>
-
             {/* Content */}
             <div className="max-w-7xl mx-auto px-6 py-12">
+                {/* Header with Back Arrow */}
+                <div className="flex items-center justify-between mb-8">
+                    <div className="flex items-center gap-4">
+                        <Link href="/admin/dashboard" className="w-10 h-10 flex items-center justify-center bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-colors">
+                            <SvgBack className="w-5 h-5 text-white/70" />
+                        </Link>
+                        <div>
+                            <h1 className="text-2xl font-medium">Manage Products</h1>
+                            <p className="text-sm text-white/40">{products.length} product{products.length !== 1 ? 's' : ''}</p>
+                        </div>
+                    </div>
+                    <Link
+                        href="/admin/products/new"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#38A36D] text-white rounded-lg hover:bg-[#38A36D]/80 transition-colors font-medium text-sm"
+                    >
+                        <SvgPlus className="w-4 h-4" />
+                        Add New
+                    </Link>
+                </div>
+
                 {error && (
                     <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400">
                         {error}

@@ -428,6 +428,7 @@ export const blogApi = {
 export interface Information {
   id?: number;
   title: string;
+  description?: string;
   content: string;
   image?: string;
   category?: Category;

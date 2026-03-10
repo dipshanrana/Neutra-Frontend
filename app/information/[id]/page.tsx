@@ -128,7 +128,7 @@ export default function InformationDetailPage() {
             {/* Split Content Area */}
             <section className="relative -mt-16 z-20 pb-40">
                 <div className="max-w-7xl mx-auto px-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-12 lg:gap-20">
+                    <div className="max-w-4xl mx-auto">
 
                         {/* Left Column: Image & Text */}
                         <div className="space-y-12">
@@ -168,45 +168,6 @@ export default function InformationDetailPage() {
                                 />
                             </div>
                         </div>
-
-                        {/* Right Column: Sidebar Specs */}
-                        <div className="space-y-8 lg:mt-32">
-                            {/* Security Box */}
-                            <div className="bg-[#0A190E] rounded-[2.5rem] p-10 text-white relative overflow-hidden group">
-                                <div className="absolute -right-10 -top-10 opacity-5 group-hover:opacity-10 transition-opacity duration-1000">
-                                    <Lock className="w-64 h-64" />
-                                </div>
-                                <Activity className="w-8 h-8 text-brand-accent mb-8" />
-                                <h4 className="text-2xl font-heading font-medium tracking-tight mb-4">Module Status</h4>
-                                <ul className="space-y-6">
-                                    <li className="flex flex-col">
-                                        <span className="text-[9px] font-mono text-brand-accent/60 uppercase tracking-widest mb-1">Clearance</span>
-                                        <span className="font-bold text-sm tracking-wide">Public Read-Only</span>
-                                    </li>
-                                    <li className="flex flex-col">
-                                        <span className="text-[9px] font-mono text-brand-accent/60 uppercase tracking-widest mb-1">Last Sync</span>
-                                        <span className="font-bold text-sm tracking-wide">Current Cycle</span>
-                                    </li>
-                                    <li className="flex flex-col">
-                                        <span className="text-[9px] font-mono text-brand-accent/60 uppercase tracking-widest mb-1">Encryption</span>
-                                        <span className="font-bold text-sm tracking-wide">Standard AES-256</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            {/* Download Action */}
-                            <div className="bg-white rounded-[2.5rem] p-10 border border-stone-200 shadow-sm text-center">
-                                <div className="w-16 h-16 rounded-full bg-stone-50 border border-stone-100 flex items-center justify-center mx-auto mb-6">
-                                    <Download className="w-6 h-6 text-stone-400" />
-                                </div>
-                                <h4 className="text-xl font-heading font-medium text-[#252422] mb-2">Export Data</h4>
-                                <p className="text-stone-400 text-sm mb-8">Download PDF synthesis of this exact product module.</p>
-                                <button className="w-full py-4 bg-stone-100 hover:bg-brand-primary hover:text-white text-stone-600 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-colors flex items-center justify-center gap-3">
-                                    Generate PDF <ExternalLink className="w-3.5 h-3.5" />
-                                </button>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </section>

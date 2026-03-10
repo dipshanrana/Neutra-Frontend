@@ -28,48 +28,59 @@ export function InformationOverview() {
     if (loading || data.length === 0) return null;
 
     return (
-        <section className="pt-6 pb-12 bg-[#F9F9F7] font-sans">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-                {/* Section Title - Centered and Refined */}
-                <div className="text-center mb-20">
-                    <span className="text-[#D4AF37] font-bold text-[12px] uppercase tracking-[0.35em] mb-4 block">
-                        KNOWLEDGE BASE
-                    </span>
-                    <h2 className="text-[#1b3a32] text-[34px] md:text-[44px] font-bold font-heading tracking-tight leading-[1.1]">
-                        Expert Health <span className="font-light italic text-[#1b3a32]/60">&</span> <br className="hidden sm:block" /> Wellness Manuals
-                    </h2>
+        <section className="py-24 bg-white font-sans overflow-hidden">
+            <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                {/* Section Header */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                    <div className="max-w-2xl text-left">
+                        <h2 className="text-[#1B4332] text-[40px] md:text-[52px] font-bold font-heading leading-[1.05] tracking-tight mb-4">
+                            Expert Health and <br />
+                            <span className="text-[#38A36D] italic font-light">Wellness Manuals</span>
+                        </h2>
+                        <p className="text-black/60 text-lg max-w-lg leading-relaxed">
+                            Deep dives into nutritional science and holistic living, curated by our experts.
+                        </p>
+                    </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14">
+                {/* Information Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
                     {data.map((item) => (
-                        <div
-                            key={item.id}
-                            className="flex flex-col bg-white overflow-hidden group hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 rounded-sm"
-                        >
-                            {/* Image Section - Fully Clickable */}
-                            <Link href={`/info/${item.id}`} className="block relative aspect-[3/2] w-full overflow-hidden bg-stone-200">
+                        <div key={item.id} className="group flex flex-col items-start text-left">
+                            {/* Image Wrapper */}
+                            <Link
+                                href={`/info/${item.id}`}
+                                className="block w-full aspect-[16/10] overflow-hidden rounded-2xl mb-8 bg-stone-100 relative group-hover:shadow-[0_20px_50px_rgba(27,67,50,0.15)] transition-all duration-500"
+                            >
                                 <img
                                     src={formatBase64Image(item.image)}
                                     alt={item.title}
-                                    className="w-full h-full object-cover transition-transform duration-[2s] ease-out group-hover:scale-110"
+                                    className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110"
                                 />
-                                <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500"></div>
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
                             </Link>
 
-                            {/* Content Section */}
-                            <div className="p-10 flex flex-col items-center text-center flex-1">
-                                <Link href={`/info/${item.id}`} className="block mb-8 group-hover:text-brand-secondary transition-colors">
-                                    <h3 className="text-[#333333] text-[20px] md:text-[23px] font-bold font-heading leading-snug tracking-tight">
+                            {/* Text Content */}
+                            <div className="flex-1 flex flex-col items-start w-full">
+                                <h3 className="text-[#1B4332] text-[24px] md:text-[28px] font-bold font-heading leading-tight mb-4 group-hover:text-[#38A36D] transition-colors line-clamp-2">
+                                    <Link href={`/info/${item.id}`}>
                                         {item.title}
-                                    </h3>
-                                </Link>
+                                    </Link>
+                                </h3>
+
+                                <p className="text-black/50 text-base leading-relaxed mb-8 line-clamp-3">
+                                    {/* Stripping tags if any and showing description */}
+                                    {item.description ? item.description.replace(/<[^>]+>/g, '') : "Discover detailed insights and expert advice on optimizing your health through science-backed nutrition."}
+                                </p>
 
                                 <Link
                                     href={`/info/${item.id}`}
-                                    className="mt-auto inline-block bg-[#D4AF37] hover:bg-[#B8860B] text-white font-bold py-3.5 px-14 shadow-lg hover:shadow-xl active:scale-[0.98] transition-all duration-300 text-[14px] uppercase tracking-widest rounded-sm"
+                                    className="mt-auto group/btn flex items-center gap-2 bg-[#1B4332] hover:bg-[#38A36D] text-white px-8 py-3.5 rounded-full transition-all duration-300 text-[13px] font-bold uppercase tracking-wider shadow-[0_4px_15px_rgba(27,67,50,0.2)] hover:shadow-[0_8px_25px_rgba(56,163,109,0.3)] hover:-translate-y-0.5 active:translate-y-0"
                                 >
-                                    Read more
+                                    Read More
+                                    <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" stroke="currentColor">
+                                        <path d="M5 12h14m-7-7l7 7-7 7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
                                 </Link>
                             </div>
                         </div>
