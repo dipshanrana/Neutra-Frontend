@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { api, Category } from "@/lib/api";
+import { api, Category, getCurrentUser, logout } from "@/lib/api";
 
 const SvgSearch = ({ className, strokeWidth = 1.5 }: { className?: string, strokeWidth?: number }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor" strokeWidth={strokeWidth}>
@@ -36,6 +36,7 @@ export function Navbar() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [showCategories, setShowCategories] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [user, setUser] = useState<any>(null);
 
   const handleSearch = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -54,6 +55,7 @@ export function Navbar() {
       }
     };
     loadCategories();
+    setUser(getCurrentUser());
   }, []);
 
   return (
@@ -138,9 +140,37 @@ export function Navbar() {
               </button>
             </form>
 
-            <button className="text-[#252422] hover:text-brand-secondary transition-colors">
-              <SvgUser className="w-[20px] h-[20px]" strokeWidth={1.5} />
-            </button>
+            {user ? (
+              <div className="relative group/user">
+                <button className="text-[#252422] hover:text-brand-secondary transition-colors font-sans text-[13px] font-bold flex items-center gap-2 group">
+                  <div className="w-9 h-9 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[10px] text-brand-primary shadow-sm group-hover:bg-brand-primary group-hover:text-white transition-all duration-500">
+                    {user.username?.charAt(0).toUpperCase() || 'U'}
+                  </div>
+                </button>
+                <div className="absolute right-0 top-[calc(100%+8px)] w-48 bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_20px_50px_rgba(29,53,87,0.12)] border border-[#252422]/5 p-2 transition-all duration-300 transform origin-top-right opacity-0 scale-95 invisible group-hover/user:opacity-100 group-hover/user:scale-100 group-hover/user:visible">
+                  <div className="px-4 py-3 border-b border-[#252422]/5 mb-1">
+                    <p className="text-[10px] font-black tracking-widest text-[#252422]/40 uppercase mb-0.5">Account</p>
+                    <p className="text-[13px] font-bold text-[#252422] truncate">{user.username}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setUser(null);
+                      router.push('/');
+                    }}
+                    className="w-full text-left px-4 py-3 text-[13px] text-[#252422]/70 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300 font-bold flex items-center justify-between group/logout"
+                  >
+                    Log Out
+                    <span className="opacity-0 group-hover/logout:opacity-50 transition-opacity">→</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <Link href="/auth/login" className="text-[#252422] hover:text-brand-secondary transition-colors relative group">
+                <SvgUser className="w-[20px] h-[20px] group-hover:scale-110 transition-transform duration-500" strokeWidth={1.5} />
+                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-[1px] bg-brand-primary group-hover:w-full transition-all duration-500"></span>
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -156,6 +186,15 @@ export function Navbar() {
             >
               <SvgSearch className="w-5 h-5" strokeWidth={1.5} />
             </button>
+            {user ? (
+              <div className="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-[10px] text-brand-primary font-bold">
+                {user.username?.charAt(0).toUpperCase()}
+              </div>
+            ) : (
+              <Link href="/auth/login" className="text-[#252422]">
+                <SvgUser className="w-5 h-5" strokeWidth={1.5} />
+              </Link>
+            )}
             <button className="text-[#252422] hover:text-brand-secondary">
               <SvgMenu className="w-[24px] h-[24px]" strokeWidth={2} />
             </button>

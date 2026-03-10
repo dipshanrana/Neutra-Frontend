@@ -3,14 +3,15 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import Link from "next/link";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import { useParams } from "next/navigation";
-import { api, productApi, Product, formatBase64Image, getProductAllImages, getProductMainImage } from "@/lib/api";
+import { api, productApi, Product, Blog, Information, formatBase64Image, getProductAllImages, getProductMainImage } from "@/lib/api";
 import {
     ShoppingCart, Star, ChevronRight, Truck, ShieldCheck,
     RotateCcw, Plus, Minus, Check, Heart,
     Leaf, FlaskConical, Award, ExternalLink,
-    HelpCircle, ChevronDown
+    HelpCircle, ChevronDown, BookOpen, Microscope, Activity,
+    Calendar, Clock, ArrowRight
 } from "lucide-react";
 
 /* ── Helpers ──────────────────────────────────── */
@@ -47,35 +48,85 @@ function ProductDetailContent() {
     const [bundleQty, setBundleQty] = useState<1 | 2 | 3>(1);
     const [quantity, setQuantity] = useState(1);
     const [relatedBlog, setRelatedBlog] = useState<any>(null);
+    const [relatedBlogs, setRelatedBlogs] = useState<Blog[]>([]);
+    const [relatedInfo, setRelatedInfo] = useState<Information[]>([]);
+
+    // Zoom state
+    const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
+    const [isHovered, setIsHovered] = useState(false);
+    const imageContainerRef = useRef<HTMLDivElement>(null);
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!imageContainerRef.current) return;
+        const { left, top, width, height } = imageContainerRef.current.getBoundingClientRect();
+        const x = ((e.clientX - left) / width) * 100;
+        const y = ((e.clientY - top) / height) * 100;
+        setZoomPos({ x, y });
+    };
 
     useEffect(() => {
         (async () => {
             try {
                 const id = parseInt(params.id as string);
                 if (!isNaN(id)) {
-                    const [data, all, blogs] = await Promise.all([
+                    const [data, all, blogs, infos] = await Promise.all([
                         productApi.getById(id),
                         productApi.getAll(),
-                        api.blogs.getAll()
+                        api.blogs.getAll(),
+                        api.info.getAll()
                     ]);
 
                     if (data && !Array.isArray(data)) {
                         setProduct(data);
 
-                        // Find a blog that mentions this product
+                        const cCat = data.category;
+                        const cId = typeof cCat === 'object' ? cCat?.id : null;
+                        const cName = (typeof cCat === 'string' ? cCat : cCat?.name || "").toLowerCase().trim();
+
+                        // Related Blogs
                         if (blogs && Array.isArray(blogs)) {
+                            // Find a blog that specifically mentions this product (for hero/sidebar)
                             const found = blogs.find(b => b.relatedProducts?.some(rp => rp.id === data.id));
                             if (found) setRelatedBlog(found);
+
+                            // Filter blogs by category
+                            const filteredBlogs = blogs.filter(b => {
+                                const bCat = b.category; // Assuming blog has category
+                                const bName = (typeof bCat === 'string' ? bCat : bCat?.name || "").toLowerCase().trim();
+                                return bName === cName && cName !== "";
+                            }).slice(0, 3);
+                            setRelatedBlogs(filteredBlogs);
+                        }
+
+                        // Related Info
+                        if (infos && Array.isArray(infos)) {
+                            const filteredInfo = infos.filter(i => {
+                                const iCat = i.category;
+                                const iId = typeof iCat === 'object' ? iCat?.id : null;
+                                const iName = (typeof iCat === 'string' ? iCat : iCat?.name || "").toLowerCase().trim();
+
+                                const idMatch = cId !== null && iId !== null && cId === iId;
+                                const nameMatch = cName !== "" && cName === iName;
+                                return idMatch || nameMatch;
+                            }).slice(0, 3);
+                            setRelatedInfo(filteredInfo);
                         }
 
                         if (all && Array.isArray(all)) {
-                            const currentCatName = (typeof data.category === "string" ? data.category : data.category?.name || "").toLowerCase().trim();
                             const same = all.filter(p => {
-                                const pCatName = (typeof p.category === "string" ? p.category : p.category?.name || "").toLowerCase().trim();
-                                return p.id !== data.id && pCatName === currentCatName && currentCatName !== "";
+                                if (p.id === data.id) return false;
+
+                                const tCat = p.category;
+                                const tId = typeof tCat === 'object' ? tCat?.id : null;
+                                const tName = (typeof tCat === 'string' ? tCat : tCat?.name || "").toLowerCase().trim();
+
+                                const idMatch = cId !== null && tId !== null && cId === tId;
+                                const nameMatch = cName !== "" && cName === tName;
+
+                                return idMatch || nameMatch;
                             }).slice(0, 4);
-                            const extra = all.filter(p => p.id !== data.id && !same.find(s => s.id === p.id)).slice(0, 4 - same.length);
-                            setRelated([...same, ...extra]);
+
+                            setRelated(same);
                         }
                     }
                 }
@@ -171,8 +222,14 @@ function ProductDetailContent() {
                                             })}
                                         </div>
 
-                                        <div className="relative flex-1 aspect-square lg:aspect-auto h-full bg-[#f6f6f8] rounded-[2rem] overflow-hidden border border-stone-100/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex items-center justify-center cursor-crosshair">
-                                            <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-20 flex flex-col gap-2.5">
+                                        <div
+                                            ref={imageContainerRef}
+                                            onMouseEnter={() => setIsHovered(true)}
+                                            onMouseLeave={() => setIsHovered(false)}
+                                            onMouseMove={handleMouseMove}
+                                            className="relative flex-1 aspect-square lg:aspect-auto h-full bg-[#f6f6f8] rounded-[2rem] overflow-hidden border border-stone-100/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] flex items-center justify-center cursor-crosshair"
+                                        >
+                                            <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-20 flex flex-col gap-2.5 pointer-events-none">
                                                 {savePct > 0 && (
                                                     <div className="bg-[#2A401E] text-white font-sans text-[10px] sm:text-[11px] px-4 py-1.5 rounded-full uppercase tracking-[0.2em] font-bold shadow-[0_4px_12px_rgba(42,64,30,0.2)]">
                                                         Save {savePct}%
@@ -185,7 +242,10 @@ function ProductDetailContent() {
                                             <img
                                                 src={img}
                                                 alt={product.name}
-                                                className="w-full h-full object-cover mix-blend-multiply"
+                                                className={`w-full h-full object-cover mix-blend-multiply transition-transform duration-200 ease-out ${isHovered ? 'scale-[2.5]' : 'scale-100'}`}
+                                                style={{
+                                                    transformOrigin: isHovered ? `${zoomPos.x}% ${zoomPos.y}%` : 'center center'
+                                                }}
                                             />
                                         </div>
                                     </div>
@@ -290,12 +350,14 @@ function ProductDetailContent() {
                                                     </div>
                                                 </div>
                                                 {product.link ? (
-                                                    <a href={ensureUrl(product.link)} target="_blank" rel="noopener noreferrer" className="flex-1 h-14 rounded-xl font-sans font-bold text-[16px] transition-all duration-300 flex items-center justify-center tracking-wide group bg-[#fbbf24] hover:bg-[#f5b102] text-[#451a03] rounded-sm shadow-sm no-underline">
-                                                        <span className="flex items-center">Buy Now <ChevronRight className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1" /></span>
+                                                    <a href={ensureUrl(product.link)} target="_blank" rel="noopener noreferrer" className="flex-1 h-14 font-outfit font-black text-[16px] transition-all duration-300 flex items-center justify-center tracking-widest group btn-gold rounded-xl shadow-lg no-underline relative overflow-hidden">
+                                                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[200%] group-hover:animate-shine z-10"></div>
+                                                        <span className="flex items-center text-current relative z-20">Buy Now <ChevronRight className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1" /></span>
                                                     </a>
                                                 ) : (
-                                                    <button className="flex-1 h-14 rounded-xl font-sans font-bold text-[16px] transition-all duration-300 flex items-center justify-center tracking-wide group bg-[#fbbf24] hover:bg-[#f5b102] text-[#451a03] rounded-sm shadow-sm">
-                                                        <span className="flex items-center">Buy Now <ChevronRight className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1" /></span>
+                                                    <button className="flex-1 h-14 font-outfit font-black text-[16px] transition-all duration-300 flex items-center justify-center tracking-widest group btn-gold rounded-xl shadow-lg relative overflow-hidden">
+                                                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[200%] group-hover:animate-shine z-10"></div>
+                                                        <span className="flex items-center text-current relative z-20">Buy Now <ChevronRight className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1" /></span>
                                                     </button>
                                                 )}
                                             </div>
@@ -322,7 +384,10 @@ function ProductDetailContent() {
                                                         return (
                                                             <button
                                                                 key={b.qty}
-                                                                onClick={() => setBundleQty(b.qty as 1 | 2 | 3)}
+                                                                onClick={() => {
+                                                                    setBundleQty(b.qty as 1 | 2 | 3);
+                                                                    setSelectedImg(null); // Reset manual image selection when switching packs
+                                                                }}
                                                                 className={`flex flex-col items-center justify-center py-3 rounded-xl border transition-all duration-200 text-center gap-1.5 ${isActive ? "border-brand-primary bg-emerald-50/20" : "border-stone-100 bg-white hover:border-stone-200"}`}
                                                             >
                                                                 <span className={`font-sans font-bold text-[13px] ${isActive ? "text-[#2A401E]" : "text-stone-700"}`}>{b.label}</span>
@@ -613,12 +678,134 @@ function ProductDetailContent() {
                                                         </div>
                                                     )}
                                                     <div className="flex items-baseline gap-1.5">
-                                                        <span className="font-sans font-bold text-[#252422] text-[14px]">Price:</span>
-                                                        <span className="font-sans font-bold text-[#252422] text-[18px]">₹ {relSp.toLocaleString()}</span>
+                                                        <span className="font-outfit font-bold text-[#252422] text-[14px]">Price:</span>
+                                                        <span className="font-outfit font-bold text-[#252422] text-[18px]">₹ {relSp.toLocaleString()}</span>
                                                     </div>
                                                     <div className="text-[10px] text-brand-primary font-medium mt-0.5">Inclusive of all taxes</div>
                                                 </div>
-                                                <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (p.link) window.open(ensureUrl(p.link), '_blank', 'noopener,noreferrer'); }} className="w-full text-center font-sans font-bold text-[15px] py-2.5 transition-all duration-300 rounded-sm cursor-pointer bg-[#fbbf24] hover:bg-[#f5b102] text-[#451a03] shadow-sm">Buy Now</button>
+                                                <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (p.link) window.open(ensureUrl(p.link), '_blank', 'noopener,noreferrer'); }} className="w-full text-center font-outfit font-bold text-[15px] py-2.5 transition-all duration-300 rounded-sm cursor-pointer bg-[#fbbf24] hover:bg-[#f5b102] text-[#451a03] shadow-sm">Buy Now</button>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* LATEST ARTICLES - AS PER REFERENCE */}
+            {(relatedBlogs.length > 0) && (
+                <div className="bg-[#FEF9F0] border-t border-[#E8E1D5]/50 relative overflow-hidden">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
+                        {/* Section Header */}
+                        <div className="text-center mb-16">
+                            <h2 className="text-[#333333] text-[22px] font-bold tracking-[0.3em] uppercase font-sans">Latest Articles</h2>
+                        </div>
+
+                        {/* Articles Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 xl:gap-12">
+                            {relatedBlogs.slice(0, 3).map((blog) => {
+                                const blogImg = blog.image ? formatBase64Image(blog.image) : "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=2000&auto=format&fit=crop";
+                                return (
+                                    <Link key={blog.id} href={`/blog/${blog.id}`} className="group flex flex-col transition-all duration-500">
+                                        {/* Image Container */}
+                                        <div className="aspect-[4/3] w-full overflow-hidden mb-6 rounded-sm shadow-sm">
+                                            <img
+                                                src={blogImg}
+                                                alt={blog.title}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 grayscale-[0.1] group-hover:grayscale-0"
+                                            />
+                                        </div>
+
+                                        {/* Meta Data */}
+                                        <div className="flex items-center gap-5 mb-4 px-1">
+                                            <div className="flex items-center gap-2 text-[#8C8273] text-[10px] uppercase font-bold tracking-widest font-sans">
+                                                <Calendar className="w-3.5 h-3.5 text-[#DBCBB4]" />
+                                                <span>{new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-[#8C8273] text-[10px] uppercase font-bold tracking-widest font-sans">
+                                                <Clock className="w-3.5 h-3.5 text-[#DBCBB4]" />
+                                                <span>5 Min. Read</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Title */}
+                                        <h3 className="text-[#1A1A1A] text-[18px] font-bold leading-tight uppercase tracking-tight mb-8 font-sans px-1 group-hover:text-brand-primary transition-colors line-clamp-2">
+                                            {blog.title}
+                                        </h3>
+
+                                        {/* Premium Read Now Button */}
+                                        <div className="mt-auto flex items-center px-1">
+                                            <div className="flex bg-[#FAF3E8] border border-[#E8E1D5] rounded-sm overflow-hidden group-hover:border-brand-primary transition-colors">
+                                                <span className="px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest text-[#5C5449] border-r border-[#E8E1D5] group-hover:border-brand-primary transition-colors">
+                                                    Read Now
+                                                </span>
+                                                <div className="px-3 flex items-center justify-center bg-white group-hover:text-brand-primary transition-colors">
+                                                    <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* HEALTH PROTOCOLS - INTEGRATED INFORMATION SECTION */}
+            {relatedInfo.length > 0 && (
+                <div className="bg-[#FAF9F6] border-t border-[#E8E1D5]/30 relative overflow-hidden">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
+                        {/* Section Header */}
+                        <div className="text-center mb-16">
+                            <h2 className="text-[#333333] text-[22px] font-bold tracking-[0.3em] uppercase font-sans">Health Protocols</h2>
+                        </div>
+
+                        {/* Info Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 xl:gap-12">
+                            {relatedInfo.slice(0, 2).map((info, idx) => {
+                                const infoImg = info.image ? formatBase64Image(info.image) : [
+                                    "/lab_microscope_macro_1772623339466.png",
+                                    "/molecular_formula_blur_1772623357430.png"
+                                ][idx % 2];
+                                return (
+                                    <Link key={info.id} href={`/information/${info.id}`} className="group flex flex-col md:flex-row gap-8 bg-white p-8 rounded-sm border border-[#E8E1D5]/40 hover:border-brand-primary transition-all duration-500 shadow-sm hover:shadow-md">
+                                        {/* Image Container */}
+                                        <div className="w-full md:w-1/3 aspect-square overflow-hidden rounded-sm bg-stone-50 border border-stone-100">
+                                            <img
+                                                src={infoImg}
+                                                alt={info.title}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 grayscale-[0.2] group-hover:grayscale-0"
+                                            />
+                                        </div>
+
+                                        {/* Content */}
+                                        <div className="flex-1 flex flex-col justify-center">
+                                            <div className="flex items-center gap-4 mb-4">
+                                                <span className="text-[#8C8273] text-[9px] font-black uppercase tracking-widest px-2 py-0.5 border border-[#E8E1D5] rounded-sm">MOD-{info.id?.toString().padStart(3, '0') || 'ARCH'}</span>
+                                                <Activity className="w-3.5 h-3.5 text-[#DBCBB4]" />
+                                            </div>
+
+                                            <h3 className="text-[#1A1A1A] text-[18px] font-bold leading-tight uppercase tracking-tight mb-4 font-sans group-hover:text-brand-primary transition-colors">
+                                                {info.title}
+                                            </h3>
+
+                                            <p className="text-[#6B655B] text-[13px] leading-relaxed line-clamp-2 mb-6 font-sans">
+                                                {info.content.replace(/<[^>]+>/g, '')}
+                                            </p>
+
+                                            {/* Open Vault Button */}
+                                            <div className="mt-auto flex">
+                                                <div className="flex bg-[#F5F1E9] border border-[#E8E1D5] rounded-sm overflow-hidden group-hover:border-brand-primary transition-colors">
+                                                    <span className="px-5 py-2 text-[9px] font-bold uppercase tracking-widest text-[#5C5449] border-r border-[#E8E1D5] group-hover:border-brand-primary transition-colors">
+                                                        Open Vault
+                                                    </span>
+                                                    <div className="px-2 flex items-center justify-center bg-white group-hover:text-brand-primary transition-colors">
+                                                        <ExternalLink className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </Link>

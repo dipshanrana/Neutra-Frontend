@@ -17,7 +17,7 @@ const SvgChevronRight = ({ className }: { className?: string }) => (
 
 export function Features() {
   return (
-    <section className="pt-12 pb-6 bg-white relative overflow-hidden font-sans">
+    <section className="pt-6 pb-0 bg-white relative overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Section Header - Slimmed Down */}
@@ -59,7 +59,10 @@ export function Features() {
                 <p className="text-white/70 text-lg md:text-xl font-sans font-light max-w-xl mb-10 leading-relaxed">
                   Advanced molecular mapping identifies the exact pharmacological threshold for maximum metabolic up-regulation.
                 </p>
-                <Link href="/information" className="w-max bg-[#38A36D] hover:bg-[#2D8A56] text-white font-bold py-4 px-10 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-xl inline-block">
+                <Link
+                  href="/information"
+                  className="w-max bg-[#2FAF82] hover:bg-[#258a67] text-white font-medium py-4 px-10 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-xl inline-block"
+                >
                   Learn More
                 </Link>
               </div>
@@ -131,7 +134,7 @@ export function Features() {
               <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-[1500ms] ease-[cubic-bezier(0.2,1,0.3,1)]">
                 <span className="text-emerald-400 font-bold text-[10px] uppercase tracking-widest mb-2 block">Absorption</span>
                 <h4 className="text-2xl text-white font-heading mb-4">Fluid Kinetics</h4>
-                <Link href="/information" className="bg-[#38A36D] text-white text-[12px] font-bold px-6 py-2 rounded-full hover:bg-[#2D8A56] transition-colors inline-block">
+                <Link href="/information" className="bg-[#2FAF82] text-white text-[12px] font-medium px-6 py-2 rounded-full hover:bg-[#258a67] transition-colors inline-block">
                   Learn More
                 </Link>
               </div>
@@ -171,12 +174,12 @@ export function Features() {
         </div>
 
         {/* Section Footer - Bridge to Knowledge Base */}
-        <div className="mt-6 md:mt-8 border-t border-emerald-900/5 pt-8 flex flex-col items-center text-center">
+        <div className="mt-6 md:mt-8 border-t border-emerald-900/5 pt-8 pb-10 flex flex-col items-center text-center">
           <p className="text-[#3a5a40] text-lg md:text-xl font-normal max-w-2xl leading-relaxed opacity-80 mb-8 font-sans">
             Our pursuit of bio-optimization is relentless. Every batch undergoes comprehensive third-party analysis to ensure we deliver nothing less than pharmaceutical-grade excellence to your daily ritual.
           </p>
           <Link
-            href="/our-story"
+            href="/information"
             className="text-[#163A24] font-bold text-[15px] uppercase tracking-widest border-b-2 border-[#D4AF37] pb-1 hover:text-brand-secondary hover:border-emerald-800 transition-all"
           >
             Learn about our clinical standards

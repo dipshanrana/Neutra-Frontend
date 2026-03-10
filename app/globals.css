@@ -74,3 +74,37 @@ h6,
 .bg-brand-accent {
   background-color: var(--color-brand-accent);
 }
+
+@keyframes shine {
+  from {
+    transform: translateX(-200%) skewX(-30deg);
+  }
+
+  to {
+    transform: translateX(200%) skewX(-30deg);
+  }
+}
+
+.animate-shine {
+  animation: shine 1.8s ease-in-out infinite;
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+  background-size: 200% 200%;
+  color: #451A03;
+  text-shadow: 0 0.5px 0 rgba(255, 255, 255, 0.4);
+  box-shadow:
+    0 4px 15px rgba(184, 134, 11, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  border: 1px solid #996515;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-gold:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 25px rgba(184, 134, 11, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}

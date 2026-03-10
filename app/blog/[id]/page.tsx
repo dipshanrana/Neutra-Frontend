@@ -65,6 +65,24 @@ export default function BlogDetailPage() {
         );
     }
 
+    const [related, setRelated] = useState<Blog[]>([]);
+
+    useEffect(() => {
+        const fetchRelated = async () => {
+            try {
+                const all = await api.blogs.getAll();
+                if (Array.isArray(all)) {
+                    // Filter out current and take 3
+                    const filtered = all
+                        .filter(b => b.id !== article.id)
+                        .slice(0, 3);
+                    setRelated(filtered);
+                }
+            } catch { }
+        };
+        if (article) fetchRelated();
+    }, [article]);
+
     const imgUrl = article.image ? formatBase64Image(article.image) : fallbacks[(article.id || 0) % fallbacks.length];
 
     return (
@@ -167,29 +185,33 @@ export default function BlogDetailPage() {
             </article>
 
             {/* Read Next Section */}
-            <section className="bg-stone-50 border-t border-stone-200 py-24">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <h2 className="text-3xl font-heading font-medium text-[#252422] tracking-tight">Continue Reading</h2>
+            {related.length > 0 && (
+                <section className="bg-stone-50 border-t border-stone-200 py-24">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <h2 className="text-3xl font-heading font-medium text-[#252422] tracking-tight">Continue Reading</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                            {related.map(rel => {
+                                const relImg = rel.image ? formatBase64Image(rel.image) : fallbacks[(rel.id || 0) % fallbacks.length];
+                                return (
+                                    <Link href={`/blog/${rel.id}`} key={rel.id} className="group flex flex-col bg-white rounded-3xl overflow-hidden border border-stone-200 hover:border-emerald-200 hover:shadow-xl transition-all duration-500">
+                                        <div className="aspect-[4/3] bg-stone-100 overflow-hidden">
+                                            <img src={relImg} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt={rel.title} />
+                                        </div>
+                                        <div className="p-6">
+                                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-3 block">RELATED REVIEW</span>
+                                            <h3 className="text-xl font-heading font-medium text-[#252422] leading-tight group-hover:text-brand-secondary transition-colors line-clamp-2">
+                                                {rel.title}
+                                            </h3>
+                                        </div>
+                                    </Link>
+                                );
+                            })}
+                        </div>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                        {/* Placeholder for related/more blogs - just linking back to blog for now */}
-                        {[1, 2, 3].map(i => (
-                            <Link href="/blog" key={i} className="group flex flex-col bg-white rounded-3xl overflow-hidden border border-stone-200 hover:border-emerald-200 hover:shadow-xl transition-all duration-500">
-                                <div className="aspect-[4/3] bg-stone-100 overflow-hidden">
-                                    <img src={fallbacks[i % 3]} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt="" />
-                                </div>
-                                <div className="p-6">
-                                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-3 block">RELATED REVIEW</span>
-                                    <h3 className="text-xl font-heading font-medium text-[#252422] leading-tight group-hover:text-brand-secondary transition-colors">
-                                        Return to full archives to view more products.
-                                    </h3>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </section>
+                </section>
+            )}
 
             <PreFooter />
             <Footer />

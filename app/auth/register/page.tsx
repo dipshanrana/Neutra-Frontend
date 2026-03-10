@@ -78,29 +78,29 @@ export default function CustomerRegister() {
             </div>
 
             {/* Premium Header */}
-            <header className="absolute top-0 w-full p-8 z-50 flex justify-between items-center">
+            <header className="absolute top-0 w-full p-6 z-50 flex justify-between items-center">
                 <Link href="/" className="inline-flex items-center gap-3 text-white/70 hover:text-white transition-all duration-500 group">
-                    <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center bg-white/10 backdrop-blur-md group-hover:bg-white/20 group-hover:shadow-xl group-hover:-translate-x-1 transition-all duration-500">
-                        <SvgArrowLeft className="w-5 h-5" />
+                    <div className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center bg-white/10 backdrop-blur-md group-hover:bg-white/20 group-hover:shadow-xl group-hover:-translate-x-1 transition-all duration-500">
+                        <SvgArrowLeft className="w-4 h-4" />
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] font-heading">Return Home</span>
+                    <span className="text-[9px] font-black uppercase tracking-[0.25em] font-heading">Home</span>
                 </Link>
-                <div className="text-2xl font-black tracking-tighter text-white font-heading drop-shadow-md">
+                <div className="text-xl font-black tracking-tighter text-white font-heading drop-shadow-md">
                     Nutri<span className="text-[#A3E0B5]">Core</span>
                 </div>
             </header>
 
-            {/* Registration Architecture */}
-            <div className="flex-1 flex items-center justify-center p-6 z-10 relative py-32">
-                <div className="w-full max-w-lg bg-white/95 backdrop-blur-2xl rounded-[3rem] p-10 lg:p-14 shadow-[0_40px_100px_rgba(23,63,40,0.3)] border border-white/60">
+            {/* Register Architecture */}
+            <div className="flex-1 flex items-center justify-center p-6 z-10 relative">
+                <div className="w-full max-w-md bg-white/95 backdrop-blur-2xl rounded-[2.5rem] p-8 lg:p-10 shadow-[0_40px_100px_rgba(23,63,40,0.3)] border border-white/60">
 
-                    <div className="mb-12 text-center">
-                        <div className="w-20 h-20 mx-auto bg-gradient-to-br from-[#E8F5EE] to-[#C9E4D5] rounded-[2rem] flex items-center justify-center text-[#2B5441] mb-8 shadow-inner relative overflow-hidden group">
+                    <div className="mb-6 text-center">
+                        <div className="w-14 h-14 mx-auto bg-gradient-to-br from-[#E8F5EE] to-[#C9E4D5] rounded-2xl flex items-center justify-center text-[#2B5441] mb-5 shadow-inner relative overflow-hidden group">
                             <div className="absolute inset-0 bg-white/40 group-hover:scale-150 transition-transform duration-700"></div>
-                            <SvgUserPlus className="w-10 h-10 relative z-10 drop-shadow-sm" />
+                            <SvgUserPlus className="w-7 h-7 relative z-10 drop-shadow-sm" />
                         </div>
-                        <h1 className="text-4xl font-bold tracking-tight text-[#1F422E] font-heading mb-4">Create <span className="italic font-normal text-[#4E7760]">Account.</span></h1>
-                        <p className="text-[#557763] text-base font-medium">Join us to access advanced natural formulations.</p>
+                        <h1 className="text-3xl font-bold tracking-tight text-[#1F422E] font-heading mb-2">Create <span className="italic font-normal text-[#4E7760]">Account.</span></h1>
+                        <p className="text-[#557763] text-sm font-medium">Join our premium wellness community.</p>
                     </div>
 
                     {error && (
@@ -150,18 +150,19 @@ export default function CustomerRegister() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-5 bg-gradient-to-r from-[#2B5441] to-[#36684E] text-white rounded-[1.5rem] font-bold uppercase tracking-[0.2em] text-[12px] hover:shadow-[0_15px_30px_rgba(43,84,65,0.4)] hover:-translate-y-1 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed border border-[#4F8B6D]/30 relative overflow-hidden group/btn mt-4"
+                            id="register-submit-button"
+                            className="w-full py-4 bg-gradient-to-r from-[#2B5441] to-[#36684E] text-white rounded-2xl font-bold uppercase tracking-[0.2em] text-[11px] hover:shadow-[0_15px_30px_rgba(43,84,65,0.4)] hover:-translate-y-0.5 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed border border-[#4F8B6D]/30 relative overflow-hidden group/btn"
                         >
                             <span className="relative z-10">
-                                {loading ? "Creating Account..." : "Create Account"}
+                                {loading ? "Creating Account..." : "Sign Up Now"}
                             </span>
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"></div>
                         </button>
                     </form>
 
-                    <div className="mt-12 text-center border-t border-[#DEEDE3] pt-8">
-                        <p className="text-sm text-[#557763] font-medium">
-                            Already have an account? <Link href="/auth/login" className="text-[#2B5441] font-black hover:opacity-80 uppercase tracking-widest ml-2 transition-all border-b border-[#2B5441]/30 pb-0.5 hover:border-[#2B5441]">Sign In</Link>
+                    <div className="mt-8 text-center border-t border-[#DEEDE3] pt-6">
+                        <p className="text-xs text-[#557763] font-medium">
+                            Already a member? <Link href="/auth/login" className="text-[#2B5441] font-black hover:opacity-80 uppercase tracking-widest ml-2 transition-all border-b border-[#2B5441]/30 pb-0.5 hover:border-[#2B5441]">Sign In Here</Link>
                         </p>
                     </div>
                 </div>

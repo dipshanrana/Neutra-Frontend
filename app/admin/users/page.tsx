@@ -20,6 +20,12 @@ const SvgUserPlus = ({ className }: { className?: string }) => (
     </svg>
 );
 
+const SvgTrash = ({ className }: { className?: string }) => (
+    <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
+        <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
 export default function AdminUsers() {
     const router = useRouter();
     const [users, setUsers] = useState<User[]>([]);
@@ -72,6 +78,17 @@ export default function AdminUsers() {
         }
     };
 
+    const handleDeleteUser = async (id: number) => {
+        if (!confirm("Are you sure you want to delete this user? This action is permanent.")) return;
+
+        try {
+            await api.admin.deleteUser(id);
+            setUsers(users.filter(u => u.id !== id));
+        } catch (err) {
+            alert("Failed to delete user. Please try again.");
+        }
+    };
+
     if (loading) {
         return <div className="min-h-screen bg-[#0A190E] text-white flex items-center justify-center">Loading Data...</div>;
     }
@@ -110,7 +127,7 @@ export default function AdminUsers() {
                             </div>
                             <div>
                                 <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D] mb-2 font-heading">Provision Passkey</label>
-                                <input required type="password" value={newAdminPassword} onChange={e => setNewAdminPassword(e.target.value)} className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-[#38A36D]" placeholder="••••••••" />
+                                <input required type="password" value={newAdminPassword} onChange={e => setNewAdminPassword(e.target.value)} className="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-white outline-none focus:border-[#38A36D]" placeholder="Password" />
                             </div>
                             <div className="md:col-span-2 flex justify-end gap-4 mt-2">
                                 <button type="button" onClick={() => setIsCreatingAdmin(false)} className="px-6 py-3 border border-white/10 text-white rounded-xl text-[10px] uppercase font-bold tracking-[0.2em] hover:bg-white/5 transition-colors">Cancel</button>
@@ -127,6 +144,7 @@ export default function AdminUsers() {
                                 <th className="p-6">Registry ID</th>
                                 <th className="p-6">Identity</th>
                                 <th className="p-6">Access Level</th>
+                                <th className="p-6 text-right">Operations</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/5">
@@ -139,11 +157,21 @@ export default function AdminUsers() {
                                             {user.role}
                                         </span>
                                     </td>
+                                    <td className="p-6 text-right">
+                                        <button
+                                            onClick={() => handleDeleteUser(user.id)}
+                                            className="p-2.5 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-lg transition-all duration-300 group inline-flex items-center gap-2"
+                                            title="Delete User"
+                                        >
+                                            <SvgTrash className="w-4 h-4" />
+                                            <span className="text-[10px] font-black uppercase tracking-widest hidden group-hover:block px-1">Purge Account</span>
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                             {users.length === 0 && (
                                 <tr>
-                                    <td colSpan={3} className="p-12 text-center text-white/30 text-sm uppercase tracking-widest font-medium">No records found.</td>
+                                    <td colSpan={4} className="p-12 text-center text-white/30 text-sm uppercase tracking-widest font-medium">No records found.</td>
                                 </tr>
                             )}
                         </tbody>
@@ -154,4 +182,3 @@ export default function AdminUsers() {
         </main>
     )
 }
-

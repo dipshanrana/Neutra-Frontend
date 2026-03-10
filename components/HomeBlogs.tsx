@@ -36,14 +36,16 @@ export function HomeBlogs() {
     }
 
     return (
-        <section className="pt-12 pb-12 bg-white font-sans overflow-hidden">
+        <section className="pt-4 pb-8 bg-[#F7FAF8] font-sans overflow-hidden">
             <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
 
                 {/* Section Heading - Meaningful, Soft, and Refined */}
                 <div className="text-center mb-12">
-                    <h2 className="text-[#1b3a32] text-[26px] sm:text-[30px] md:text-[34px] font-bold font-heading tracking-tight capitalize">
-                        Wellness Insights
-                    </h2>
+                    <Link href="/blog">
+                        <h2 className="text-[#1b3a32] text-[26px] sm:text-[30px] md:text-[34px] font-bold font-heading tracking-tight capitalize hover:text-[#2FAF82] transition-colors inline-block cursor-pointer">
+                            Wellness Insights
+                        </h2>
+                    </Link>
                 </div>
 
                 {/* 4 Blogs in One Row Grid */}
@@ -67,7 +69,7 @@ export function HomeBlogs() {
 
                                 <div className="flex flex-col flex-1 text-left">
                                     <Link href={`/blog/${blog.id}`}>
-                                        <h3 className="text-[18px] sm:text-[20px] font-extrabold text-[#10243E] leading-[1.3] mb-4 group-hover:text-brand-secondary transition-colors font-outfit uppercase tracking-tight line-clamp-2">
+                                        <h3 className="text-black text-[18px] sm:text-[20px] font-extrabold leading-[1.3] mb-4 font-outfit uppercase tracking-tight line-clamp-2">
                                             {blog.title}
                                         </h3>
                                     </Link>
@@ -78,7 +80,7 @@ export function HomeBlogs() {
 
                                     <Link
                                         href={`/blog/${blog.id}`}
-                                        className="inline-block text-[#38A36D] font-bold text-[14px] hover:text-[#1B4332] transition-colors w-fit"
+                                        className="inline-block text-[#2FAF82] font-bold text-[14px] hover:text-[#1B4332] transition-colors w-fit"
                                     >
                                         Read More
                                     </Link>

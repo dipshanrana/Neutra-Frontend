@@ -109,7 +109,7 @@ export default function InformationPage() {
             </section>
 
             {/* Filter Navigation - Glassmorphism Redesign */}
-            <section className="sticky top-[80px] z-[50] py-6 translate-y-[-50%] px-6">
+            <section className="sticky top-[110px] z-[40] py-6 translate-y-[-50%] px-6">
                 <div className="max-w-7xl mx-auto">
                     <div className="bg-white/80 backdrop-blur-2xl border border-stone-100 shadow-[0_20px_50px_rgba(0,0,0,0.06)] p-3 rounded-[2.5rem] inline-flex items-center gap-2 max-w-full overflow-x-auto no-scrollbar scrollbar-hide">
                         {categories.map(cat => (
@@ -129,7 +129,7 @@ export default function InformationPage() {
             </section>
 
             {/* Main Content Grid - dossier Redesign */}
-            <section className="pb-40 pt-10 flex-1">
+            <section className="pb-20 pt-10 flex-1">
                 <div className="max-w-7xl mx-auto px-6">
                     {loading ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -215,7 +215,7 @@ export default function InformationPage() {
             </section>
 
             {/* Ultra-Premium Portal CTA */}
-            <section className="pb-32 px-6">
+            <section className="pb-16 px-6">
                 <div className="max-w-7xl mx-auto p-12 lg:p-32 bg-[#0A190E] rounded-[5rem] overflow-hidden relative group">
                     {/* Background Visuals */}
                     <div className="absolute inset-0 z-0">

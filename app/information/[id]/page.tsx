@@ -74,7 +74,7 @@ export default function InformationDetailPage() {
             <Navbar />
 
             {/* Back Navigation Bar - Tech Aesthetic */}
-            <div className="bg-[#0A190E] border-b border-[#1A2E20] sticky top-0 z-40">
+            <div className="bg-[#0A190E] border-b border-[#1A2E20] sticky top-[80px] z-40">
                 <div className="max-w-screen-2xl mx-auto px-6 h-14 flex items-center justify-between">
                     <Link href="/information" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-brand-accent/60 hover:text-emerald-400 transition-colors">
                         <ArrowLeft className="w-4 h-4" />
@@ -126,7 +126,7 @@ export default function InformationDetailPage() {
             </section>
 
             {/* Split Content Area */}
-            <section className="relative -mt-16 z-20 pb-40">
+            <section className="relative -mt-16 z-20 pb-16">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="max-w-4xl mx-auto">
 

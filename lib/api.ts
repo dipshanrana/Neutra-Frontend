@@ -90,13 +90,29 @@ async function apiFetch<T>(
 
       const method = (options.method || 'GET').toUpperCase();
 
-      // For GET requests that fail with 404/403/500, return empty gracefully
-      if (method === 'GET' && (response.status === 404 || response.status === 403 || response.status === 500)) {
-        console.warn(`[API WARNING] Gracefully suppressed ${response.status} from ${method} ${endpoint}`);
-        return [] as any;
+      // Enhanced Error Messaging based on Status Codes
+      if (response.status === 401) {
+        errorMessage = "Your session has expired. Please log in again.";
+        if (typeof window !== 'undefined' && !endpoint.includes('/login')) {
+          // Optional: auto-logout or redirect? for now just message
+        }
+      } else if (response.status === 403) {
+        errorMessage = "Access Denied: You do not have permission to view this resource.";
+      } else if (response.status === 404) {
+        errorMessage = "Resource not found: The requested item could not be located.";
+      } else if (response.status === 400 && endpoint.includes('/login')) {
+        errorMessage = "Invalid credentials: Check your email and password.";
+      } else if (response.status >= 500) {
+        errorMessage = "System Error: Our servers are experiencing issues. Please try again later.";
       }
 
-      console.error(`[API ERROR] ${method} ${endpoint} (${response.status}):`, errorMessage);
+      // Log errors only if they are unexpected (500+) or not handled as simple validation (non-400)
+      if (response.status >= 500 || (response.status !== 400 && response.status !== 401)) {
+        console.error(`[API ERROR] ${method} ${endpoint} (${response.status}):`, errorMessage);
+      } else {
+        console.warn(`[API AUTH] ${method} ${endpoint} (${response.status}): Handled validation failure.`);
+      }
+
       throw new ApiError(response.status, errorMessage);
     }
 
@@ -259,6 +275,11 @@ export const adminApi = {
 
   getAllUsers: () =>
     apiFetch<User[]>('/admin/users', {}, true),
+
+  deleteUser: (id: number) =>
+    apiFetch<void>(`/admin/users/${id}`, {
+      method: 'DELETE',
+    }, true),
 };
 
 // ==================== Category APIs ====================
@@ -394,6 +415,7 @@ export interface Blog {
   title: string;
   content: string;
   author: string;
+  category?: Category | string;
   image?: string;
   relatedProducts?: Product[];
 }

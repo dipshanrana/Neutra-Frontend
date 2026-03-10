@@ -46,7 +46,7 @@ export function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5">
-              <Link href="/products" className="px-10 py-5 bg-[#047857] text-[#ffffff] rounded-xl font-sans font-bold uppercase tracking-widest text-xs hover:bg-[#065f46] shadow-[0_20px_40px_rgba(4,120,87,0.2)] transition-all duration-500 flex items-center justify-center gap-3 group">
+              <Link href="/products" className="px-10 py-5 bg-[#2FAF82] text-[#ffffff] rounded-xl font-sans font-medium uppercase tracking-widest text-xs hover:bg-[#258a67] shadow-[0_20px_40px_rgba(47,175,130,0.2)] transition-all duration-500 flex items-center justify-center gap-3 group">
                 Shop Essentials
                 <SvgArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-500" />
               </Link>
@@ -94,7 +94,7 @@ export function Hero() {
                 {[1, 2, 3].map(i => <img key={i} src={`https://i.pravatar.cc/100?img=${i + 20}`} className="w-10 h-10 rounded-full border-2 border-white object-cover" alt="Reviewer" />)}
               </div>
               <div>
-                <div className="flex text-[#D4AF37] mb-0.5 space-x-0.5">
+                <div className="flex text-[#FAC917] mb-0.5 space-x-0.5">
                   {[1, 2, 3, 4, 5].map(i => <SvgStar key={i} className="w-[14px] h-[14px]" />)}
                 </div>
                 <div className="text-xs font-bold text-[#252422] font-sans mt-1">Over 50K+ Reviews</div>

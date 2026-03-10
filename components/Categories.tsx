@@ -44,11 +44,11 @@ export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
         );
     }
 
-    // Display the first 4 categories to match the grid layout design
-    const displayCategories = categories.slice(0, 4);
+    // Display all fetched categories
+    const displayCategories = categories;
 
     return (
-        <section className="py-8 md:py-12 bg-[#F4F5F7] font-sans">
+        <section className="pt-8 md:pt-12 pb-4 bg-[#F4F5F7] font-sans">
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Section Heading */}
                 <div className="text-center mb-8">
@@ -106,8 +106,10 @@ export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
                                     </h3>
 
                                     {cat.shortDescription && (
-                                        <p className="text-[12px] font-black text-[#E21837] uppercase tracking-wide mb-5">
-                                            {cat.shortDescription}
+                                        <p className="font-sans text-[13px] md:text-[14px] leading-tight text-[#E21837] uppercase tracking-tighter mb-5">
+                                            {cat.shortDescription.split(' ').length > 10
+                                                ? cat.shortDescription.split(' ').slice(0, 10).join(' ') + '...'
+                                                : cat.shortDescription}
                                         </p>
                                     )}
 

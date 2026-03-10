@@ -25,7 +25,7 @@ export function OurStory() {
 
                 <Link
                     href="/about"
-                    className="inline-block bg-[#EAB308] hover:bg-[#CA8A04] text-[#451A03] font-sans font-semibold text-[15px] px-10 py-3.5 rounded-sm transition-colors shadow-[0_4px_14px_rgba(234,179,8,0.25)]"
+                    className="inline-block bg-[#FBBF24] hover:bg-[#F59E0B] text-[#451A03] font-sans font-medium text-[15px] px-10 py-3.5 rounded-sm transition-colors shadow-[0_4px_14px_rgba(251,191,36,0.3)]"
                 >
                     Learn More
                 </Link>
