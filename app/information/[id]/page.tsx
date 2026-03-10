@@ -73,6 +73,29 @@ export default function InformationDetailPage() {
         <main className="min-h-screen bg-[#FBFBFA] selection:bg-brand-primary selection:text-white flex flex-col font-sans">
             <Navbar />
 
+            {/* Information SEO Schema */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Article",
+                        "headline": info.title,
+                        "image": imgUrl,
+                        "articleSection": catName,
+                        "publisher": {
+                            "@type": "Organization",
+                            "name": "NutriCore",
+                            "logo": {
+                                "@type": "ImageObject",
+                                "url": "https://nutricore.com/logo.png"
+                            }
+                        },
+                        "articleBody": info.content.replace(/<[^>]+>/g, '')
+                    })
+                }}
+            />
+
             {/* Back Navigation Bar - Tech Aesthetic */}
             <div className="bg-[#0A190E] border-b border-[#1A2E20] sticky top-[80px] z-40">
                 <div className="max-w-screen-2xl mx-auto px-6 h-14 flex items-center justify-between">

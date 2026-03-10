@@ -7,6 +7,8 @@ import { PreFooter } from "@/components/PreFooter";
 import Image from "next/image";
 import Link from "next/link";
 import { api, Blog, formatBase64Image } from "@/lib/api";
+import { Suspense } from "react";
+import { ArrowRight } from "lucide-react";
 
 export default function BlogPage() {
     const [articles, setArticles] = useState<Blog[]>([]);
@@ -34,7 +36,9 @@ export default function BlogPage() {
 
     return (
         <main className="min-h-screen bg-[#FFFCF2] selection:bg-[#D4AF37] selection:text-white flex flex-col font-sans">
-            <Navbar />
+            <Suspense fallback={<div className="h-20 bg-white animate-pulse" />}>
+                <Navbar />
+            </Suspense>
 
             <section className="pt-32 pb-24 bg-white flex-1 relative overflow-hidden">
                 <div className="absolute top-1/2 left-0 w-[800px] h-[800px] bg-[#D4AF37]/5 rounded-full blur-[150px] pointer-events-none -translate-y-1/2 -translate-x-1/2"></div>
@@ -73,7 +77,7 @@ export default function BlogPage() {
                                             <h3 className="text-2xl font-medium text-[#252422] font-heading tracking-tight leading-tight mb-4 group-hover:text-brand-secondary transition-colors">{article.title}</h3>
                                             <p className="text-[#252422]/60 font-light text-sm leading-relaxed mb-8 flex-1">{excerptText}</p>
                                             <div className="inline-flex items-center gap-2 text-[#252422] font-bold text-xs uppercase tracking-widest group-hover:gap-4 transition-all">
-                                                Read Product ?
+                                                Read Publication <ArrowRight className="w-4 h-4" />
                                             </div>
                                         </div>
                                     </Link>

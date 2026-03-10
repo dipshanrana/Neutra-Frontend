@@ -38,10 +38,10 @@ export function Features() {
 
 
         {/* Hyper-Premium Visual Mosaic Grid - Dynamic Hover Effects */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 auto-rows-[320px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 auto-rows-[250px] sm:auto-rows-[300px] lg:auto-rows-[320px]">
 
           {/* Item 1: Massive Hero Image (Molecule) */}
-          <div className="md:col-span-8 md:row-span-2 relative rounded-[3rem] overflow-hidden group shadow-[0_30px_70px_rgba(10,25,14,0.12)]">
+          <div className="sm:col-span-2 lg:col-span-8 lg:row-span-2 relative rounded-[2rem] sm:rounded-[3rem] overflow-hidden group shadow-[0_30px_70px_rgba(10,25,14,0.12)] h-[500px] sm:h-auto">
             <Image
               src="/molecule.png"
               fill
@@ -52,16 +52,16 @@ export function Features() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#0A190E] via-[#0A190E]/20 to-transparent opacity-60"></div>
 
             {/* Premium Information Overlay - Smooth Synchronized Transition (Slowed down for premium feel) */}
-            <div className="absolute inset-0 bg-[#0A190E]/95 opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-[cubic-bezier(0.2,1,0.3,1)] flex flex-col justify-center p-12 lg:p-16">
+            <div className="absolute inset-0 bg-[#0A190E]/95 opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-[cubic-bezier(0.2,1,0.3,1)] flex flex-col justify-center p-8 lg:p-16">
               <div className="transform translate-y-12 group-hover:translate-y-0 transition-transform duration-[1500ms] ease-[cubic-bezier(0.2,1,0.3,1)]">
-                <span className="text-brand-accent font-bold text-xs uppercase tracking-[0.4em] mb-4 block">Potency Research</span>
-                <h3 className="text-4xl lg:text-6xl font-medium text-white font-heading mb-6 leading-tight">Potency Matrix <br /> <span className="font-light italic text-emerald-400">Analysis</span></h3>
-                <p className="text-white/70 text-lg md:text-xl font-sans font-light max-w-xl mb-10 leading-relaxed">
+                <span className="text-brand-accent font-bold text-[10px] sm:text-xs uppercase tracking-[0.4em] mb-4 block">Potency Research</span>
+                <h3 className="text-3xl lg:text-6xl font-medium text-white font-heading mb-6 leading-tight">Potency Matrix <br /> <span className="font-light italic text-emerald-400">Analysis</span></h3>
+                <p className="text-white/70 text-base lg:text-xl font-sans font-light max-w-xl mb-10 leading-relaxed">
                   Advanced molecular mapping identifies the exact pharmacological threshold for maximum metabolic up-regulation.
                 </p>
                 <Link
                   href="/information"
-                  className="w-max bg-[#2FAF82] hover:bg-[#258a67] text-white font-medium py-4 px-10 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-xl inline-block"
+                  className="w-max bg-[#2FAF82] hover:bg-[#258a67] text-white font-medium py-3 sm:py-4 px-8 sm:px-10 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-xl inline-block text-xs sm:text-sm"
                 >
                   Learn More
                 </Link>
@@ -69,15 +69,15 @@ export function Features() {
             </div>
 
             {/* Static Content (Visible when NOT hovered) */}
-            <div className="absolute inset-x-0 bottom-0 p-12 lg:p-16 flex flex-col justify-end group-hover:opacity-0 transition-all duration-700 pointer-events-none">
-              <h3 className="text-4xl lg:text-[#252422]xl font-medium text-white font-heading mb-2 tracking-tight leading-[1.05]">
+            <div className="absolute inset-x-0 bottom-0 p-8 lg:p-16 flex flex-col justify-end group-hover:opacity-0 transition-all duration-700 pointer-events-none">
+              <h3 className="text-3xl lg:text-5xl font-medium text-white font-heading mb-2 tracking-tight leading-[1.05]">
                 Clinically <br /> <span className="font-light italic text-emerald-400">Validated</span>
               </h3>
             </div>
           </div>
 
           {/* Item 2: Tall Vertical (Capsules) - The Arrow Card (No Hover Overlay) */}
-          <div className="md:col-span-4 md:row-span-2 relative rounded-[3rem] overflow-hidden group shadow-[0_30px_70px_rgba(10,25,14,0.08)] bg-white">
+          <div className="sm:col-span-1 lg:col-span-4 lg:row-span-2 relative rounded-[2rem] sm:rounded-[3rem] overflow-hidden group shadow-[0_30px_70px_rgba(10,25,14,0.08)] bg-white h-[400px] sm:h-auto">
             <Image
               src="/capsules.png"
               fill
@@ -86,19 +86,19 @@ export function Features() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-transparent opacity-100"></div>
 
-            <div className="absolute inset-x-0 bottom-0 p-12 flex flex-col justify-end">
-              <h3 className="text-4xl font-medium text-[#0A190E] font-heading mb-4 tracking-tight leading-tight">Absolute <br /> <span className="font-light italic text-[#40916C]">Purity</span></h3>
-              <p className="text-[#0A190E]/50 font-sans font-light leading-relaxed mb-10 text-lg">
+            <div className="absolute inset-x-0 bottom-0 p-8 sm:p-12 flex flex-col justify-end">
+              <h3 className="text-3xl sm:text-4xl font-medium text-[#0A190E] font-heading mb-4 tracking-tight leading-tight">Absolute <br /> <span className="font-light italic text-[#40916C]">Purity</span></h3>
+              <p className="text-[#0A190E]/50 font-sans font-light leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg">
                 Zero excipients. Zero artificial binding agents. 100% active transparency.
               </p>
-              <Link href="/information" className="w-14 h-14 rounded-full bg-[#0A190E] flex items-center justify-center text-white hover:bg-[#40916C] transition-all duration-300 shadow-xl hover:scale-110">
-                <SvgChevronRight className="w-7 h-7" />
+              <Link href="/information" className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#0A190E] flex items-center justify-center text-white hover:bg-[#40916C] transition-all duration-300 shadow-xl hover:scale-110">
+                <SvgChevronRight className="w-6 h-6 sm:w-7 sm:h-7" />
               </Link>
             </div>
           </div>
 
           {/* Item 3: Square Image (Lab) */}
-          <div className="md:col-span-4 md:row-span-1 relative rounded-[3rem] overflow-hidden group shadow-lg bg-[#0A190E]">
+          <div className="sm:col-span-1 lg:col-span-4 lg:row-span-1 relative rounded-[2rem] lg:rounded-[3rem] overflow-hidden group shadow-lg bg-[#0A190E] h-[250px] sm:h-auto">
             <Image
               src="/lab.png"
               fill
@@ -109,20 +109,20 @@ export function Features() {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-[cubic-bezier(0.2,1,0.3,1)] flex flex-col items-center justify-center p-8 text-center bg-emerald-950/90">
               <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-[1500ms] ease-[cubic-bezier(0.2,1,0.3,1)]">
                 <span className="text-emerald-400 font-bold text-[10px] uppercase tracking-widest mb-2 block">Standards</span>
-                <h4 className="text-2xl text-white font-heading mb-4">Protocol Testing</h4>
-                <Link href="/information" className="bg-white text-[#0A190E] text-[12px] font-bold px-6 py-2 rounded-full hover:bg-[#D4AF37] hover:text-white transition-colors inline-block">
+                <h4 className="text-xl sm:text-2xl text-white font-heading mb-4">Protocol Testing</h4>
+                <Link href="/information" className="bg-white text-[#0A190E] text-[10px] sm:text-[12px] font-bold px-6 py-2 rounded-full hover:bg-[#D4AF37] hover:text-white transition-colors inline-block">
                   View Data
                 </Link>
               </div>
             </div>
 
-            <div className="absolute inset-0 p-10 flex flex-col justify-center text-center group-hover:opacity-0 pointer-events-none transition-all duration-1000">
-              <h3 className="text-[#252422]xl font-medium text-white font-heading tracking-tight mb-2 leading-tight">Third-Party <br /> <span className="font-light italic text-[#76C893]">Verified</span></h3>
+            <div className="absolute inset-0 p-8 flex flex-col justify-center text-center group-hover:opacity-0 pointer-events-none transition-all duration-1000">
+              <h3 className="text-2xl sm:text-3xl font-medium text-white font-heading tracking-tight mb-2 leading-tight">Third-Party <br /> <span className="font-light italic text-[#76C893]">Verified</span></h3>
             </div>
           </div>
 
           {/* Item 4: Square Image (Golden Drop) */}
-          <div className="md:col-span-4 md:row-span-1 relative rounded-[3rem] overflow-hidden group shadow-lg bg-white">
+          <div className="sm:col-span-1 lg:col-span-4 lg:row-span-1 relative rounded-[2rem] lg:rounded-[3rem] overflow-hidden group shadow-lg bg-white h-[250px] sm:h-auto">
             <Image
               src="/drop.png"
               fill
@@ -133,20 +133,20 @@ export function Features() {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-[cubic-bezier(0.2,1,0.3,1)] flex flex-col items-center justify-center p-8 text-center bg-[#0A190E]/95">
               <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-[1500ms] ease-[cubic-bezier(0.2,1,0.3,1)]">
                 <span className="text-emerald-400 font-bold text-[10px] uppercase tracking-widest mb-2 block">Absorption</span>
-                <h4 className="text-2xl text-white font-heading mb-4">Fluid Kinetics</h4>
-                <Link href="/information" className="bg-[#2FAF82] text-white text-[12px] font-medium px-6 py-2 rounded-full hover:bg-[#258a67] transition-colors inline-block">
+                <h4 className="text-xl sm:text-2xl text-white font-heading mb-4">Fluid Kinetics</h4>
+                <Link href="/information" className="bg-[#2FAF82] text-white text-[10px] sm:text-[12px] font-medium px-6 py-2 rounded-full hover:bg-[#258a67] transition-colors inline-block">
                   Learn More
                 </Link>
               </div>
             </div>
 
-            <div className="absolute inset-x-0 bottom-0 p-10 flex flex-col items-center text-center group-hover:opacity-0 pointer-events-none transition-all duration-1000">
-              <h3 className="text-[#252422]xl font-medium text-[#0A190E] font-heading tracking-tight mb-2">Max <br /> <span className="font-light italic text-[#38A36D]">Bioavailability</span></h3>
+            <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col items-center text-center group-hover:opacity-0 pointer-events-none transition-all duration-1000">
+              <h3 className="text-2xl sm:text-3xl font-medium text-[#0A190E] font-heading tracking-tight mb-2">Max <br /> <span className="font-light italic text-[#38A36D]">Bioavailability</span></h3>
             </div>
           </div>
 
           {/* Item 5: Square Image (Bottle) */}
-          <div className="md:col-span-4 md:row-span-1 relative rounded-[3rem] overflow-hidden group shadow-xl bg-[#F7FCF9]">
+          <div className="sm:col-span-1 lg:col-span-4 lg:row-span-1 relative rounded-[2rem] lg:rounded-[3rem] overflow-hidden group shadow-xl bg-[#F7FCF9] h-[250px] sm:h-auto">
             <Image
               src="/bottle.png"
               fill
@@ -157,15 +157,15 @@ export function Features() {
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-[cubic-bezier(0.2,1,0.3,1)] flex flex-col items-center justify-center p-8 text-center bg-emerald-900/95">
               <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-[1500ms] ease-[cubic-bezier(0.2,1,0.3,1)]">
                 <span className="text-emerald-300 font-bold text-[10px] uppercase tracking-widest mb-2 block">Sustainability</span>
-                <h4 className="text-2xl text-white font-heading mb-4">Eco Standards</h4>
-                <Link href="/information" className="bg-white text-emerald-900 text-[12px] font-bold px-6 py-2 rounded-full hover:bg-[#D4AF37] hover:text-white transition-colors inline-block">
+                <h4 className="text-xl sm:text-2xl text-white font-heading mb-4">Eco Standards</h4>
+                <Link href="/information" className="bg-white text-emerald-900 text-[10px] sm:text-[12px] font-bold px-6 py-2 rounded-full hover:bg-[#D4AF37] hover:text-white transition-colors inline-block">
                   Details
                 </Link>
               </div>
             </div>
 
-            <div className="absolute inset-x-0 bottom-0 p-10 flex items-end justify-center pb-12 group-hover:opacity-0 pointer-events-none transition-all duration-1000">
-              <span className="text-[#0A190E] bg-white/80 backdrop-blur-xl border border-white/40 px-8 py-3 rounded-full font-black uppercase tracking-[0.3em] font-heading text-[10px] shadow-2xl">
+            <div className="absolute inset-x-0 bottom-0 p-8 flex items-end justify-center pb-8 lg:pb-12 group-hover:opacity-0 pointer-events-none transition-all duration-1000">
+              <span className="text-[#0A190E] bg-white/80 backdrop-blur-xl border border-white/40 px-6 sm:px-8 py-2 sm:py-3 rounded-full font-black uppercase tracking-[0.3em] font-heading text-[8px] sm:text-[10px] shadow-2xl">
                 Eco-Conscious
               </span>
             </div>

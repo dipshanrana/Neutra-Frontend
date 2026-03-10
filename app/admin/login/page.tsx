@@ -89,7 +89,7 @@ export default function AdminLogin() {
                         <div className="w-16 h-16 mx-auto bg-black/40 rounded-2xl flex items-center justify-center text-[#38A36D] mb-6 shadow-inner border border-white/5">
                             <SvgCommand className="w-8 h-8" />
                         </div>
-                        <h1 className="text-[#252422]xl font-medium tracking-tighter text-white font-heading mb-2">Command Center</h1>
+                        <h1 className="text-4xl font-medium tracking-tighter text-white font-heading mb-2">Command Center</h1>
                         <p className="text-white/40 text-[11px] uppercase tracking-[0.2em] font-black font-heading">Authorized Personnel Only</p>
                     </div>
 

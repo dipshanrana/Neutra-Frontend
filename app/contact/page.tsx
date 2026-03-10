@@ -1,11 +1,14 @@
 ﻿import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PreFooter } from "@/components/PreFooter";
+import { Suspense } from "react";
 
 export default function ContactPage() {
     return (
         <main className="min-h-screen bg-[#FFFCF2] selection:bg-[#D4AF37] selection:text-white flex flex-col font-sans">
-            <Navbar />
+            <Suspense fallback={<div className="h-20 bg-white animate-pulse" />}>
+                <Navbar />
+            </Suspense>
 
             <section className="pt-32 pb-24 bg-white flex-1 relative overflow-hidden">
                 <div className="absolute top-1/2 left-0 w-[800px] h-[800px] bg-[#D4AF37]/5 rounded-full blur-[150px] pointer-events-none -translate-y-1/2 -translate-x-1/2"></div>

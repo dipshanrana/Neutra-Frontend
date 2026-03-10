@@ -179,6 +179,48 @@ function ProductDetailContent() {
 
     return (
         <div className="flex-1 bg-[#FAF8F3] pt-20">
+            {/* Product SEO Schema */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "Product",
+                        "name": product.name,
+                        "image": images,
+                        "description": product.description,
+                        "brand": {
+                            "@type": "Brand",
+                            "name": "NutriCore"
+                        },
+                        "sku": product.id?.toString(),
+                        "offers": {
+                            "@type": "Offer",
+                            "url": typeof window !== 'undefined' ? window.location.href : `https://nutricore.com/products/${product.id}`,
+                            "priceCurrency": "NPR",
+                            "price": displaySp,
+                            "availability": "https://schema.org/InStock"
+                        },
+                        "aggregateRating": reviews.length > 0 ? {
+                            "@type": "AggregateRating",
+                            "ratingValue": avgRating,
+                            "reviewCount": reviews.length
+                        } : undefined,
+                        "review": reviews.map(r => ({
+                            "@type": "Review",
+                            "author": {
+                                "@type": "Person",
+                                "name": r.username
+                            },
+                            "reviewRating": {
+                                "@type": "Rating",
+                                "ratingValue": r.stars
+                            },
+                            "reviewBody": r.comment
+                        }))
+                    })
+                }}
+            />
             {/* ── BREADCRUMB ─────────────────── */}
             <div className="bg-white border-b border-stone-200">
                 <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-10 h-11 flex items-center">
@@ -350,13 +392,13 @@ function ProductDetailContent() {
                                                     </div>
                                                 </div>
                                                 {product.link ? (
-                                                    <a href={ensureUrl(product.link)} target="_blank" rel="noopener noreferrer" className="flex-1 h-14 font-outfit font-black text-[16px] transition-all duration-300 flex items-center justify-center tracking-widest group btn-gold rounded-xl shadow-lg no-underline relative overflow-hidden">
-                                                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[200%] group-hover:animate-shine z-10"></div>
+                                                    <a href={ensureUrl(product.link)} target="_blank" rel="noopener noreferrer" className="flex-1 h-14 font-sans font-bold text-[16px] transition-all duration-300 flex items-center justify-center group btn-gold rounded-2xl shadow-lg no-underline relative overflow-hidden">
+                                                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-[200%] group-hover:animate-shine z-10"></div>
                                                         <span className="flex items-center text-current relative z-20">Buy Now <ChevronRight className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1" /></span>
                                                     </a>
                                                 ) : (
-                                                    <button className="flex-1 h-14 font-outfit font-black text-[16px] transition-all duration-300 flex items-center justify-center tracking-widest group btn-gold rounded-xl shadow-lg relative overflow-hidden">
-                                                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-[200%] group-hover:animate-shine z-10"></div>
+                                                    <button className="flex-1 h-14 font-sans font-bold text-[16px] transition-all duration-300 flex items-center justify-center group btn-gold rounded-2xl shadow-lg relative overflow-hidden">
+                                                        <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-[200%] group-hover:animate-shine z-10"></div>
                                                         <span className="flex items-center text-current relative z-20">Buy Now <ChevronRight className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1" /></span>
                                                     </button>
                                                 )}
@@ -697,9 +739,9 @@ function ProductDetailContent() {
             {/* LATEST ARTICLES - AS PER REFERENCE */}
             {(relatedBlogs.length > 0) && (
                 <div className="bg-[#FEF9F0] border-t border-[#E8E1D5]/50 relative overflow-hidden">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 relative z-10">
                         {/* Section Header */}
-                        <div className="text-center mb-16">
+                        <div className="text-center mb-10">
                             <h2 className="text-[#333333] text-[22px] font-bold tracking-[0.3em] uppercase font-sans">Latest Articles</h2>
                         </div>
 
@@ -757,9 +799,9 @@ function ProductDetailContent() {
             {/* HEALTH PROTOCOLS - INTEGRATED INFORMATION SECTION */}
             {relatedInfo.length > 0 && (
                 <div className="bg-[#FAF9F6] border-t border-[#E8E1D5]/30 relative overflow-hidden">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 relative z-10">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 relative z-10">
                         {/* Section Header */}
-                        <div className="text-center mb-16">
+                        <div className="text-center mb-10">
                             <h2 className="text-[#333333] text-[22px] font-bold tracking-[0.3em] uppercase font-sans">Health Protocols</h2>
                         </div>
 
@@ -822,7 +864,9 @@ function ProductDetailContent() {
 export default function ProductDetailPage() {
     return (
         <div className="min-h-screen flex flex-col bg-[#FAF8F3] selection:bg-emerald-100 selection:text-emerald-900">
-            <Navbar />
+            <Suspense fallback={<div className="h-20 bg-[#FAF8F3] animate-pulse" />}>
+                <Navbar />
+            </Suspense>
             <Suspense fallback={
                 <div className="flex-1 flex items-center justify-center min-h-[60vh] bg-[#FAF8F3]">
                     <div className="w-10 h-10 border-[3px] border-emerald-100 border-t-brand-primary rounded-full animate-spin" />

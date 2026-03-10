@@ -45,7 +45,7 @@ export function Products() {
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
                     <div className="max-w-xl">
                         <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-black font-heading mb-6">Complete Your Routine</h2>
-                        <h3 className="text-4xl md:text-[#252422]xl font-medium tracking-tight text-[#252422] font-heading leading-tight">
+                        <h3 className="text-4xl md:text-5xl font-medium tracking-tight text-[#252422] font-heading leading-tight">
                             Purpose-built formulas for every physiological need.
                         </h3>
                     </div>

@@ -2,11 +2,14 @@
 import { Footer } from "@/components/Footer";
 import { PreFooter } from "@/components/PreFooter";
 import Image from "next/image";
+import { Suspense } from "react";
 
 export default function AboutPage() {
     return (
         <main className="min-h-screen bg-[#FFFCF2] selection:bg-[#D4AF37] selection:text-white flex flex-col font-sans">
-            <Navbar />
+            <Suspense fallback={<div className="h-20 bg-white animate-pulse" />}>
+                <Navbar />
+            </Suspense>
 
             <section className="pt-32 pb-24 bg-white relative overflow-hidden flex-1">
                 <div className="absolute top-1/2 left-0 w-[800px] h-[800px] bg-[#D4AF37]/5 rounded-full blur-[150px] pointer-events-none -translate-y-1/2 -translate-x-1/2"></div>
@@ -15,7 +18,7 @@ export default function AboutPage() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="text-center mb-24 max-w-4xl mx-auto mt-12">
                         <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#D4AF37] font-heading mb-6 inline-block">The Product</span>
-                        <h1 className="text-[#252422]xl md:text-[#252422]xl lg:text-8xl font-medium tracking-tight text-[#252422] font-heading leading-[1] mb-8">
+                        <h1 className="text-5xl md:text-6xl lg:text-8xl font-medium tracking-tight text-[#252422] font-heading leading-[1] mb-8">
                             Engineering <br />
                             <span className="text-[#D4AF37] italic font-light">Longevity.</span>
                         </h1>
@@ -38,19 +41,19 @@ export default function AboutPage() {
 
                         <div className="flex flex-col gap-12">
                             <div>
-                                <h3 className="text-[#252422]xl font-medium text-[#252422] font-heading tracking-tight leading-tight mb-4">Bio-availability First.</h3>
+                                <h3 className="text-2xl sm:text-3xl font-medium text-[#252422] font-heading tracking-tight leading-tight mb-4">Bio-availability First.</h3>
                                 <p className="text-[#252422]/60 font-light leading-relaxed text-lg">
                                     It doesn't matter what the label says if your body cannot synthesize it. Our primary directive is maximizing cellular uptake using proprietary liposomal encapsulations and activated compounding.
                                 </p>
                             </div>
                             <div>
-                                <h3 className="text-[#252422]xl font-medium text-[#252422] font-heading tracking-tight leading-tight mb-4">Transparent Sourcing.</h3>
+                                <h3 className="text-2xl sm:text-3xl font-medium text-[#252422] font-heading tracking-tight leading-tight mb-4">Transparent Sourcing.</h3>
                                 <p className="text-[#252422]/60 font-light leading-relaxed text-lg">
                                     Every compound, from synthetic peptides to organic bio-extracts, is traced back to its point of origin. We hold our suppliers to extreme pharmaceutical-grade constraints, discarding 80% of raw material during screening.
                                 </p>
                             </div>
                             <div>
-                                <h3 className="text-[#252422]xl font-medium text-[#252422] font-heading tracking-tight leading-tight mb-4">No Proprietary Blends.</h3>
+                                <h3 className="text-2xl sm:text-3xl font-medium text-[#252422] font-heading tracking-tight leading-tight mb-4">No Proprietary Blends.</h3>
                                 <p className="text-[#252422]/60 font-light leading-relaxed text-lg">
                                     Proprietary blends are used by the industry to hide under-dosed ingredients. We list every single milligram of active compound on our labeling, allowing complete scientific scrutiny.
                                 </p>

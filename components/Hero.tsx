@@ -23,81 +23,81 @@ const SvgStar = ({ className }: { className?: string }) => (
 
 export function Hero() {
   return (
-    <section className="relative h-[calc(100vh-80px)] mt-[80px] flex items-center bg-[#FFFCF2] overflow-hidden">
+    <section className="relative min-h-[calc(100vh-80px)] lg:h-[calc(100vh-80px)] mt-[80px] flex items-center bg-[#FFFCF2] overflow-hidden py-12 lg:py-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-8 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
 
           {/* Content */}
-          <div className="max-w-2xl">
+          <div className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
             <div className="inline-flex items-center gap-3 mb-6">
-              <span className="h-px w-8 bg-brand-primary"></span>
+              <span className="h-px w-8 bg-brand-primary hidden sm:block"></span>
               <span className="text-brand-primary font-bold text-xs uppercase tracking-[0.2em] font-heading">
                 Next Generation Nutrition
               </span>
             </div>
 
-            <h1 className="text-[#1D3557]xl sm:text-6xl lg:text-[#1D3557]xl font-medium tracking-tight text-[#1D3557] leading-[1.05] font-heading mb-6">
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-medium tracking-tight text-[#1D3557] leading-[1.1] font-heading mb-6">
               True Health,<br />
               <span className="text-brand-primary italic font-light">Simplified.</span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-[#1D3557]/70 font-sans font-light leading-relaxed mb-10 max-w-lg">
+            <p className="text-base sm:text-xl text-[#1D3557]/70 font-sans font-light leading-relaxed mb-10 max-w-lg mx-auto lg:mx-0">
               Clinically-dosed, highly bioavailable multi-nutrition essentials. Expertly formulated to elevate your daily performance and long-term vitality.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-5">
-              <Link href="/products" className="px-10 py-5 bg-[#2FAF82] text-[#ffffff] rounded-xl font-sans font-medium uppercase tracking-widest text-xs hover:bg-[#258a67] shadow-[0_20px_40px_rgba(47,175,130,0.2)] transition-all duration-500 flex items-center justify-center gap-3 group">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center lg:justify-start">
+              <Link href="/products" className="px-8 sm:px-10 py-4 sm:py-5 bg-[#2FAF82] text-[#ffffff] rounded-xl font-sans font-medium uppercase tracking-widest text-xs hover:bg-[#258a67] shadow-[0_20px_40px_rgba(47,175,130,0.2)] transition-all duration-500 flex items-center justify-center gap-3 group">
                 Shop Essentials
                 <SvgArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-500" />
               </Link>
-              <Link href="/information" className="px-10 py-5 bg-white text-[#1D3557] rounded-xl font-sans font-bold uppercase tracking-widest text-xs border border-[#1D3557]/10 hover:border-brand-primary shadow-[0_10px_30px_rgba(29,53,87,0.03)] transition-all duration-500 flex items-center justify-center">
+              <Link href="/information" className="px-8 sm:px-10 py-4 sm:py-5 bg-white text-[#1D3557] rounded-xl font-sans font-bold uppercase tracking-widest text-xs border border-[#1D3557]/10 hover:border-brand-primary shadow-[0_10px_30px_rgba(29,53,87,0.03)] transition-all duration-500 flex items-center justify-center">
                 Explore The Science
               </Link>
             </div>
 
-            <div className="mt-12 pt-8 border-t border-[#252422]/10 flex flex-wrap gap-8 items-center justify-start">
+            <div className="mt-12 pt-8 border-t border-[#252422]/10 flex flex-wrap gap-4 sm:gap-8 items-center justify-center lg:justify-start text-center sm:text-left">
               <div className="flex items-center gap-2">
-                <SvgCheckCircle className="w-5 h-5 text-[#82C49C]" strokeWidth={1.5} />
-                <span className="text-sm font-medium text-[#252422]/80">Third-Party Tested</span>
+                <SvgCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#82C49C]" strokeWidth={1.5} />
+                <span className="text-[12px] sm:text-sm font-medium text-[#252422]/80">Third-Party Tested</span>
               </div>
               <div className="flex items-center gap-2">
-                <SvgCheckCircle className="w-5 h-5 text-[#82C49C]" strokeWidth={1.5} />
-                <span className="text-sm font-medium text-[#252422]/80">Zero Fillers</span>
+                <SvgCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#82C49C]" strokeWidth={1.5} />
+                <span className="text-[12px] sm:text-sm font-medium text-[#252422]/80">Zero Fillers</span>
               </div>
               <div className="flex items-center gap-2">
-                <SvgCheckCircle className="w-5 h-5 text-[#82C49C]" strokeWidth={1.5} />
-                <span className="text-sm font-medium text-[#252422]/80">Non-GMO</span>
+                <SvgCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#82C49C]" strokeWidth={1.5} />
+                <span className="text-[12px] sm:text-sm font-medium text-[#252422]/80">Non-GMO</span>
               </div>
             </div>
           </div>
 
           {/* Images */}
-          <div className="relative h-[600px] w-full flex items-center justify-center">
+          <div className="relative h-[400px] sm:h-[500px] lg:h-[600px] w-full flex items-center justify-center mt-8 lg:mt-0">
             {/* Elegant luxury background element */}
             <div className="absolute inset-0 bg-[#82C49C]/10 rounded-full scale-90 blur-3xl opacity-60"></div>
 
-            <div className="relative w-full h-full flex items-center justify-center">
+            <div className="relative w-full h-full flex items-center justify-center scale-75 sm:scale-90 lg:scale-100">
               <div className="absolute z-30 transition-transform duration-700 hover:-translate-y-4">
-                <Image src="/multi-vit.png" width={320} height={400} alt="Vitamins" className="object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.15)] mix-blend-multiply" />
+                <Image src="/multi-vit.png" width={320} height={400} alt="Vitamins" className="w-[180px] sm:w-[260px] lg:w-[320px] object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.15)] mix-blend-multiply" />
               </div>
-              <div className="absolute z-20 -left-4 bottom-24 -rotate-6 transition-transform duration-700 hover:rotate-0 hover:z-40 hover:-translate-y-2">
-                <Image src="/protein.png" width={240} height={300} alt="Protein" className="object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.1)] mix-blend-multiply" />
+              <div className="absolute z-20 -left-4 sm:-left-8 bottom-12 sm:bottom-24 -rotate-6 transition-transform duration-700 hover:rotate-0 hover:z-40 hover:-translate-y-2">
+                <Image src="/protein.png" width={240} height={300} alt="Protein" className="w-[140px] sm:w-[200px] lg:w-[240px] object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.1)] mix-blend-multiply" />
               </div>
-              <div className="absolute z-20 right-0 top-24 rotate-6 transition-transform duration-700 hover:rotate-0 hover:z-40 hover:-translate-y-2">
-                <Image src="/fish-oil.png" width={180} height={200} alt="Fish Oil" className="object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.1)] mix-blend-multiply" />
+              <div className="absolute z-20 right-0 sm:right-0 top-12 sm:top-24 rotate-6 transition-transform duration-700 hover:rotate-0 hover:z-40 hover:-translate-y-2">
+                <Image src="/fish-oil.png" width={180} height={200} alt="Fish Oil" className="w-[100px] sm:w-[150px] lg:w-[180px] object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.1)] mix-blend-multiply" />
               </div>
             </div>
 
             {/* Premium minimalist badge */}
-            <div className="absolute bottom-12 right-0 bg-white p-5 rounded-2xl shadow-[0_10px_40px_rgba(29,53,87,0.08)] flex items-center gap-4 border border-[#252422]/5">
-              <div className="flex -space-x-3">
-                {[1, 2, 3].map(i => <img key={i} src={`https://i.pravatar.cc/100?img=${i + 20}`} className="w-10 h-10 rounded-full border-2 border-white object-cover" alt="Reviewer" />)}
+            <div className="absolute bottom-4 sm:bottom-12 right-0 bg-white p-3 sm:p-5 rounded-2xl shadow-[0_10px_40px_rgba(29,53,87,0.08)] flex items-center gap-3 sm:gap-4 border border-[#252422]/5">
+              <div className="flex -space-x-2 sm:-space-x-3">
+                {[1, 2, 3].map(i => <img key={i} src={`https://i.pravatar.cc/100?img=${i + 20}`} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-white object-cover" alt="Reviewer" />)}
               </div>
               <div>
                 <div className="flex text-[#FAC917] mb-0.5 space-x-0.5">
-                  {[1, 2, 3, 4, 5].map(i => <SvgStar key={i} className="w-[14px] h-[14px]" />)}
+                  {[1, 2, 3, 4, 5].map(i => <SvgStar key={i} className="w-[10px] h-[10px] sm:w-[14px] sm:h-[14px]" />)}
                 </div>
-                <div className="text-xs font-bold text-[#252422] font-sans mt-1">Over 50K+ Reviews</div>
+                <div className="text-[10px] sm:text-xs font-bold text-[#252422] font-sans mt-0.5 sm:mt-1">Over 50K+ Reviews</div>
               </div>
             </div>
           </div>

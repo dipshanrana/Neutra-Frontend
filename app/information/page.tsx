@@ -7,6 +7,7 @@ import { PreFooter } from "@/components/PreFooter";
 import { api, Information, formatBase64Image } from "@/lib/api";
 import { ArrowRight, ShieldCheck, Binary, Activity, Database, Fingerprint, Lock, Zap, MousePointer2 } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default function InformationPage() {
     const [infoData, setInfoData] = useState<Information[]>([]);
@@ -55,7 +56,9 @@ export default function InformationPage() {
 
     return (
         <main className="min-h-screen bg-[#FBFBFA] selection:bg-[#D4AF37] selection:text-white flex flex-col font-inter">
-            <Navbar />
+            <Suspense fallback={<div className="h-20 bg-emerald-950 animate-pulse" />}>
+                <Navbar />
+            </Suspense>
 
             {/* Cinematic Sticky-Parallax Hero - Enhanced Layering */}
             <section className="relative h-[85vh] flex items-center overflow-hidden bg-[#0A190E]">
@@ -69,33 +72,33 @@ export default function InformationPage() {
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#0A190E_70%)] opacity-60"></div>
                 </div>
 
-                <div className="max-w-7xl mx-auto px-6 relative z-10 w-full pt-20">
+                <div className="max-w-7xl mx-auto px-6 relative z-10 w-full pt-32 lg:pt-20">
                     <div className="max-w-5xl">
-                        <div className="flex items-center gap-6 mb-12 overflow-hidden group">
-                            <span className="flex items-center gap-2 text-brand-accent font-black uppercase tracking-[0.5em] text-[10px] whitespace-nowrap bg-brand-accent/10 px-4 py-2 rounded-full border border-brand-accent/20">
+                        <div className="flex items-center gap-4 sm:gap-6 mb-8 lg:mb-12 overflow-hidden group">
+                            <span className="flex items-center gap-2 text-brand-accent font-black uppercase tracking-[0.3em] sm:tracking-[0.5em] text-[8px] sm:text-[10px] whitespace-nowrap bg-brand-accent/10 px-3 sm:px-4 py-2 rounded-full border border-brand-accent/20">
                                 <span className="w-1.5 h-1.5 rounded-full bg-brand-accent animate-pulse"></span>
                                 DATA ARCHIVE V2.1
                             </span>
                             <div className="h-[1px] flex-1 bg-gradient-to-r from-brand-accent/40 to-transparent"></div>
                         </div>
 
-                        <h1 className="text-[#252422]xl md:text-9xl lg:text-[160px] font-heading font-medium text-white leading-[0.75] tracking-tighter mb-16 select-none">
+                        <h1 className="text-6xl sm:text-8xl lg:text-[160px] font-heading font-medium text-white leading-[0.85] lg:leading-[0.75] tracking-tighter mb-12 lg:mb-16 select-none">
                             Deep <br />
                             <span className="text-brand-accent italic font-light lowercase">Physiology.</span>
                         </h1>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-end">
-                            <p className="text-white/50 text-xl font-light leading-relaxed max-w-xl border-l-[1px] border-brand-accent/20 pl-10">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 items-end">
+                            <p className="text-white/50 text-base sm:text-xl font-light leading-relaxed max-w-xl border-l-[1px] border-brand-accent/20 pl-6 sm:pl-10">
                                 Our central repository for validated pharmacological products, clinical synthesis methodologies, and raw biochemical optimization modules.
                             </p>
-                            <div className="hidden md:flex justify-end gap-16">
+                            <div className="hidden md:flex justify-end gap-10 lg:gap-16">
                                 <div className="text-right">
                                     <p className="text-brand-accent font-black tracking-widest text-[9px] uppercase mb-2">Total Modules</p>
-                                    <p className="text-white text-[#252422]xl font-heading font-medium tracking-tighter">{infoData.length.toString().padStart(2, '0')}</p>
+                                    <p className="text-white text-3xl lg:text-5xl font-heading font-medium tracking-tighter">{infoData.length.toString().padStart(2, '0')}</p>
                                 </div>
                                 <div className="text-right">
                                     <p className="text-brand-accent font-black tracking-widest text-[9px] uppercase mb-2">Access Status</p>
-                                    <p className="text-white text-[#252422]xl font-heading font-medium tracking-tighter flex items-center gap-2">VERIFIED <ShieldCheck className="w-6 h-6 text-brand-accent" /></p>
+                                    <p className="text-white text-3xl lg:text-5xl font-heading font-medium tracking-tighter flex items-center gap-2 text-right">VERIFIED <ShieldCheck className="w-6 h-6 text-brand-accent shrink-0" /></p>
                                 </div>
                             </div>
                         </div>
@@ -109,14 +112,14 @@ export default function InformationPage() {
             </section>
 
             {/* Filter Navigation - Glassmorphism Redesign */}
-            <section className="sticky top-[110px] z-[40] py-6 translate-y-[-50%] px-6">
-                <div className="max-w-7xl mx-auto">
-                    <div className="bg-white/80 backdrop-blur-2xl border border-stone-100 shadow-[0_20px_50px_rgba(0,0,0,0.06)] p-3 rounded-[2.5rem] inline-flex items-center gap-2 max-w-full overflow-x-auto no-scrollbar scrollbar-hide">
+            <section className="sticky top-20 z-[40] pt-8 translate-y-[-50%] px-4 sm:px-6">
+                <div className="max-w-7xl mx-auto flex justify-center lg:justify-start">
+                    <div className="bg-white/90 backdrop-blur-2xl border border-stone-100 shadow-[0_20px_50px_rgba(0,0,0,0.06)] p-2 sm:p-3 rounded-[2.5rem] inline-flex items-center gap-1 sm:gap-2 max-w-full overflow-x-auto no-scrollbar scrollbar-hide">
                         {categories.map(cat => (
                             <button
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
-                                className={`whitespace-nowrap px-8 py-3.5 rounded-[1.8rem] text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 ${activeCategory === cat
+                                className={`whitespace-nowrap px-6 sm:px-8 py-2.5 sm:py-3.5 rounded-[1.8rem] text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-500 ${activeCategory === cat
                                     ? 'bg-[#252422] text-white shadow-xl shadow-[#252422]/20 scale-[1.02]'
                                     : 'text-stone-400 hover:text-stone-900 hover:bg-stone-50'
                                     }`}
@@ -177,15 +180,15 @@ export default function InformationPage() {
                                             </div>
                                         </div>
 
-                                        <h3 className="text-4xl md:text-[#252422]xl font-heading font-medium text-[#252422] tracking-tight leading-[1.05] mb-8 break-words group-hover:text-brand-secondary transition-colors">
+                                        <h3 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-medium text-[#252422] tracking-tight leading-[1.05] mb-6 lg:mb-8 break-words group-hover:text-brand-secondary transition-colors">
                                             {info.title}
                                         </h3>
 
-                                        <p className="text-stone-500 text-lg leading-relaxed font-light mb-12 line-clamp-3">
+                                        <p className="text-stone-500 text-base sm:text-lg leading-relaxed font-light mb-10 lg:mb-12 line-clamp-3">
                                             {info.content}
                                         </p>
 
-                                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8 pt-10 border-t border-stone-100">
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 lg:gap-8 pt-8 lg:pt-10 border-t border-stone-100">
                                             <div className="flex items-center gap-6">
                                                 <div className="flex flex-col">
                                                     <span className="text-[9px] text-stone-300 uppercase tracking-widest mb-1.5 font-bold italic">Integrity Verification</span>
@@ -195,9 +198,9 @@ export default function InformationPage() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button className="relative overflow-hidden px-10 py-5 bg-stone-900 text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] group/btn hover:bg-[#D4AF37] transition-all duration-500 pointer-events-none">
+                                            <button className="relative overflow-hidden px-8 lg:px-10 py-4 lg:py-5 bg-stone-900 text-white rounded-full text-[9px] lg:text-[10px] font-black uppercase tracking-[0.2em] group/btn hover:bg-[#D4AF37] transition-all duration-500 pointer-events-none">
                                                 <span className="relative z-10 flex items-center gap-3 group-hover/btn:translate-x-2 transition-transform duration-500">
-                                                    Launch Product <ArrowRight className="w-4 h-4" />
+                                                    Read Module <ArrowRight className="w-4 h-4" />
                                                 </span>
                                             </button>
                                         </div>
@@ -238,12 +241,12 @@ export default function InformationPage() {
                             </div>
                         </div>
 
-                        <h2 className="text-6xl lg:text-8xl font-heading font-medium text-white tracking-tighter mb-12 leading-[0.85]">
+                        <h2 className="text-4xl sm:text-6xl lg:text-8xl font-heading font-medium text-white tracking-tighter mb-8 lg:mb-12 leading-[1] lg:leading-[0.85]">
                             Full Vault <br />
                             <span className="text-brand-accent italic font-light lowercase">access.</span>
                         </h2>
 
-                        <p className="text-white/40 text-xl font-light leading-relaxed mb-16 max-w-xl">
+                        <p className="text-white/40 text-base sm:text-xl font-light leading-relaxed mb-12 lg:mb-16 max-w-xl">
                             Verified research institutes and clinical partners may request administrative clearance to access full biochemical assay archives.
                         </p>
 

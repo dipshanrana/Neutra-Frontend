@@ -141,7 +141,7 @@ export default function AdminDashboard() {
                             </div>
                             <h3 className="text-sm uppercase tracking-widest text-white/40 font-bold">Products</h3>
                         </div>
-                        <p className="text-[#252422]xl font-medium tracking-tight">{stats.products}</p>
+                        <p className="text-4xl font-medium tracking-tight text-white">{stats.products}</p>
                     </div>
 
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
@@ -151,7 +151,7 @@ export default function AdminDashboard() {
                             </div>
                             <h3 className="text-sm uppercase tracking-widest text-white/40 font-bold">Categories</h3>
                         </div>
-                        <p className="text-[#252422]xl font-medium tracking-tight">{stats.categories}</p>
+                        <p className="text-4xl font-medium tracking-tight text-white">{stats.categories}</p>
                     </div>
 
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
@@ -161,7 +161,7 @@ export default function AdminDashboard() {
                             </div>
                             <h3 className="text-sm uppercase tracking-widest text-white/40 font-bold">Users</h3>
                         </div>
-                        <p className="text-[#252422]xl font-medium tracking-tight">{stats.users}</p>
+                        <p className="text-4xl font-medium tracking-tight text-white">{stats.users}</p>
                     </div>
 
                     <div className="bg-white/5 border border-white/10 rounded-2xl p-8 md:col-span-3 lg:col-span-3">

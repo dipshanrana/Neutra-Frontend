@@ -70,22 +70,22 @@ function ShopContent() {
             <Navbar />
 
             {/* -- Page Header --- */}
-            <div className="bg-white border-b border-stone-200 pt-24 pb-10 text-center px-4 mt-[70px]">
+            <div className="bg-white border-b border-stone-200 pt-24 pb-10 text-center px-4 mt-[80px]">
                 <div className="max-w-2xl mx-auto">
                     <span className="font-heading font-semibold text-[10px] text-brand-secondary uppercase tracking-[0.3em] block mb-3">Premium Collection</span>
-                    <h1 className="font-heading font-semibold text-[#2A401E] text-4xl sm:text-[#252422]xl tracking-tight mb-3">
+                    <h1 className="font-heading font-semibold text-[#2A401E] text-3xl sm:text-5xl lg:text-6xl tracking-tight mb-3">
                         Our Best Products
                     </h1>
-                    <p className="font-sans text-stone-500 text-base font-medium max-w-xl mx-auto">
+                    <p className="font-sans text-stone-500 text-sm sm:text-base font-medium max-w-xl mx-auto">
                         Explore the most advanced formulas crafted for peak performance and everyday wellness.
                     </p>
                 </div>
             </div>
 
             {/* -- Filter Bar --- */}
-            <div className="bg-white border-b border-stone-200 sticky top-[70px] z-40 shadow-sm">
+            <div className="bg-white border-b border-stone-200 sticky top-20 z-40 shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3">
-                    <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3 items-center">
+                    <form onSubmit={handleSearch} className="flex flex-col lg:flex-row gap-3 items-center">
 
                         {/* Search */}
                         <div className="relative flex-1 w-full">
@@ -99,41 +99,43 @@ function ShopContent() {
                             />
                         </div>
 
-                        {/* Category */}
-                        <select
-                            value={selectedCategory}
-                            onChange={e => { setSelectedCategory(e.target.value); setSearchQuery(""); setMinPrice(""); setMaxPrice(""); }}
-                            className="px-4 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-brand-accent transition-colors w-full sm:w-48"
-                        >
-                            <option value="">All Categories</option>
-                            {categories.map(c => (
-                                <option key={c.id} value={c.name}>{c.name}</option>
-                            ))}
-                        </select>
+                        <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                            {/* Category */}
+                            <select
+                                value={selectedCategory}
+                                onChange={e => { setSelectedCategory(e.target.value); setSearchQuery(""); setMinPrice(""); setMaxPrice(""); }}
+                                className="px-4 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-brand-accent transition-colors w-full sm:w-48"
+                            >
+                                <option value="">All Categories</option>
+                                {categories.map(c => (
+                                    <option key={c.id} value={c.name}>{c.name}</option>
+                                ))}
+                            </select>
 
-                        {/* Price range */}
-                        <div className="flex gap-2 w-full sm:w-auto">
-                            <input
-                                type="number" placeholder="Min NPR"
-                                value={minPrice}
-                                onChange={e => { setMinPrice(e.target.value); setSearchQuery(""); setSelectedCategory(""); }}
-                                className="w-28 px-3 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-brand-accent transition-colors"
-                            />
-                            <input
-                                type="number" placeholder="Max NPR"
-                                value={maxPrice}
-                                onChange={e => { setMaxPrice(e.target.value); setSearchQuery(""); setSelectedCategory(""); }}
-                                className="w-28 px-3 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-brand-accent transition-colors"
-                            />
+                            {/* Price range */}
+                            <div className="flex gap-2 w-full sm:w-auto">
+                                <input
+                                    type="number" placeholder="Min"
+                                    value={minPrice}
+                                    onChange={e => { setMinPrice(e.target.value); setSearchQuery(""); setSelectedCategory(""); }}
+                                    className="flex-1 sm:w-24 px-3 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-brand-accent transition-colors"
+                                />
+                                <input
+                                    type="number" placeholder="Max"
+                                    value={maxPrice}
+                                    onChange={e => { setMaxPrice(e.target.value); setSearchQuery(""); setSelectedCategory(""); }}
+                                    className="flex-1 sm:w-24 px-3 py-2.5 bg-[#FAF8F3] border border-stone-200 rounded-xl text-[#2A401E] text-sm font-sans font-medium focus:outline-none focus:border-brand-accent transition-colors"
+                                />
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="flex items-center gap-2 px-8 py-2.5 bg-[#D48D0B] hover:bg-[#B87A00] text-white rounded-full font-heading font-bold text-[13px] uppercase tracking-widest transition-all shadow-md hover:shadow-lg w-full sm:w-auto justify-center"
+                            >
+                                <SlidersHorizontal className="w-4 h-4 text-white" />
+                                Filter
+                            </button>
                         </div>
-
-                        <button
-                            type="submit"
-                            className="flex items-center gap-2 px-6 py-2.5 bg-[#D4AF37] hover:bg-[#B8860B] text-white rounded-xl font-heading font-semibold text-[13px] uppercase tracking-wide transition-colors shadow-sm w-full sm:w-auto justify-center"
-                        >
-                            <SlidersHorizontal className="w-4 h-4" />
-                            Filter
-                        </button>
                     </form>
                 </div>
             </div>
@@ -150,7 +152,7 @@ function ShopContent() {
                         <p className="font-sans text-stone-500">Try adjusting your search or filter criteria.</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
                         {products.map((p) => {
                             const imageSrc = getProductMainImage(p);
                             const catName = typeof p.category === "string" ? p.category : p.category?.name ?? "";

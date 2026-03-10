@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useParams } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -40,7 +40,9 @@ export default function BlogDetailPage() {
     if (loading) {
         return (
             <main className="min-h-screen bg-[#FFFCF2] flex flex-col font-sans">
-                <Navbar />
+                <Suspense fallback={<div className="h-20 bg-white animate-pulse" />}>
+                    <Navbar />
+                </Suspense>
                 <div className="flex-1 flex justify-center items-center py-40">
                     <div className="w-10 h-10 border-4 border-brand-primary border-t-transparent rounded-full animate-spin"></div>
                 </div>
@@ -52,7 +54,9 @@ export default function BlogDetailPage() {
     if (!article) {
         return (
             <main className="min-h-screen bg-[#FFFCF2] flex flex-col font-sans">
-                <Navbar />
+                <Suspense fallback={<div className="h-20 bg-white animate-pulse" />}>
+                    <Navbar />
+                </Suspense>
                 <div className="flex-1 flex flex-col items-center justify-center py-40 text-center px-4">
                     <h1 className="text-4xl md:text-5xl font-heading text-[#252422] mb-6 tracking-tight">Publication Not Found</h1>
                     <p className="text-[#252422]/60 mb-8 max-w-md">The specific research article you're looking for could not be located in our clinical journal archives.</p>
@@ -87,7 +91,36 @@ export default function BlogDetailPage() {
 
     return (
         <main className="min-h-screen bg-[#FBFBFA] selection:bg-brand-primary selection:text-white flex flex-col font-sans">
-            <Navbar />
+            <Suspense fallback={<div className="h-20 bg-white animate-pulse" />}>
+                <Navbar />
+            </Suspense>
+
+            {/* Blog SEO Schema */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "BlogPosting",
+                        "headline": article.title,
+                        "image": imgUrl,
+                        "author": {
+                            "@type": "Person",
+                            "name": article.author || "Clinical Team"
+                        },
+                        "publisher": {
+                            "@type": "Organization",
+                            "name": "NutriCore",
+                            "logo": {
+                                "@type": "ImageObject",
+                                "url": "https://nutricore.com/logo.png"
+                            }
+                        },
+                        "datePublished": "2026-03-10",
+                        "articleBody": article.content.replace(/<[^>]+>/g, '')
+                    })
+                }}
+            />
 
             {/* Back Navigation */}
             <div className="bg-white border-b border-stone-200 sticky top-0 z-40">
