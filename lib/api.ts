@@ -1,5 +1,8 @@
 // API Configuration
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://209.126.86.149:8079";
+const IS_SERVER = typeof window === 'undefined';
+export const API_BASE_URL = IS_SERVER
+  ? (process.env.NEXT_PUBLIC_API_URL || "http://209.126.86.149:8079")
+  : "/api/backend";
 
 // Simple in-memory cache to prevent redundant large fetches (e.g. Base64 images)
 const apiCache: Record<string, { data: any, timestamp: number }> = {};
@@ -167,9 +170,7 @@ async function apiFetch<T>(
     const method = (options.method || 'GET').toUpperCase();
     console.error(`[NETWORK ERROR] ${method} ${endpoint}:`, error);
 
-    if (method === 'GET') {
-      return [] as any;
-    }
+    // Don't swallow errors for GET requests as it hides issues from users
     throw new Error(error instanceof Error ? error.message : 'Network error. Please check your connection.');
   }
 }
