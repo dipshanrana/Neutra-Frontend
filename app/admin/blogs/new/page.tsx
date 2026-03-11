@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api, ApiError, Product } from "@/lib/api";
+import { AdminLanguageSwitcher } from "@/components/AdminLanguageSwitcher";
 import { Image as ImageIcon, X } from "lucide-react";
 
 export default function NewBlog() {
@@ -84,11 +85,12 @@ export default function NewBlog() {
             <header className="border-b border-white/10 bg-black/20 backdrop-blur-sm sticky top-0 z-50">
                 <div className="max-w-4xl mx-auto px-6 py-6 flex justify-between items-center">
                     <div className="flex items-center gap-4">
-                        <Link href="/admin/blogs" className="text-white/50 hover:text-white transition-colors text-sm">? Blogs</Link>
+                        <Link href="/admin/blogs" className="text-white/50 hover:text-white transition-colors text-sm">← Blogs</Link>
                         <h1 className="text-2xl font-black tracking-tighter font-heading">
                             New <span className="text-[#38A36D]">Blog Post</span>
                         </h1>
                     </div>
+                    <AdminLanguageSwitcher />
                 </div>
             </header>
 

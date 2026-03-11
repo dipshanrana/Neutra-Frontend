@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { productApi, Product, getProductMainImage } from "@/lib/api";
+import { useCurrency } from "@/components/CurrencyContext";
 import { Heart, Star } from "lucide-react";
 
 const SvgArrowUpRight = ({ className }: { className?: string }) => (
@@ -22,6 +23,7 @@ const SvgCheck = ({ className }: { className?: string }) => (
 export function Products() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
+    const { formatPrice } = useCurrency();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -137,14 +139,14 @@ export function Products() {
                                                     <div className="flex items-center gap-1.5 mb-1">
                                                         <span className="font-sans text-stone-500 text-[12px] uppercase">MRP :</span>
                                                         <span className="font-sans text-stone-400 text-[12px] line-through decoration-stone-300">
-                                                            ₹ {currentMp?.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                            {formatPrice(currentMp)}
                                                         </span>
                                                     </div>
                                                 )}
                                                 <div className="flex items-baseline gap-1.5">
                                                     <span className="font-sans font-bold text-[#1D3557] text-[15px]">Price:</span>
                                                     <span className="font-sans font-bold text-[#1D3557] text-[20px]">
-                                                        ₹ {currentSp?.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                        {formatPrice(currentSp)}
                                                     </span>
                                                 </div>
                                                 <div className="text-[11px] text-[#D4AF37] font-medium mt-0.5">

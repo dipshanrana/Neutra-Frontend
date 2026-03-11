@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api, Information } from "@/lib/api";
+import { AdminLanguageSwitcher } from "@/components/AdminLanguageSwitcher";
 
 export default function AdminInformation() {
     const router = useRouter();
@@ -45,12 +46,15 @@ export default function AdminInformation() {
                             Manage <span className="text-[#38A36D]">Information</span>
                         </h1>
                     </div>
-                    <Link
-                        href="/admin/information/new"
-                        className="px-6 py-3 bg-[#D4AF37] text-[#0A190E] rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-white transition-colors"
-                    >
-                        + New Page
-                    </Link>
+                    <div className="flex items-center gap-3">
+                        <AdminLanguageSwitcher />
+                        <Link
+                            href="/admin/information/new"
+                            className="px-6 py-3 bg-[#D4AF37] text-[#0A190E] rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-white transition-colors"
+                        >
+                            + New Page
+                        </Link>
+                    </div>
                 </div>
             </header>
 

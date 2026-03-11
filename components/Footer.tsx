@@ -48,9 +48,9 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="bg-[#0A1F11] pt-24 pb-12">
+    <footer className="bg-[#0A1F11] pt-16 pb-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white/80">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 xl:gap-24 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-16 xl:gap-24 mb-4">
 
           {/* Brand column */}
           <div className="md:col-span-5">
@@ -122,7 +122,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Footer */}
-        <div className="flex flex-col-reverse md:flex-row justify-between items-center border-t border-white/5 pt-8 text-xs text-white/20 font-sans font-light">
+        <div className="flex flex-col-reverse md:flex-row justify-between items-center border-t border-white/5 pt-5 text-xs text-white/20 font-sans font-light">
           <p className="mt-6 md:mt-0">© 2026 NutriCore Technologies. All rights reserved.</p>
           <div className="flex gap-8">
             <a href="#" className="hover:text-[#4ADE80] transition-colors" aria-label="Instagram">

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api, User } from "@/lib/api";
+import { AdminLanguageSwitcher } from "@/components/AdminLanguageSwitcher";
 
 const SvgArrowLeft = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
@@ -23,6 +24,12 @@ const SvgUserPlus = ({ className }: { className?: string }) => (
 const SvgTrash = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
         <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+);
+
+const SvgPower = ({ className }: { className?: string }) => (
+    <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
+        <path d="M18.36 6.64a9 9 0 1 1-12.73 0M12 2v10" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
 );
 
@@ -89,6 +96,23 @@ export default function AdminUsers() {
         }
     };
 
+    const handleToggleUserStatus = async (user: User) => {
+        try {
+            const updatedUser = user.active
+                ? await api.admin.deactivateUser(user.id)
+                : await api.admin.activateUser(user.id);
+
+            // If backend returns updated user, use it. Otherwise, toggle locally.
+            if (updatedUser) {
+                setUsers(users.map(u => u.id === user.id ? updatedUser : u));
+            } else {
+                setUsers(users.map(u => u.id === user.id ? { ...u, active: !u.active } : u));
+            }
+        } catch (err) {
+            alert(`Failed to ${user.active ? 'deactivate' : 'activate'} user`);
+        }
+    };
+
     if (loading) {
         return <div className="min-h-screen bg-[#0A190E] text-white flex items-center justify-center">Loading Data...</div>;
     }
@@ -105,12 +129,15 @@ export default function AdminUsers() {
                             System <span className="text-[#38A36D]">Users</span>
                         </h1>
                     </div>
-                    <button
-                        onClick={() => setIsCreatingAdmin(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-[#D4AF37] text-[#0A190E] rounded-lg hover:bg-white font-bold text-xs uppercase transition-all"
-                    >
-                        <SvgUserPlus className="w-4 h-4" /> Delegate Admin
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <AdminLanguageSwitcher />
+                        <button
+                            onClick={() => setIsCreatingAdmin(true)}
+                            className="flex items-center gap-2 px-4 py-2 bg-[#D4AF37] text-[#0A190E] rounded-lg hover:bg-white font-bold text-xs uppercase transition-all"
+                        >
+                            <SvgUserPlus className="w-4 h-4" /> Delegate Admin
+                        </button>
+                    </div>
                 </div>
             </header>
 
@@ -144,6 +171,7 @@ export default function AdminUsers() {
                                 <th className="p-6">Registry ID</th>
                                 <th className="p-6">Identity</th>
                                 <th className="p-6">Access Level</th>
+                                <th className="p-6">Status</th>
                                 <th className="p-6 text-right">Operations</th>
                             </tr>
                         </thead>
@@ -157,7 +185,22 @@ export default function AdminUsers() {
                                             {user.role}
                                         </span>
                                     </td>
-                                    <td className="p-6 text-right">
+                                    <td className="p-6">
+                                        <span className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${user.active ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 'bg-red-500/10 text-red-500 border border-red-500/20'}`}>
+                                            {user.active ? 'Active' : 'Deactivated'}
+                                        </span>
+                                    </td>
+                                    <td className="p-6 text-right flex justify-end gap-2">
+                                        <button
+                                            onClick={() => handleToggleUserStatus(user)}
+                                            className={`p-2.5 rounded-lg transition-all duration-300 group inline-flex items-center gap-2 ${user.active ? 'bg-orange-500/10 hover:bg-orange-500 text-orange-500 hover:text-white' : 'bg-green-500/10 hover:bg-green-500 text-green-500 hover:text-white'}`}
+                                            title={user.active ? "Deactivate User" : "Activate User"}
+                                        >
+                                            <SvgPower className="w-4 h-4" />
+                                            <span className="text-[10px] font-black uppercase tracking-widest hidden group-hover:block px-1">
+                                                {user.active ? 'Deactivate' : 'Activate'}
+                                            </span>
+                                        </button>
                                         <button
                                             onClick={() => handleDeleteUser(user.id)}
                                             className="p-2.5 bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white rounded-lg transition-all duration-300 group inline-flex items-center gap-2"

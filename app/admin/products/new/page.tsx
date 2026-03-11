@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import { api, Product, Category, ApiError, API_BASE_URL, getAdminToken, formatBase64Image } from "@/lib/api";
+import { AdminLanguageSwitcher } from "@/components/AdminLanguageSwitcher";
 
 const SvgBack = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
@@ -145,7 +146,9 @@ export default function ProductForm() {
                 singleProductImage: product.singleProductImage || "",
                 twoProductImage: product.twoProductImage || "",
                 threeProductImage: product.threeProductImage || "",
-                benefits: product.benefits && product.benefits.length > 0 ? product.benefits : [],
+                benefits: product.benefits && product.benefits.length > 0
+                    ? product.benefits.map(b => ({ svg: b.svg, nutrientName: b.nutrientName, benefitDescription: b.benefitDescription }))
+                    : [],
                 link: product.link || "",
                 servingSize: product.servingSize || "",
                 capsulesPerContainer: product.capsulesPerContainer || "",
@@ -287,13 +290,16 @@ export default function ProductForm() {
             {/* Header */}
             <header className="border-b border-white/10 bg-black/20 backdrop-blur-sm sticky top-0 z-50">
                 <div className="max-w-4xl mx-auto px-6 py-6">
-                    <div className="flex items-center gap-4">
-                        <Link href="/admin/products" className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
-                            <SvgBack className="w-5 h-5" />
-                        </Link>
-                        <h1 className="text-2xl font-medium tracking-tight">
-                            {isEdit ? "Edit Product" : "Add New Product"}
-                        </h1>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <Link href="/admin/products" className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center hover:bg-white/5 transition-colors">
+                                <SvgBack className="w-5 h-5" />
+                            </Link>
+                            <h1 className="text-2xl font-medium tracking-tight">
+                                {isEdit ? "Edit Product" : "Add New Product"}
+                            </h1>
+                        </div>
+                        <AdminLanguageSwitcher />
                     </div>
                 </div>
             </header>
@@ -622,6 +628,17 @@ export default function ProductForm() {
                                         }}
                                         className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg focus:outline-none focus:border-[#38A36D] transition-colors text-sm text-white placeholder-white/20"
                                         placeholder="SVG Icon Code (<svg>...</svg>)"
+                                    />
+                                    <input
+                                        type="text"
+                                        value={benefit.nutrientName || ""}
+                                        onChange={(e) => {
+                                            const newBenefits = [...formData.benefits];
+                                            newBenefits[index].nutrientName = e.target.value;
+                                            setFormData(prev => ({ ...prev, benefits: newBenefits }));
+                                        }}
+                                        className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg focus:outline-none focus:border-[#38A36D] transition-colors text-sm text-white placeholder-white/20"
+                                        placeholder="Nutrient Name (e.g. Protein)"
                                     />
                                     <textarea
                                         value={benefit.benefitDescription || ""}

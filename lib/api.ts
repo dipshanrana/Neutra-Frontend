@@ -1,5 +1,5 @@
 // API Configuration
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8079/api";
 
 // Helper function to get auth token
 export const getAuthToken = (): string | null => {
@@ -52,22 +52,23 @@ async function apiFetch<T>(
   requiresAuth = false
 ): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
+  const token = requiresAuth ? (getAdminToken() || getAuthToken()) : null;
+  console.log(`[NX API] ${options.method || 'GET'} ${url}`, {
+    hasToken: !!token,
+    hasBody: !!options.body
+  });
+
   const headers: Record<string, string> = {
     ...(options.headers as Record<string, string>),
   };
 
-  // Only set Content-Type if it's not FormData (browser handles boundary for FormData)
-  if (!(options.body instanceof FormData)) {
+  // Only set Content-Type if it's not FormData AND there is a body
+  if (!(options.body instanceof FormData) && options.body) {
     headers['Content-Type'] = 'application/json';
   }
 
-  if (requiresAuth) {
-    // Always prioritize admin token for authenticated requests,
-    // since all requiresAuth endpoints are admin-only operations
-    const token = getAdminToken() || getAuthToken();
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
+  if (requiresAuth && token) {
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
   try {
@@ -121,7 +122,18 @@ async function apiFetch<T>(
       return undefined as T;
     }
 
-    return await response.json();
+    // Safely parse JSON or return undefined for empty bodies
+    const text = await response.text();
+    if (!text) {
+      return undefined as T;
+    }
+
+    try {
+      return JSON.parse(text);
+    } catch (e) {
+      // If it's not JSON but was successful, just return the text as casted type
+      return text as unknown as T;
+    }
   } catch (error) {
     if (error instanceof ApiError) {
       throw error;
@@ -259,6 +271,7 @@ export interface User {
   id: number;
   username: string;
   role: 'CUSTOMER' | 'ADMIN';
+  active: boolean; // Added for deactivation status
 }
 
 export interface CreateAdminRequest {
@@ -276,6 +289,16 @@ export const adminApi = {
   getAllUsers: () =>
     apiFetch<User[]>('/admin/users', {}, true),
 
+  deactivateUser: (id: number) =>
+    apiFetch<User>(`/admin/users/${id}/deactivate`, {
+      method: 'PATCH',
+    }, true),
+
+  activateUser: (id: number) =>
+    apiFetch<User>(`/admin/users/${id}/activate`, {
+      method: 'PATCH',
+    }, true),
+
   deleteUser: (id: number) =>
     apiFetch<void>(`/admin/users/${id}`, {
       method: 'DELETE',
@@ -288,6 +311,8 @@ export interface Category {
   id?: number;
   name: string;
   svg: string;
+  badge?: string; // Match documentation
+  shortDescription?: string; // Match documentation
   image?: string; // Base64 string from backend
 }
 
@@ -338,6 +363,7 @@ export interface Product {
   twoProductImage?: string;
   threeProductImage?: string;
   images: string[];
+  benefitsParagraph?: string; // Match documentation
   benefits: {
     svg: string;
     nutrientName: string;

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api, Category, logout } from "@/lib/api";
+import { AdminLanguageSwitcher } from "@/components/AdminLanguageSwitcher";
 
 const SvgArrowLeft = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
@@ -144,12 +145,15 @@ export default function AdminCategories() {
                             Manage <span className="text-[#38A36D]">Categories</span>
                         </h1>
                     </div>
-                    <button
-                        onClick={() => setIsCreating(true)}
-                        className="flex items-center gap-2 px-4 py-2 bg-[#D4AF37] text-[#0A190E] rounded-lg hover:bg-white font-bold text-xs uppercase transition-all"
-                    >
-                        <SvgPlus className="w-4 h-4" /> Add Category
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <AdminLanguageSwitcher />
+                        <button
+                            onClick={() => setIsCreating(true)}
+                            className="flex items-center gap-2 px-4 py-2 bg-[#D4AF37] text-[#0A190E] rounded-lg hover:bg-white font-bold text-xs uppercase transition-all"
+                        >
+                            <SvgPlus className="w-4 h-4" /> Add Category
+                        </button>
+                    </div>
                 </div>
             </header>
 

@@ -1,9 +1,9 @@
 # Nutra Backend — API Endpoints Documentation
 
-> **Base URL:** `http://localhost:8080/api`
+> **Base URL:** `http://localhost:8079/api`
 >
 > All endpoints below are relative to this base URL.
-> For example, `POST /auth/login` means `POST http://localhost:8080/api/auth/login`
+> For example, `POST /auth/login` means `POST http://localhost:8079/api/auth/login`
 
 ---
 

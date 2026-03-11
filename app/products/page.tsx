@@ -8,6 +8,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { api, Product, Category, getProductMainImage } from "@/lib/api";
 import { Search, SlidersHorizontal, ShoppingCart, Star, Check, Heart } from "lucide-react";
+import { useCurrency } from "@/components/CurrencyContext";
 
 
 
@@ -23,6 +24,7 @@ function ShopContent() {
     const [selectedCategory, setSelectedCategory] = useState(categoryParam || "");
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
+    const { formatPrice } = useCurrency();
 
     useEffect(() => { loadInitialData(); }, [categoryParam, searchParam]);
 
@@ -70,7 +72,7 @@ function ShopContent() {
             <Navbar />
 
             {/* -- Page Header --- */}
-            <div className="bg-white border-b border-stone-200 pt-24 pb-10 text-center px-4 mt-[80px]">
+            <div className="bg-white border-b border-stone-200 pt-10 pb-10 text-center px-4 mt-[80px]">
                 <div className="max-w-2xl mx-auto">
                     <span className="font-heading font-semibold text-[10px] text-brand-secondary uppercase tracking-[0.3em] block mb-3">Premium Collection</span>
                     <h1 className="font-heading font-semibold text-[#2A401E] text-3xl sm:text-5xl lg:text-6xl tracking-tight mb-3">
@@ -225,14 +227,14 @@ function ShopContent() {
                                                     <div className="flex items-center gap-1.5 mb-1">
                                                         <span className="font-sans text-stone-500 text-[12px] uppercase tracking-wider">MRP :</span>
                                                         <span className="font-sans text-stone-400 text-[12px] line-through decoration-stone-300">
-                                                            ₹ {currentMp?.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                            {formatPrice(currentMp)}
                                                         </span>
                                                     </div>
                                                 )}
                                                 <div className="flex items-baseline gap-1.5">
                                                     <span className="font-sans font-bold text-[#1D3557] text-[15px]">Price:</span>
                                                     <span className="font-sans font-bold text-[#1D3557] text-[20px]">
-                                                        ₹ {currentSp?.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
+                                                        {formatPrice(currentSp)}
                                                     </span>
                                                 </div>
                                                 <div className="text-[11px] text-[#D4AF37] font-medium mt-0.5">

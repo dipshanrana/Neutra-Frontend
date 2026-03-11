@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useState, Suspense, useRef } from "react";
 import { useParams } from "next/navigation";
 import { api, productApi, Product, Blog, Information, formatBase64Image, getProductAllImages, getProductMainImage } from "@/lib/api";
+import { useCurrency } from "@/components/CurrencyContext";
 import {
     ShoppingCart, Star, ChevronRight, Truck, ShieldCheck,
     RotateCcw, Plus, Minus, Check, Heart,
@@ -50,6 +51,7 @@ function ProductDetailContent() {
     const [relatedBlog, setRelatedBlog] = useState<any>(null);
     const [relatedBlogs, setRelatedBlogs] = useState<Blog[]>([]);
     const [relatedInfo, setRelatedInfo] = useState<Information[]>([]);
+    const { formatPrice, currency } = useCurrency();
 
     // Zoom state
     const [zoomPos, setZoomPos] = useState({ x: 0, y: 0 });
@@ -362,14 +364,14 @@ function ProductDetailContent() {
 
                                         <div className="px-5 py-3 border-b border-stone-100">
                                             <div className="flex flex-col gap-0.5 mb-2">
-                                                <span className="font-sans text-stone-400 text-[13px]">MRP : <span className="line-through">₹ {displayMp.toLocaleString()}</span></span>
+                                                <span className="font-sans text-stone-400 text-[13px]">MRP : <span className="line-through">{formatPrice(displayMp)}</span></span>
                                                 <div className="flex items-center gap-2">
                                                     <span className="font-sans font-bold text-[#252422] text-[18px]">Price:</span>
-                                                    <span className="font-sans font-bold text-[#252422] text-[24px]">₹ {displaySp.toLocaleString()}</span>
+                                                    <span className="font-sans font-bold text-[#252422] text-[24px]">{formatPrice(displaySp)}</span>
                                                     <span className="text-emerald-500 font-bold text-[14px]">{savePct}% off</span>
                                                     <div className="flex items-center gap-1 ml-2 text-stone-500 font-sans text-[12px]">
                                                         <span>Get {Math.round(displaySp * 0.02)} HK Cash</span>
-                                                        <div className="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center text-[10px] text-white font-bold">₹</div>
+                                                        <div className="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center text-[10px] text-white font-bold">{currency.symbol}</div>
                                                     </div>
                                                 </div>
                                                 <div className="text-[11px] text-stone-400 font-sans font-medium">Inclusive of all taxes</div>
@@ -433,7 +435,7 @@ function ProductDetailContent() {
                                                                 className={`flex flex-col items-center justify-center py-3 rounded-xl border transition-all duration-200 text-center gap-1.5 ${isActive ? "border-brand-primary bg-emerald-50/20" : "border-stone-100 bg-white hover:border-stone-200"}`}
                                                             >
                                                                 <span className={`font-sans font-bold text-[13px] ${isActive ? "text-[#2A401E]" : "text-stone-700"}`}>{b.label}</span>
-                                                                <span className="font-sans text-[11px] text-stone-400">₹ {(b.sp as number).toLocaleString()}</span>
+                                                                <span className="font-sans text-[11px] text-stone-400">{formatPrice(b.sp as number)}</span>
                                                             </button>
                                                         );
                                                     })}
@@ -716,12 +718,12 @@ function ProductDetailContent() {
                                                     {relMp > relSp && (
                                                         <div className="flex items-center gap-1.5 mb-1">
                                                             <span className="font-sans text-stone-500 text-[11px] uppercase">MRP :</span>
-                                                            <span className="font-sans text-stone-400 text-[11px] line-through decoration-stone-300">₹ {relMp.toLocaleString()}</span>
+                                                            <span className="font-sans text-stone-400 text-[11px] line-through decoration-stone-300">{formatPrice(relMp)}</span>
                                                         </div>
                                                     )}
                                                     <div className="flex items-baseline gap-1.5">
                                                         <span className="font-outfit font-bold text-[#252422] text-[14px]">Price:</span>
-                                                        <span className="font-outfit font-bold text-[#252422] text-[18px]">₹ {relSp.toLocaleString()}</span>
+                                                        <span className="font-outfit font-bold text-[#252422] text-[18px]">{formatPrice(relSp)}</span>
                                                     </div>
                                                     <div className="text-[10px] text-brand-primary font-medium mt-0.5">Inclusive of all taxes</div>
                                                 </div>

@@ -145,7 +145,9 @@ export default function ProductForm() {
                 singleProductImage: product.singleProductImage || "",
                 twoProductImage: product.twoProductImage || "",
                 threeProductImage: product.threeProductImage || "",
-                benefits: product.benefits && product.benefits.length > 0 ? product.benefits : [],
+                benefits: product.benefits && product.benefits.length > 0
+                    ? product.benefits.map(b => ({ svg: b.svg, nutrientName: b.nutrientName, benefitDescription: b.benefitDescription }))
+                    : [],
                 link: product.link || "",
                 servingSize: product.servingSize || "",
                 capsulesPerContainer: product.capsulesPerContainer || "",
@@ -612,6 +614,17 @@ export default function ProductForm() {
                                         }}
                                         className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg focus:outline-none focus:border-[#38A36D] transition-colors text-sm text-white placeholder-white/20"
                                         placeholder="SVG Icon Code (<svg>...</svg>)"
+                                    />
+                                    <input
+                                        type="text"
+                                        value={benefit.nutrientName || ""}
+                                        onChange={(e) => {
+                                            const newBenefits = [...formData.benefits];
+                                            newBenefits[index].nutrientName = e.target.value;
+                                            setFormData(prev => ({ ...prev, benefits: newBenefits }));
+                                        }}
+                                        className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg focus:outline-none focus:border-[#38A36D] transition-colors text-sm text-white placeholder-white/20"
+                                        placeholder="Nutrient Name (e.g. Protein)"
                                     />
                                     <textarea
                                         value={benefit.benefitDescription || ""}

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api, logout } from "@/lib/api";
+import { AdminLanguageSwitcher } from "@/components/AdminLanguageSwitcher";
 
 const SvgBox = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
@@ -120,13 +121,16 @@ export default function AdminDashboard() {
                             {admin.username}
                         </span>
                     </div>
-                    <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-2 px-4 py-2 border border-white/10 rounded-lg hover:bg-white/5 transition-colors"
-                    >
-                        <SvgLogout className="w-4 h-4" />
-                        <span className="text-sm font-medium">Logout</span>
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <AdminLanguageSwitcher />
+                        <button
+                            onClick={handleLogout}
+                            className="flex items-center gap-2 px-4 py-2 border border-white/10 rounded-lg hover:bg-white/5 transition-colors"
+                        >
+                            <SvgLogout className="w-4 h-4" />
+                            <span className="text-sm font-medium">Logout</span>
+                        </button>
+                    </div>
                 </div>
             </header>
 

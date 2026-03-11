@@ -33,6 +33,7 @@ export const metadata: Metadata = {
 };
 
 import AnalyticsTracker from "@/components/AnalyticsTracker";
+import { CurrencyProvider } from "@/components/CurrencyContext";
 
 export default function RootLayout({
   children,
@@ -40,8 +41,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${cormorant.variable} ${spaceMono.variable} ${outfit.variable} ${inter.variable} font-sans antialiased bg-[#ffffff] text-[#252422]`}
       >
         {/* Global SEO Schema */}
@@ -80,8 +82,10 @@ export default function RootLayout({
           }}
         />
 
-        <AnalyticsTracker />
-        {children}
+        <CurrencyProvider>
+          <AnalyticsTracker />
+          {children}
+        </CurrencyProvider>
 
         {/* Google Translate API Scripts */}
         <script
@@ -187,6 +191,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-
-

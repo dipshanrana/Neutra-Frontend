@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api, Blog, ApiError } from "@/lib/api";
+import { AdminLanguageSwitcher } from "@/components/AdminLanguageSwitcher";
 
 export default function AdminBlogs() {
     const router = useRouter();
@@ -45,12 +46,15 @@ export default function AdminBlogs() {
                             Manage <span className="text-[#38A36D]">Blogs</span>
                         </h1>
                     </div>
-                    <Link
-                        href="/admin/blogs/new"
-                        className="px-6 py-3 bg-[#D4AF37] text-[#0A190E] rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-white transition-colors"
-                    >
-                        + New Blog
-                    </Link>
+                    <div className="flex items-center gap-3">
+                        <AdminLanguageSwitcher />
+                        <Link
+                            href="/admin/blogs/new"
+                            className="px-6 py-3 bg-[#D4AF37] text-[#0A190E] rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-white transition-colors"
+                        >
+                            + New Blog
+                        </Link>
+                    </div>
                 </div>
             </header>
 

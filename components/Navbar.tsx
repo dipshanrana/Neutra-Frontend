@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { api, Category, getCurrentUser, logout } from "@/lib/api";
+import { useCurrency } from "@/components/CurrencyContext";
+import { LANGUAGE_CURRENCY_MAP } from "@/lib/currency";
 
 const SvgSearch = ({ className, strokeWidth = 1.5 }: { className?: string, strokeWidth?: number }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor" strokeWidth={strokeWidth}>
@@ -38,6 +40,7 @@ export function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [user, setUser] = useState<any>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { setLanguage, langCode: activeLang } = useCurrency();
 
   const handleSearch = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -140,33 +143,36 @@ export function Navbar() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h4.6a2 2 0 001.838-1.234l.321-.804A2 2 0 0019.122 8H17a2 2 0 01-2-2V4.5A1.5 1.5 0 0013.5 3h-1.1a2 2 0 00-1.838 1.234l-.321.804A2 2 0 018.322 8H7a2 2 0 01-2-2V3a1 1 0 00-1-1h-.5a1 1 0 00-1 1v.935z" />
                 </svg>
                 <span id="current_language_label">Language</span>
+                <span className="text-brand-primary font-bold opacity-70">{LANGUAGE_CURRENCY_MAP[activeLang]?.symbol ?? 'Rs.'}</span>
                 <svg className="w-3 h-3 opacity-40 transition-transform group-hover/lang:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
 
               <div className="absolute right-0 top-full pt-2 opacity-0 invisible group-hover/lang:opacity-100 group-hover/lang:visible transition-all duration-300 scale-95 group-hover/lang:scale-100 z-[100]">
-                <div className="w-44 bg-white rounded-2xl shadow-2xl border border-[#252422]/5 p-2 grid gap-1 overflow-hidden">
+                <div className="w-52 bg-white rounded-2xl shadow-2xl border border-[#252422]/5 p-2 grid gap-1 overflow-hidden">
                   {[
-                    { name: 'English', code: 'en' },
-                    { name: 'Spanish', code: 'es' },
-                    { name: 'French', code: 'fr' },
-                    { name: 'German', code: 'de' },
-                    { name: 'Chinese', code: 'zh-CN' },
-                    { name: 'Japanese', code: 'ja' },
-                    { name: 'Nepali', code: 'ne' },
-                    { name: 'Hindi', code: 'hi' },
+                    { name: 'English', code: 'en', flag: '🇬🇧' },
+                    { name: 'Spanish', code: 'es', flag: '🇪🇸' },
+                    { name: 'French', code: 'fr', flag: '🇫🇷' },
+                    { name: 'German', code: 'de', flag: '🇩🇪' },
+                    { name: 'Chinese', code: 'zh-CN', flag: '🇨🇳' },
+                    { name: 'Japanese', code: 'ja', flag: '🇯🇵' },
+                    { name: 'Nepali', code: 'ne', flag: '🇳🇵' },
+                    { name: 'Hindi', code: 'hi', flag: '🇮🇳' },
                   ].map((lang) => (
                     <button
                       key={lang.code}
                       onClick={() => {
                         document.cookie = `googtrans=/en/${lang.code}; path=/`;
+                        setLanguage(lang.code);
                         window.location.reload();
                       }}
-                      className="flex items-center justify-between px-4 py-2.5 rounded-xl hover:bg-emerald-50 transition-colors text-[13px] font-medium text-[#252422]/70 hover:text-brand-primary"
+                      className={`flex items-center gap-2.5 w-full px-3 py-2.5 rounded-xl hover:bg-emerald-50 transition-colors text-[13px] font-medium hover:text-brand-primary ${activeLang === lang.code ? 'text-brand-primary bg-emerald-50' : 'text-[#252422]/70'}`}
                     >
-                      {lang.name}
-                      <span className="text-[10px] opacity-30 uppercase font-black">{lang.code}</span>
+                      <span className="text-base leading-none">{lang.flag}</span>
+                      <span className="flex-1 text-left">{lang.name}</span>
+                      <span className="text-[11px] font-bold opacity-40">{LANGUAGE_CURRENCY_MAP[lang.code]?.symbol ?? ''}</span>
                     </button>
                   ))}
                 </div>
@@ -297,20 +303,28 @@ export function Navbar() {
             <p className="text-[10px] font-black tracking-[0.2em] text-brand-primary/60 uppercase mb-4">Display Language</p>
             <div className="flex flex-wrap gap-2">
               {[
-                { name: 'English', code: 'en' },
-                { name: 'Hindi', code: 'hi' },
-                { name: 'Nepali', code: 'ne' },
-                { name: 'Spanish', code: 'es' },
-                { name: 'French', code: 'fr' },
+                { name: 'English', code: 'en', flag: '🇬🇧' },
+                { name: 'Hindi', code: 'hi', flag: '🇮🇳' },
+                { name: 'Nepali', code: 'ne', flag: '🇳🇵' },
+                { name: 'Spanish', code: 'es', flag: '🇪🇸' },
+                { name: 'French', code: 'fr', flag: '🇫🇷' },
+                { name: 'German', code: 'de', flag: '🇩🇪' },
+                { name: 'Chinese', code: 'zh-CN', flag: '🇨🇳' },
+                { name: 'Japanese', code: 'ja', flag: '🇯🇵' },
               ].map(lang => (
                 <button
                   key={lang.code}
                   onClick={() => {
                     document.cookie = `googtrans=/en/${lang.code}; path=/`;
+                    setLanguage(lang.code);
                     window.location.reload();
                   }}
-                  className="px-4 py-2 bg-white border border-emerald-100 rounded-full text-xs font-bold text-[#252422]/70 hover:bg-brand-primary hover:text-white hover:border-brand-primary transition-all shadow-sm"
+                  className={`flex items-center gap-1.5 px-3 py-2 bg-white border rounded-full text-xs font-bold transition-all shadow-sm ${activeLang === lang.code
+                    ? 'border-brand-primary text-brand-primary bg-emerald-50'
+                    : 'border-emerald-100 text-[#252422]/70 hover:bg-brand-primary hover:text-white hover:border-brand-primary'
+                    }`}
                 >
+                  <span className="text-sm leading-none">{lang.flag}</span>
                   {lang.name}
                 </button>
               ))}
