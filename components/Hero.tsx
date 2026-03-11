@@ -1,4 +1,4 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 
 const SvgCheckCircle = ({ className, strokeWidth = 1.5 }: { className?: string, strokeWidth?: number }) => (
@@ -78,13 +78,13 @@ export function Hero() {
 
             <div className="relative w-full h-full flex items-center justify-center scale-75 sm:scale-90 lg:scale-100">
               <div className="absolute z-30 transition-transform duration-700 hover:-translate-y-4">
-                <Image src="/multi-vit.png" width={320} height={400} alt="Vitamins" className="w-[180px] sm:w-[260px] lg:w-[320px] object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.15)] mix-blend-multiply" />
+                <Image src="/multi-vit.png" width={320} height={400} alt="Vitamins" priority className="w-[180px] sm:w-[260px] lg:w-[320px] object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.15)] mix-blend-multiply" />
               </div>
               <div className="absolute z-20 -left-4 sm:-left-8 bottom-12 sm:bottom-24 -rotate-6 transition-transform duration-700 hover:rotate-0 hover:z-40 hover:-translate-y-2">
-                <Image src="/protein.png" width={240} height={300} alt="Protein" className="w-[140px] sm:w-[200px] lg:w-[240px] object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.1)] mix-blend-multiply" />
+                <Image src="/protein.png" width={240} height={300} alt="Protein" priority className="w-[140px] sm:w-[200px] lg:w-[240px] object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.1)] mix-blend-multiply" />
               </div>
               <div className="absolute z-20 right-0 sm:right-0 top-12 sm:top-24 rotate-6 transition-transform duration-700 hover:rotate-0 hover:z-40 hover:-translate-y-2">
-                <Image src="/fish-oil.png" width={180} height={200} alt="Fish Oil" className="w-[100px] sm:w-[150px] lg:w-[180px] object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.1)] mix-blend-multiply" />
+                <Image src="/fish-oil.png" width={180} height={200} alt="Fish Oil" priority className="w-[100px] sm:w-[150px] lg:w-[180px] object-contain drop-shadow-[0_20px_40px_rgba(29,53,87,0.1)] mix-blend-multiply" />
               </div>
             </div>
 

@@ -1,6 +1,32 @@
 // API Configuration
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8079/api";
 
+// Simple in-memory cache to prevent redundant large fetches (e.g. Base64 images)
+const apiCache: Record<string, { data: any, timestamp: number }> = {};
+const CACHE_TTL = 300000; // 5 minutes
+
+function getCache<T>(key: string): T | null {
+  const cached = apiCache[key];
+  if (cached && (Date.now() - cached.timestamp < CACHE_TTL)) {
+    return cached.data as T;
+  }
+  return null;
+}
+
+function setCache(key: string, data: any) {
+  apiCache[key] = { data, timestamp: Date.now() };
+}
+
+function clearCache(prefix?: string) {
+  if (!prefix) {
+    Object.keys(apiCache).forEach(k => delete apiCache[k]);
+  } else {
+    Object.keys(apiCache).forEach(k => {
+      if (k.startsWith(prefix)) delete apiCache[k];
+    });
+  }
+}
+
 // Helper function to get auth token
 export const getAuthToken = (): string | null => {
   if (typeof window !== 'undefined') {
@@ -317,28 +343,42 @@ export interface Category {
 }
 
 export const categoryApi = {
-  getAll: () =>
-    apiFetch<Category[]>('/categories'),
+  getAll: async () => {
+    const cached = getCache<Category[]>('/categories');
+    if (cached) return cached;
+    const data = await apiFetch<Category[]>('/categories');
+    setCache('/categories', data);
+    return data;
+  },
 
   getById: (id: number) =>
     apiFetch<Category>(`/categories/${id}`),
 
-  create: (formData: FormData) =>
-    apiFetch<Category>('/categories', {
+  create: async (formData: FormData) => {
+    const res = await apiFetch<Category>('/categories', {
       method: 'POST',
       body: formData,
-    }, true),
+    }, true);
+    clearCache('/categories');
+    return res;
+  },
 
-  update: (id: number, formData: FormData) =>
-    apiFetch<Category>(`/categories/${id}`, {
+  update: async (id: number, formData: FormData) => {
+    const res = await apiFetch<Category>(`/categories/${id}`, {
       method: 'PUT',
       body: formData,
-    }, true),
+    }, true);
+    clearCache('/categories');
+    return res;
+  },
 
-  delete: (id: number) =>
-    apiFetch<void>(`/categories/${id}`, {
+  delete: async (id: number) => {
+    const res = await apiFetch<void>(`/categories/${id}`, {
       method: 'DELETE',
-    }, true),
+    }, true);
+    clearCache('/categories');
+    return res;
+  },
 };
 
 // ==================== Product APIs ====================
@@ -391,8 +431,13 @@ export interface Product {
 }
 
 export const productApi = {
-  getAll: () =>
-    apiFetch<Product[]>('/products'),
+  getAll: async () => {
+    const cached = getCache<Product[]>('/products');
+    if (cached) return cached;
+    const data = await apiFetch<Product[]>('/products');
+    setCache('/products', data);
+    return data;
+  },
 
   getById: (id: number) =>
     apiFetch<Product>(`/products/${id}`),
@@ -406,22 +451,31 @@ export const productApi = {
   getRandom: () =>
     apiFetch<Product[]>('/products/random'),
 
-  create: (formData: FormData) =>
-    apiFetch<Product>('/products', {
+  create: async (formData: FormData) => {
+    const res = await apiFetch<Product>('/products', {
       method: 'POST',
       body: formData,
-    }, true),
+    }, true);
+    clearCache('/products');
+    return res;
+  },
 
-  update: (id: number, formData: FormData) =>
-    apiFetch<Product>(`/products/${id}`, {
+  update: async (id: number, formData: FormData) => {
+    const res = await apiFetch<Product>(`/products/${id}`, {
       method: 'PUT',
       body: formData,
-    }, true),
+    }, true);
+    clearCache('/products');
+    return res;
+  },
 
-  delete: (id: number) =>
-    apiFetch<void>(`/products/${id}`, {
+  delete: async (id: number) => {
+    const res = await apiFetch<void>(`/products/${id}`, {
       method: 'DELETE',
-    }, true),
+    }, true);
+    clearCache('/products');
+    return res;
+  },
 
   // Search APIs
   searchByCategory: (category: string) =>
@@ -527,6 +581,52 @@ export const analyticsApi = {
     apiFetch<AnalyticsStats>('/analytics/stats'),
 };
 
+// ==================== Currency APIs ====================
+
+export interface CurrencyRates {
+  amount: number;
+  base: string;
+  date: string;
+  rates: {
+    [key: string]: number;
+  };
+}
+
+export interface CurrencyConversion {
+  base: string;
+  targetCurrency: string;
+  originalAmount: number;
+  exchangeRate: number;
+  convertedAmount: number;
+  date: string;
+}
+
+export interface ProductPriceConversion {
+  productId: number;
+  productName: string;
+  baseCurrency: string;
+  targetCurrency: string;
+  exchangeRate: number;
+  date: string;
+  singleProductMp: number;
+  singleProductSp: number;
+  twoProductMp: number;
+  twoProductSp: number;
+  threeProductMp: number;
+  threeProductSp: number;
+}
+
+export const currencyApi = {
+  getLatestRates: () =>
+    apiFetch<CurrencyRates>('/currency/rates'),
+
+  convertSingle: (amount: number, currency: string) =>
+    apiFetch<CurrencyConversion>(`/currency/convert?amount=${amount}&currency=${currency}`),
+
+  convertProduct: (productId: number, currency: string) =>
+    apiFetch<ProductPriceConversion>(`/currency/product/${productId}?currency=${currency}`),
+};
+
 // Export all APIs
 export const api = {
   auth: authApi,
@@ -536,6 +636,7 @@ export const api = {
   blogs: blogApi,
   info: infoApi,
   analytics: analyticsApi,
+  currency: currencyApi,
 };
 
 export default api;

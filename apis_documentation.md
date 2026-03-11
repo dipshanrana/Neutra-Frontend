@@ -1,9 +1,10 @@
 # Nutra Backend — API Endpoints Documentation
 
-> **Base URL:** `http://localhost:8079/api`
+> **Base URL:** `http://209.126.86.149:8079`
+> **Base Currency:** `USD` (All product prices are entered in USD)
 >
 > All endpoints below are relative to this base URL.
-> For example, `POST /auth/login` means `POST http://localhost:8079/api/auth/login`
+> For example, `POST /auth/login` means `POST http://209.126.86.149:8079/auth/login`
 
 ---
 
@@ -194,6 +195,48 @@ You can obtain a token by calling the **Login** or **Signup** endpoints.
 
 ---
 
+### 2.3 Deactivate User
+
+| Property    | Value                                |
+|-------------|--------------------------------------|
+| **Method**  | `PATCH`                              |
+| **URL**     | `/admin/users/{id}/deactivate`       |
+| **Auth**    | 🔒 ADMIN                            |
+
+> Disables a user account. Deactivated users cannot log in.
+
+**Success Response (200 OK):** Updated user object with `"active": false`.
+
+---
+
+### 2.4 Activate User
+
+| Property    | Value                                |
+|-------------|--------------------------------------|
+| **Method**  | `PATCH`                              |
+| **URL**     | `/admin/users/{id}/activate`         |
+| **Auth**    | 🔒 ADMIN                            |
+
+> Re-enables a previously deactivated user account.
+
+**Success Response (200 OK):** Updated user object with `"active": true`.
+
+---
+
+### 2.5 Delete User
+
+| Property    | Value                                |
+|-------------|--------------------------------------|
+| **Method**  | `DELETE`                             |
+| **URL**     | `/admin/users/{id}`                  |
+| **Auth**    | 🔒 ADMIN                            |
+
+> Permanently removes a user from the system. This action is irreversible.
+
+**Success Response (204 No Content):** Empty body.
+
+---
+
 ---
 
 ## 3. Category Endpoints
@@ -205,21 +248,27 @@ You can obtain a token by calling the **Login** or **Signup** endpoints.
 | **Method**  | `POST`                 |
 | **URL**     | `/categories`          |
 | **Auth**    | 🔒 ADMIN              |
+| **Content-Type** | `multipart/form-data` |
 
-**Request Body:**
-```json
-{
-  "name": "Supplements",
-  "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2L2 7l10 5 10-5-10-5z'/></svg>"
-}
-```
+**Request Parts:**
+1.  **`category` (application/json)**:
+    ```json
+    {
+      "name": "Supplements",
+      "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2L2 7l10 5 10-5-10-5z'/></svg>",
+      "badge": "NEW",
+      "shortDescription": "High‑quality supplement category"
+    }
+    ```
+2.  **`image` (File)**: Optional image file for the category.
 
 **Success Response (201 Created):**
 ```json
 {
   "id": 1,
   "name": "Supplements",
-  "svg": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2L2 7l10 5 10-5-10-5z'/></svg>"
+  "svg": "<svg>...</svg>",
+  "image": "data:image/png;base64,..."
 }
 ```
 
@@ -284,14 +333,9 @@ You can obtain a token by calling the **Login** or **Signup** endpoints.
 | **Method**  | `PUT`                  |
 | **URL**     | `/categories/{id}`     |
 | **Auth**    | 🔒 ADMIN              |
+| **Content-Type** | `multipart/form-data` |
 
-**Request Body:**
-```json
-{
-  "name": "Updated Category Name",
-  "svg": "<svg>...updated...</svg>"
-}
-```
+**Request Parts:** Same as **Create Category (3.1)**. Include the `category` JSON with the new `badge` and `shortDescription` fields and an optional `image` file.
 
 **Success Response (200 OK):** Updated `Category` object.
 
@@ -323,6 +367,7 @@ You can obtain a token by calling the **Login** or **Signup** endpoints.
 | **Content-Type** | `multipart/form-data` |
 
 > If the category name doesn't exist, it is automatically created.
+> **Note:** All product prices (SP/MP) are stored and managed in **USD**.
 
 **Request Parts (Multipart):**
 
@@ -342,15 +387,14 @@ You can obtain a token by calling the **Login** or **Signup** endpoints.
       "twoProductSp": 5000.0,
       "threeProductMp": 10500.0,
       "threeProductSp": 7000.0,
+      "benefitsParagraph": "Our premium whey protein isolate is designed for athletes who demand the best. It provides a clean source of protein that is rapidly absorbed by the body.",
       "benefits": [
         {
           "svg": "<svg>...</svg>",
-          "nutrientName": "Protein",
           "benefitDescription": "Rapid absorption for quick recovery"
         },
         {
           "svg": "<svg>...</svg>",
-          "nutrientName": "Purity",
           "benefitDescription": "High bioavailability and purity"
         }
       ],
@@ -406,7 +450,7 @@ formData.append('twoProductImage', fileInput2.files[0]);
 formData.append('threeProductImage', fileInput3.files[0]);
 
 // 3. Send request
-fetch('/api/products', {
+fetch('/products', {
   method: 'POST',
   headers: { 'Authorization': 'Bearer ' + token },
   body: formData // Content-Type is set automatically by the browser
@@ -431,15 +475,14 @@ fetch('/api/products', {
   "singleProductImage": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==",
   "twoProductImage": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==",
   "threeProductImage": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==",
+  "benefitsParagraph": "Our premium whey protein isolate is designed for athletes who demand the best...",
   "benefits": [
     {
       "svg": "<svg>...</svg>",
-      "nutrientName": "Protein",
       "benefitDescription": "Rapid absorption for quick recovery"
     },
     {
       "svg": "<svg>...</svg>",
-      "nutrientName": "Purity",
       "benefitDescription": "High bioavailability and purity"
     }
   ],
@@ -745,7 +788,7 @@ fetch('/api/products', {
 | **URL**     | `/blogs/{id}`          |
 | **Auth**    | 🔒 ADMIN              |
 
-**Success Response (204 No Content):** Empty body.
+**Success Response (24 No Content):** Empty body.
 
 ---
 
@@ -855,7 +898,7 @@ fetch('/api/products', {
 
 ## 8. Analytics Endpoints
 
-### 8.1 Record a Visit
+### 8.1 Record a Initial Visit
 
 | Property    | Value                  |
 |-------------|------------------------|
@@ -899,7 +942,94 @@ fetch('/api/products', {
 
 ---
 
-## 9. Error Responses
+## 9. Currency Endpoints
+
+> Publicly accessible endpoints for real-time exchange rates and price conversions.
+
+### 9.1 Get Latest Rates
+
+| Property    | Value                  |
+|-------------|------------------------|
+| **Method**  | `GET`                  |
+| **URL**     | `/currency/rates`      |
+| **Auth**    | None (Public)          |
+
+> Returns all available exchange rates with **USD** as the base currency.
+
+**Success Response (200 OK):**
+```json
+{
+  "amount": 1.0,
+  "base": "USD",
+  "date": "2026-03-11",
+  "rates": {
+    "INR": 91.96,
+    "EUR": 0.94,
+    "GBP": 0.78,
+    "JPY": 151.2
+  }
+}
+```
+
+---
+
+### 9.2 Convert Single Amount
+
+| Property        | Value                                   |
+|-----------------|-----------------------------------------|
+| **Method**      | `GET`                                   |
+| **URL**         | `/currency/convert?amount=X&currency=Y` |
+| **Auth**        | None (Public)                           |
+| **Query Params**| `amount` (default 1.0)                  |
+|                 | `currency` (e.g. INR, EUR)              |
+
+**Success Response (200 OK):**
+```json
+{
+  "base": "USD",
+  "targetCurrency": "INR",
+  "originalAmount": 49.99,
+  "exchangeRate": 91.96,
+  "convertedAmount": 4597.52,
+  "date": "2026-03-11"
+}
+```
+
+---
+
+### 9.3 Convert All Product Prices
+
+| Property        | Value                                   |
+|-----------------|-----------------------------------------|
+| **Method**      | `GET`                                   |
+| **URL**         | `/currency/product/{id}?currency=INR` |
+| **Auth**        | None (Public)                           |
+
+> Fetches a product and converts all 6 price fields (SP/MP for all pack sizes) to the target currency.
+
+**Success Response (200 OK):**
+```json
+{
+  "productId": 1,
+  "productName": "Nutra Omega 3",
+  "baseCurrency": "USD",
+  "targetCurrency": "INR",
+  "exchangeRate": 91.96,
+  "date": "2026-03-11",
+  "singleProductMp": 4597.52,
+  "singleProductSp": 3677.52,
+  "twoProductMp": 8349.52,
+  "twoProductSp": 6897.52,
+  "threeProductMp": 11977.52,
+  "threeProductSp": 9677.52
+}
+```
+
+---
+
+---
+
+## 10. Error Responses
 
 All errors follow a consistent JSON format:
 
@@ -919,7 +1049,7 @@ All errors follow a consistent JSON format:
 
 ---
 
-## 10. Quick Reference Table
+## 11. Quick Reference Table
 
 | #  | Method   | Endpoint                                 | Auth         | Description                              |
 |----|----------|------------------------------------------|--------------|------------------------------------------|
@@ -928,41 +1058,47 @@ All errors follow a consistent JSON format:
 | 3  | `POST`   | `/auth/signup`                           | None         | Register as Customer                     |
 | 4  | `POST`   | `/admin/users/admin`                     | 🔒 ADMIN    | Create a new Admin user                  |
 | 5  | `GET`    | `/admin/users`                           | 🔒 ADMIN    | List all users                           |
-| 6  | `POST`   | `/categories`                            | 🔒 ADMIN    | Create a category                        |
-| 7  | `GET`    | `/categories`                            | None         | Get all categories                       |
-| 8  | `GET`    | `/categories/{id}`                       | None         | Get category by ID                       |
-| 9  | `PUT`    | `/categories/{id}`                       | 🔒 ADMIN    | Update a category                        |
-| 10 | `DELETE` | `/categories/{id}`                       | 🔒 ADMIN    | Delete a category                        |
-| 11 | `POST`   | `/products`                              | 🔒 ADMIN    | Create a product                         |
-| 12 | `GET`    | `/products`                              | None         | Get all products                         |
-| 13 | `GET`    | `/products/{id}`                         | None         | Get product by ID                        |
-| 14 | `PUT`    | `/products/{id}`                         | 🔒 ADMIN    | Update a product                         |
-| 15 | `DELETE` | `/products/{id}`                         | 🔒 ADMIN    | Delete a product                         |
-| 16 | `GET`    | `/products/categories`                   | None         | Get all category names                   |
-| 17 | `GET`    | `/products/categories/sample-products`   | None         | Get 1 product from 3 random categories   |
-| 18 | `GET`    | `/products/random`                       | None         | Get all products (random order)          |
-| 19 | `GET`    | `/products/search/category?category=X`   | None         | Search products by category              |
-| 20 | `GET`    | `/products/search/name?name=X`           | None         | Search products by name                  |
-| 21 | `GET`    | `/products/search/price?min=X&max=Y`     | None         | Search products by price range           |
-| 22 | `POST`   | `/blogs`                                 | 🔒 ADMIN    | Create a blog post                       |
-| 23 | `GET`    | `/blogs`                                 | None         | Get all blog posts                       |
-| 24 | `GET`    | `/blogs/{id}`                            | None         | Get blog by ID                           |
-| 25 | `PUT`    | `/blogs/{id}`                            | 🔒 ADMIN    | Update a blog post                       |
-| 26 | `DELETE` | `/blogs/{id}`                            | 🔒 ADMIN    | Delete a blog post                       |
-| 27 | `POST`   | `/information`                           | 🔒 ADMIN    | Create an information page               |
-| 28 | `GET`    | `/information`                           | None         | Get all information pages                |
-| 29 | `GET`    | `/information/{id}`                      | None         | Get information by ID                    |
-| 30 | `PUT`    | `/information/{id}`                      | 🔒 ADMIN    | Update an information page               |
-| 31 | `DELETE` | `/information/{id}`                      | 🔒 ADMIN    | Delete an information page               |
-| 32 | `POST`   | `/analytics/record`                      | None         | Record a new visit based on IP           |
-| 33 | `GET`    | `/analytics/stats`                       | None         | Get analytics statistics                 |
+| 6  | `PATCH`  | `/admin/users/{id}/deactivate`           | 🔒 ADMIN    | Deactivate user login (reversible)       |
+| 7  | `PATCH`  | `/admin/users/{id}/activate`             | 🔒 ADMIN    | Reactivate user login                    |
+| 8  | `DELETE` | `/admin/users/{id}`                      | 🔒 ADMIN    | Permanently delete user account          |
+| 9  | `POST`   | `/categories`                            | 🔒 ADMIN    | Create a category                        |
+| 10 | `GET`    | `/categories`                            | None         | Get all categories                       |
+| 11 | `GET`    | `/categories/{id}`                       | None         | Get category by ID                       |
+| 12 | `PUT`    | `/categories/{id}`                       | 🔒 ADMIN    | Update a category                        |
+| 13 | `DELETE` | `/categories/{id}`                       | 🔒 ADMIN    | Delete a category                        |
+| 14 | `POST`   | `/products`                              | 🔒 ADMIN    | Create a product                         |
+| 15 | `GET`    | `/products`                              | None         | Get all products                         |
+| 16 | `GET`    | `/products/{id}`                         | None         | Get product by ID                        |
+| 17 | `PUT`    | `/products/{id}`                         | 🔒 ADMIN    | Update a product                         |
+| 18 | `DELETE` | `/products/{id}`                         | 🔒 ADMIN    | Delete a product                         |
+| 19 | `GET`    | `/products/categories`                   | None         | Get all category names                   |
+| 20 | `GET`    | `/products/categories/sample-products`   | None         | Get 1 product from 3 random categories   |
+| 21 | `GET`    | `/products/random`                       | None         | Get all products (random order)          |
+| 22 | `GET`    | `/products/search/category?category=X`   | None         | Search products by category              |
+| 23 | `GET`    | `/products/search/name?name=X`           | None         | Search products by name                  |
+| 24 | `GET`    | `/products/search/price?min=X&max=Y`     | None         | Search products by price range           |
+| 25 | `POST`   | `/blogs`                                 | 🔒 ADMIN    | Create a blog post                       |
+| 26 | `GET`    | `/blogs`                                 | None         | Get all blog posts                       |
+| 27 | `GET`    | `/blogs/{id}`                            | None         | Get blog by ID                           |
+| 28 | `PUT`    | `/blogs/{id}`                            | 🔒 ADMIN    | Update a blog post                       |
+| 29 | `DELETE` | `/blogs/{id}`                            | 🔒 ADMIN    | Delete a blog post                       |
+| 30 | `POST`   | `/information`                           | 🔒 ADMIN    | Create an information page               |
+| 31 | `GET`    | `/information`                           | None         | Get all information pages                |
+| 32 | `GET`    | `/information/{id}`                      | None         | Get information by ID                    |
+| 33 | `PUT`    | `/information/{id}`                      | 🔒 ADMIN    | Update an information page               |
+| 34 | `DELETE` | `/information/{id}`                      | 🔒 ADMIN    | Delete an information page               |
+| 35 | `POST`   | `/analytics/record`                      | None         | Record a new visit based on IP           |
+| 36 | `GET`    | `/analytics/stats`                       | None         | Get analytics statistics                 |
+| 37 | `GET`    | `/currency/rates`                        | None         | Get all latest rates (base USD)          |
+| 38 | `GET`    | `/currency/convert`                      | None         | Convert single USD amount                |
+| 39 | `GET`    | `/currency/product/{id}`                 | None         | Convert all product prices (one call)    |
 ---
 
 ---
 
-## 11. Working with Images (Frontend Guide)
+## 12. Working with Images (Frontend Guide)
 
-### 11.1 Uploading Images (Multipart/Form-Data)
+### 9.1 Uploading Images (Multipart/Form-Data)
 When creating or updating a product, images must be sent as binary files using the `FormData` browser API. Do **not** send raw JSON for these endpoints.
 
 **Steps:**
@@ -1005,7 +1141,7 @@ const response = await fetch('/api/products', {
 });
 ```
 
-### 11.2 Displaying Images (Fetching)
+### 9.2 Displaying Images (Fetching)
 The backend uses a custom serializer that automatically adds the `data:image/png;base64,` prefix to all byte-array fields. 
 
 **This means you can use the response strings directly in your `src` attribute.**

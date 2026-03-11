@@ -75,6 +75,7 @@ export default function ProductForm() {
         singleProductImage: "",
         twoProductImage: "",
         threeProductImage: "",
+        benefitsParagraph: "",
         benefits: [] as { svg: string, nutrientName: string, benefitDescription: string }[],
         link: "",
         servingSize: "",
@@ -146,6 +147,7 @@ export default function ProductForm() {
                 singleProductImage: product.singleProductImage || "",
                 twoProductImage: product.twoProductImage || "",
                 threeProductImage: product.threeProductImage || "",
+                benefitsParagraph: product.benefitsParagraph || "",
                 benefits: product.benefits && product.benefits.length > 0
                     ? product.benefits.map(b => ({ svg: b.svg, nutrientName: b.nutrientName, benefitDescription: b.benefitDescription }))
                     : [],
@@ -234,6 +236,7 @@ export default function ProductForm() {
                 singleProductImage: formData.singleProductImage && formData.singleProductImage.startsWith('http') ? formData.singleProductImage : undefined,
                 twoProductImage: formData.twoProductImage && formData.twoProductImage.startsWith('http') ? formData.twoProductImage : undefined,
                 threeProductImage: formData.threeProductImage && formData.threeProductImage.startsWith('http') ? formData.threeProductImage : undefined,
+                benefitsParagraph: formData.benefitsParagraph,
                 benefits: formData.benefits.filter(b => b.benefitDescription && b.benefitDescription.trim() !== ""),
                 link: formData.link,
                 servingSize: formData.servingSize,
@@ -602,9 +605,21 @@ export default function ProductForm() {
 
                     </div>
 
-                    {/* ==================== BENEFITS SECTION ==================== */}
-                    <div className="space-y-4">
-                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D]">Product Benefits</label>
+                    <div className="space-y-6">
+                        <div className="space-y-4">
+                            <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D]">Benefits Overview</label>
+                            <label className="block text-xs text-white/40 uppercase font-black">Benefits Paragraph</label>
+                            <textarea
+                                value={formData.benefitsParagraph}
+                                onChange={(e) => setFormData(prev => ({ ...prev, benefitsParagraph: e.target.value }))}
+                                rows={4}
+                                className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg focus:outline-none focus:border-[#38A36D] transition-colors text-sm text-white placeholder-white/20 resize-none"
+                                placeholder="A general paragraph introducing the benefits of this product..."
+                            />
+                        </div>
+
+                        <div className="space-y-4">
+                            <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D]">Individual Benefits</label>
                         {formData.benefits.map((benefit, index) => (
                             <div key={index} className="p-4 bg-white/5 border border-white/10 rounded-xl space-y-3 relative">
                                 <button
@@ -662,8 +677,9 @@ export default function ProductForm() {
                             + Add Benefit
                         </button>
                     </div>
+                </div>
 
-                    {/* ==================== SUPPLEMENT FACTS ==================== */}
+                {/* ==================== SUPPLEMENT FACTS ==================== */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D] mb-3">Serving Size</label>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
@@ -186,14 +186,20 @@ function ShopContent() {
                                             {imageSrc.startsWith("http") || imageSrc.startsWith("data:") ? (
                                                 <img
                                                     src={imageSrc}
-                                                    alt={p.name}
+                                                    alt={p.name || "Product Image"}
+                                                    width={400}
+                                                    height={400}
+                                                    loading="lazy"
+                                                    decoding="async"
                                                     className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm"
                                                 />
                                             ) : (
                                                 <Image
                                                     src={imageSrc}
-                                                    fill
-                                                    alt={p.name}
+                                                    width={400}
+                                                    height={400}
+                                                    alt={p.name || "Product Image"}
+                                                    loading="lazy"
                                                     className="object-cover mix-blend-multiply drop-shadow-sm"
                                                 />
                                             )}

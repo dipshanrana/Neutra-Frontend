@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { Cormorant_Garamond, Space_Mono, Outfit, Inter } from "next/font/google";
 import "./globals.css";
 
@@ -143,6 +143,7 @@ export default function RootLayout({
         />
         <script
           type="text/javascript"
+          async
           src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
         ></script>
 

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { categoryApi } from "@/lib/api";
@@ -84,7 +84,11 @@ export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
                                     {/* Category Image - Large, overlaps the bottom, starts behind badge */}
                                     <img
                                         src={imgSrc}
-                                        alt={cat.name}
+                                        alt={cat.name || "Category Image"}
+                                        width={500}
+                                        height={400}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="absolute left-1/2 -translate-x-1/2 w-[125%] max-w-none h-[140%] object-contain object-bottom group-hover:scale-[1.04] transition-transform duration-500 will-change-transform z-20 pointer-events-none drop-shadow-[0_20px_20px_rgba(0,0,0,0.5)]"
                                         style={{ bottom: '-25%' }}
                                     />

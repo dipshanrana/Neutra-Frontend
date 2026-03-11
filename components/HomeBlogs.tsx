@@ -61,7 +61,11 @@ export function HomeBlogs() {
                                     <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
                                         <img
                                             src={imgUrl}
-                                            alt={blog.title}
+                                            alt={blog.title || "Blog Image"}
+                                            width={400}
+                                            height={300}
+                                            loading="lazy"
+                                            decoding="async"
                                             className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                                         />
                                     </div>
