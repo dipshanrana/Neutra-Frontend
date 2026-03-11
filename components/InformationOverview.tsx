@@ -4,33 +4,34 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api, Information, formatBase64Image } from "@/lib/api";
 
-export function InformationOverview() {
-    const [data, setData] = useState<Information[]>([]);
-    const [loading, setLoading] = useState(true);
+export function InformationOverview({ initialData }: { initialData?: Information[] }) {
+    const [data, setData] = useState<Information[]>(initialData || []);
+    const [loading, setLoading] = useState(!initialData);
 
     useEffect(() => {
-        const fetchInfo = async () => {
-            try {
-                const response = await api.info.getAll();
-                if (Array.isArray(response)) {
-                    // Take the latest 3 for the home overview
-                    setData(response.slice(0, 3));
+        if (!initialData) {
+            const fetchInfo = async () => {
+                try {
+                    const response = await api.info.getAll();
+                    if (Array.isArray(response)) {
+                        setData(response.slice(0, 3));
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch information:", error);
+                } finally {
+                    setLoading(false);
                 }
-            } catch (error) {
-                console.error("Failed to fetch information:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchInfo();
-    }, []);
+            };
+            fetchInfo();
+        }
+    }, [initialData]);
 
-    if (loading || data.length === 0) return null;
+    if ((loading || data.length === 0) && !initialData) return null;
+    if (data.length === 0) return null;
 
     return (
         <section className="pt-8 pb-24 bg-[#FAF9F6] font-sans overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 lg:px-8">
-                {/* Section Header */}
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
                     <div className="max-w-2xl text-left">
                         <Link href="/information">
@@ -45,11 +46,9 @@ export function InformationOverview() {
                     </div>
                 </div>
 
-                {/* Information Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-16">
                     {data.map((item) => (
                         <div key={item.id} className="group flex flex-col items-start text-left">
-                            {/* Image Wrapper */}
                             <Link
                                 href={`/information/${item.id}`}
                                 className="block w-full aspect-[16/10] overflow-hidden rounded-2xl mb-8 bg-stone-100 relative group-hover:shadow-[0_20px_50px_rgba(27,67,50,0.15)] transition-all duration-500"
@@ -62,7 +61,6 @@ export function InformationOverview() {
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
                             </Link>
 
-                            {/* Text Content */}
                             <div className="flex-1 flex flex-col items-start w-full">
                                 <h3 className="text-black text-[24px] md:text-[28px] font-bold font-heading leading-tight mb-4 line-clamp-2">
                                     <Link href={`/information/${item.id}`}>
@@ -71,7 +69,6 @@ export function InformationOverview() {
                                 </h3>
 
                                 <p className="text-black/50 text-base leading-relaxed mb-8 line-clamp-3">
-                                    {/* Stripping tags if any and showing description */}
                                     {item.description ? item.description.replace(/<[^>]+>/g, '') : "Discover detailed insights and expert advice on optimizing your health through science-backed nutrition."}
                                 </p>
 
@@ -92,4 +89,3 @@ export function InformationOverview() {
         </section>
     );
 }
-

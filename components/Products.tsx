@@ -14,32 +14,28 @@ const SvgArrowUpRight = ({ className }: { className?: string }) => (
     </svg>
 )
 
-const SvgCheck = ({ className }: { className?: string }) => (
-    <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
-        <polyline points="20 6 9 17 4 12" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-);
-
-export function Products() {
-    const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
+export function Products({ initialProducts }: { initialProducts?: Product[] }) {
+    const [products, setProducts] = useState<Product[]>(initialProducts || []);
+    const [loading, setLoading] = useState(!initialProducts);
     const { formatPrice } = useCurrency();
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const data: Product[] = await productApi.getAll();
-                if (Array.isArray(data) && data.length > 0) {
-                    setProducts(data.slice(0, 4));
+        if (!initialProducts) {
+            const fetchProducts = async () => {
+                try {
+                    const data: Product[] = await productApi.getAll();
+                    if (Array.isArray(data) && data.length > 0) {
+                        setProducts(data.slice(0, 4));
+                    }
+                } catch (e) {
+                    console.error("Failed to fetch products", e);
+                } finally {
+                    setLoading(false);
                 }
-            } catch (e) {
-                console.error("Failed to fetch products", e);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchProducts();
-    }, []);
+            };
+            fetchProducts();
+        }
+    }, [initialProducts]);
 
     return (
         <section className="pt-12 pb-16 bg-white">
@@ -55,27 +51,6 @@ export function Products() {
                         Shop Entire Collection <SvgArrowUpRight className="w-4 h-4" />
                     </Link>
                 </div>
-
-                {/* Featured Products Schema */}
-                {!loading && (
-                    <script
-                        type="application/ld+json"
-                        dangerouslySetInnerHTML={{
-                            __html: JSON.stringify({
-                                "@context": "https://schema.org",
-                                "@type": "ItemList",
-                                "name": "Featured Products",
-                                "itemListElement": products.map((p, i) => ({
-                                    "@type": "ListItem",
-                                    "position": i + 1,
-                                    "url": `https://nutricore.com/products/${p.id}`,
-                                    "name": p.name,
-                                    "image": getProductMainImage(p)
-                                }))
-                            })
-                        }}
-                    />
-                )}
 
                 {loading ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -104,7 +79,6 @@ export function Products() {
                                     href={`/products/${p.id}`}
                                     className="group bg-[#f6f6f8] border border-transparent hover:border-stone-200 hover:shadow-lg rounded-md overflow-hidden flex flex-col transition-all cursor-pointer"
                                 >
-                                    {/* Card image */}
                                     <div className="relative bg-transparent aspect-square flex items-center justify-center mb-5 overflow-hidden">
                                         {savePct > 0 && (
                                             <div className="absolute top-0 left-0 bg-[#b91c1c] text-white font-sans text-[11px] font-bold px-3 pt-1.5 pb-1 uppercase tracking-wider z-10">
@@ -139,7 +113,6 @@ export function Products() {
                                         </div>
                                     </div>
 
-                                    {/* Card body */}
                                     <div className="flex flex-col flex-1 px-4 pb-4">
                                         <h3 className="font-sans text-[#166534] text-[16px] leading-snug mb-1 group-hover:underline decoration-[#166534]/30 transition-all font-medium">
                                             {p.name}
@@ -150,7 +123,6 @@ export function Products() {
                                         </span>
 
                                         <div className="mt-auto pt-2">
-                                            {/* Stars */}
                                             <div className="flex items-center gap-1 mb-3">
                                                 <div className="flex gap-0.5">
                                                     {[...Array(5)].map((_, i) => (
@@ -160,7 +132,6 @@ export function Products() {
                                                 <span className="font-sans text-stone-500 text-[12px] ml-1">{avgRating ? avgRating.toFixed(1) : "4.5"} ({reviews.length > 0 ? reviews.length : 43})</span>
                                             </div>
 
-                                            {/* Price Row */}
                                             <div className="mb-4">
                                                 {currentMp > currentSp && (
                                                     <div className="flex items-center gap-1.5 mb-1">
@@ -199,4 +170,3 @@ export function Products() {
         </section >
     )
 }
-

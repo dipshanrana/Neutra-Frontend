@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api, Blog, formatBase64Image } from "@/lib/api";
 
-export function HomeBlogs() {
-    const [blogs, setBlogs] = useState<Blog[]>([]);
-    const [loading, setLoading] = useState(true);
+export function HomeBlogs({ initialBlogs }: { initialBlogs?: Blog[] }) {
+    const [blogs, setBlogs] = useState<Blog[]>(initialBlogs || []);
+    const [loading, setLoading] = useState(!initialBlogs);
 
     const fallbacks = [
         "https://images.unsplash.com/photo-1542318047-920fca5df6da?q=80&w=2000&auto=format&fit=crop",
@@ -16,30 +16,32 @@ export function HomeBlogs() {
     ];
 
     useEffect(() => {
-        const fetchBlogs = async () => {
-            try {
-                const data = await api.blogs.getAll();
-                if (Array.isArray(data) && data.length > 0) {
-                    setBlogs(data.slice(0, 4)); // Showing exactly 4 blogs in one row
+        if (!initialBlogs) {
+            const fetchBlogs = async () => {
+                try {
+                    const data = await api.blogs.getAll();
+                    if (Array.isArray(data) && data.length > 0) {
+                        setBlogs(data.slice(0, 4));
+                    }
+                } catch (error) {
+                    console.error("Failed to load blogs:", error);
+                } finally {
+                    setLoading(false);
                 }
-            } catch (error) {
-                console.error("Failed to load blogs:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchBlogs();
-    }, []);
+            };
+            fetchBlogs();
+        }
+    }, [initialBlogs]);
 
-    if (loading || blogs.length === 0) {
+    if ((loading || blogs.length === 0) && !initialBlogs) {
         return null;
     }
+
+    if (blogs.length === 0) return null;
 
     return (
         <section className="pt-4 pb-8 bg-[#F7FAF8] font-sans overflow-hidden">
             <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
-
-                {/* Section Heading - Meaningful, Soft, and Refined */}
                 <div className="text-center mb-12">
                     <Link href="/blog">
                         <h2 className="text-[#1b3a32] text-[26px] sm:text-[30px] md:text-[34px] font-bold font-heading tracking-tight capitalize hover:text-[#2FAF82] transition-colors inline-block cursor-pointer">
@@ -48,7 +50,6 @@ export function HomeBlogs() {
                     </Link>
                 </div>
 
-                {/* 4 Blogs in One Row Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
                     {blogs.map((blog, idx) => {
                         const excerptText = blog.content.replace(/<[^>]+>/g, '').substring(0, 100) + '...';
@@ -56,7 +57,6 @@ export function HomeBlogs() {
 
                         return (
                             <div key={blog.id || idx} className="flex flex-col group">
-                                {/* Image Container - Scaled for 4 columns */}
                                 <Link href={`/blog/${blog.id}`} className="block overflow-hidden mb-6 rounded-sm">
                                     <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
                                         <img
@@ -97,4 +97,3 @@ export function HomeBlogs() {
         </section>
     );
 }
-

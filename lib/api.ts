@@ -1,8 +1,9 @@
 // API Configuration
+// For Hydration consistency, we use the relative proxy path everywhere for string construction (like image URLs)
+// The actual fetch logic will resolve the absolute URL on the server.
+export const API_BASE_URL = "/api/backend";
+const SERVER_API_URL = process.env.NEXT_PUBLIC_API_URL || "http://209.126.86.149:8079";
 const IS_SERVER = typeof window === 'undefined';
-export const API_BASE_URL = IS_SERVER
-  ? (process.env.NEXT_PUBLIC_API_URL || "http://209.126.86.149:8079")
-  : "/api/backend";
 
 // Simple in-memory cache to prevent redundant large fetches (e.g. Base64 images)
 const apiCache: Record<string, { data: any, timestamp: number }> = {};
@@ -80,7 +81,13 @@ async function apiFetch<T>(
   options: RequestInit = {},
   requiresAuth = false
 ): Promise<T> {
-  const url = `${API_BASE_URL}${endpoint}`;
+  let url = `${API_BASE_URL}${endpoint}`;
+  
+  // On server, resolve the proxy path to the absolute server URL
+  if (typeof window === 'undefined' && url.startsWith(API_BASE_URL)) {
+    const serverUrl = process.env.NEXT_PUBLIC_API_URL || "http://209.126.86.149:8079";
+    url = url.replace(API_BASE_URL, serverUrl);
+  }
   const token = requiresAuth ? (getAdminToken() || getAuthToken()) : null;
   console.log(`[NX API] ${options.method || 'GET'} ${url}`, {
     hasToken: !!token,
