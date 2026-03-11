@@ -1,5 +1,5 @@
 // API Configuration
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8079/api";
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://209.126.86.149:8079";
 
 // Simple in-memory cache to prevent redundant large fetches (e.g. Base64 images)
 const apiCache: Record<string, { data: any, timestamp: number }> = {};
@@ -194,13 +194,38 @@ export function extractToken(data: AuthResponse): string | undefined {
   return data.jwtToken || data.JwtToken;
 }
 
-// Helper to format base64 image strings with correct prefix
-export function formatBase64Image(base64?: string): string {
-  if (!base64 || base64.trim() === "") return "";
-  if (base64.startsWith("data:") || base64.startsWith("http")) return base64;
-  // If no prefix, assume it's raw base64 from backend
-  return `data:image/png;base64,${base64}`;
+// Helper to format image URLs from backend (handles relative paths, base64, and full URLs)
+export function formatImageUrl(src?: string): string {
+  if (!src || src.trim() === "") return "";
+  
+  // 1. Return as-is if it's already a full URL or base64 with prefix
+  if (src.startsWith("http") || src.startsWith("data:")) return src;
+  
+  // 2. Handle relative paths from the backend (e.g., /uploads/image.jpg or uploads/image.jpg)
+  if (src.startsWith("/uploads") || src.startsWith("uploads/")) {
+    const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+    const path = src.startsWith('/') ? src : `/${src}`;
+    return `${baseUrl}${path}`;
+  }
+  
+  // 3. If it doesn't look like a path, assume it's raw base64 data from the legacy backend
+  // Only prepend the data prefix if it looks like base64 (e.g., long string, no spaces, no /)
+  if (src.length > 50 && !src.includes("/") && !src.includes(" ")) {
+    return `data:image/png;base64,${src}`;
+  }
+  
+  // 4. Default fallback: assume it might be a relative path we missed
+  if (src.includes("/")) {
+     const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+     const path = src.startsWith('/') ? src : `/${src}`;
+     return `${baseUrl}${path}`;
+  }
+
+  return src;
 }
+
+// Alias for backward compatibility
+export const formatBase64Image = formatImageUrl;
 
 /**
  * Robustly selects the primary display image for a product.

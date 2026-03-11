@@ -56,6 +56,27 @@ export function Products() {
                     </Link>
                 </div>
 
+                {/* Featured Products Schema */}
+                {!loading && (
+                    <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{
+                            __html: JSON.stringify({
+                                "@context": "https://schema.org",
+                                "@type": "ItemList",
+                                "name": "Featured Products",
+                                "itemListElement": products.map((p, i) => ({
+                                    "@type": "ListItem",
+                                    "position": i + 1,
+                                    "url": `https://nutricore.com/products/${p.id}`,
+                                    "name": p.name,
+                                    "image": getProductMainImage(p)
+                                }))
+                            })
+                        }}
+                    />
+                )}
+
                 {loading ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
                         {[1, 2, 3, 4].map(i => (

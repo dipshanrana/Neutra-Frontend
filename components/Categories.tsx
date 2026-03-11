@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { categoryApi } from "@/lib/api";
+import { categoryApi, formatImageUrl } from "@/lib/api";
 import Link from "next/link";
 
 export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
@@ -60,15 +60,7 @@ export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 gap-y-16">
                     {displayCategories.map((cat, index) => {
                         const hasBadge = !!cat.badge;
-
-                        let imgSrc = "/multi-vit.png";
-                        if (cat.image) {
-                            if (cat.image.startsWith('http') || cat.image.startsWith('data:')) {
-                                imgSrc = cat.image;
-                            } else {
-                                imgSrc = `data:image/png;base64,${cat.image}`;
-                            }
-                        }
+                        const imgSrc = formatImageUrl(cat.image) || "/multi-vit.png";
 
                         return (
                             <Link
@@ -131,3 +123,4 @@ export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
         </section>
     );
 }
+

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { Navbar } from "@/components/Navbar";
@@ -39,6 +39,29 @@ export default function BlogPage() {
             <Suspense fallback={<div className="h-20 bg-white animate-pulse" />}>
                 <Navbar />
             </Suspense>
+
+            {/* Blog List Schema */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "ItemList",
+                        "itemListElement": articles.map((b, i) => ({
+                            "@type": "ListItem",
+                            "position": i + 1,
+                            "url": `https://nutricore.com/blog/${b.id}`,
+                            "name": b.title,
+                            "headline": b.title,
+                            "description": b.content.replace(/<[^>]+>/g, '').substring(0, 150) + '...',
+                            "author": {
+                                "@type": "Person",
+                                "name": b.author || "Clinical Team"
+                            }
+                        }))
+                    })
+                }}
+            />
 
             <section className="pt-32 pb-24 bg-white flex-1 relative overflow-hidden">
                 <div className="absolute top-1/2 left-0 w-[800px] h-[800px] bg-[#D4AF37]/5 rounded-full blur-[150px] pointer-events-none -translate-y-1/2 -translate-x-1/2"></div>

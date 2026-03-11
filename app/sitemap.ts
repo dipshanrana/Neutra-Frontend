@@ -1,48 +1,71 @@
 import { MetadataRoute } from 'next';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://nutricore.com';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://nutricore.com';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://209.126.86.149:8079';
 
-    // These could be fetched from your API (api.products.getAll, api.blogs.getAll, etc.)
-    // For now, we'll provide the static routes and generic placeholders for dynamic content
-    // In a real production environment, you would use 'fetch' here to get all IDs.
+async function getProducts() {
+  try {
+    const res = await fetch(`${API_BASE}/products`, { next: { revalidate: 3600 } });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch (e) {
+    return [];
+  }
+}
 
-    return [
-        {
-            url: baseUrl,
-            lastModified: new Date(),
-            changeFrequency: 'yearly',
-            priority: 1,
-        },
-        {
-            url: `${baseUrl}/products`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.8,
-        },
-        {
-            url: `${baseUrl}/about`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.5,
-        },
-        {
-            url: `${baseUrl}/blog`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.6,
-        },
-        {
-            url: `${baseUrl}/contact`,
-            lastModified: new Date(),
-            changeFrequency: 'yearly',
-            priority: 0.4,
-        },
-        {
-            url: `${baseUrl}/information`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.5,
-        },
-    ];
+async function getBlogs() {
+  try {
+    const res = await fetch(`${API_BASE}/blogs`, { next: { revalidate: 3600 } });
+    if (!res.ok) return [];
+    return await res.json();
+  } catch (e) {
+    return [];
+  }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [products, blogs] = await Promise.all([getProducts(), getBlogs()]);
+
+  const productEntries: MetadataRoute.Sitemap = products.map((p: any) => ({
+    url: `${BASE_URL}/products/${p.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }));
+
+  const blogEntries: MetadataRoute.Sitemap = blogs.map((b: any) => ({
+    url: `${BASE_URL}/blog/${b.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  }));
+
+  const staticEntries: MetadataRoute.Sitemap = [
+    {
+      url: BASE_URL,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 1,
+    },
+    {
+      url: `${BASE_URL}/products`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.7,
+    },
+    {
+      url: `${BASE_URL}/information`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.5,
+    },
+  ];
+
+  return [...staticEntries, ...productEntries, ...blogEntries];
 }

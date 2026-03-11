@@ -70,6 +70,24 @@ function ShopContent() {
     return (
         <div className="min-h-screen bg-[#FAF8F3] flex flex-col font-sans selection:bg-[#D4AF37] selection:text-white">
             <Navbar />
+            {/* Product List Schema */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        "@context": "https://schema.org",
+                        "@type": "ItemList",
+                        "itemListElement": products.map((p, i) => ({
+                            "@type": "ListItem",
+                            "position": i + 1,
+                            "url": `https://nutricore.com/products/${p.id}`,
+                            "name": p.name,
+                            "image": getProductMainImage(p),
+                            "description": p.description
+                        }))
+                    })
+                }}
+            />
 
             {/* -- Page Header --- */}
             <div className="bg-white border-b border-stone-200 pt-10 pb-10 text-center px-4 mt-[80px]">

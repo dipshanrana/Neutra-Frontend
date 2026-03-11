@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { api, Category, logout } from "@/lib/api";
+import { api, Category, logout, formatImageUrl } from "@/lib/api";
 import { AdminLanguageSwitcher } from "@/components/AdminLanguageSwitcher";
 
 const SvgArrowLeft = ({ className }: { className?: string }) => (
@@ -224,7 +224,7 @@ export default function AdminCategories() {
                                         <div className="relative group/img w-[80px] h-[80px]">
                                             <div className="w-full h-full rounded-xl bg-black/60 border border-white/5 flex items-center justify-center overflow-hidden shadow-inner">
                                                 {cat.image ? (
-                                                    <img src={cat.image.startsWith('data:') ? cat.image : `data:image/png;base64,${cat.image}`} alt={cat.name} className="w-full h-[150%] object-contain object-bottom pt-2" />
+                                                    <img src={formatImageUrl(cat.image)} alt={cat.name} className="w-full h-[150%] object-contain object-bottom pt-2" />
                                                 ) : (
                                                     <span className="text-[10px] text-white/20 uppercase font-black">No img</span>
                                                 )}
