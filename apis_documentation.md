@@ -8,14 +8,24 @@
 
 ---
 
-## 🔑 Default Admin Credentials
+## 🔑 Auto-Seeded Data
 
-A static admin account is auto-seeded on first startup:
+A default dataset is created on first startup if the database is empty:
 
-| Field    | Value            |
-|----------|------------------|
-| Username | `admin@admin.com`|
-| Password | `admin123`       |
+### 1. Admin Credentials
+| Field    | Value            | Role  |
+|----------|------------------|-------|
+| Username | `admin@admin.com`| ADMIN |
+| Password | `admin123`       |       |
+
+### 2. Test Customer Accounts
+Ten accounts are seeded from `user1@example.com` to `user10@example.com` with the password `password123`.
+
+### 3. Store Content
+The seeder also creates:
+*   **5 Categories**: Supplements, Vitamins, Lifestyle, Equipment, Bundles.
+*   **10 Products**: Samples spread across categories with mock images.
+*   **3 Blogs** & **3 Information Pages**.
 
 ---
 
@@ -84,7 +94,7 @@ You can obtain a token by calling the **Login** or **Signup** endpoints.
 **Request Body:**
 ```json
 {
-  "username": "johndoe",
+  "username": "user1@example.com",
   "password": "password123"
 }
 ```
@@ -93,7 +103,7 @@ You can obtain a token by calling the **Login** or **Signup** endpoints.
 ```json
 {
   "userId": "2",
-  "username": "johndoe",
+  "username": "user1@example.com",
   "JwtToken": "eyJhbGciOiJIUzI1NiJ9..."
 }
 ```
@@ -193,8 +203,6 @@ You can obtain a token by calling the **Login** or **Signup** endpoints.
 ]
 ```
 
----
-
 ### 2.3 Deactivate User
 
 | Property    | Value                                |
@@ -238,6 +246,7 @@ You can obtain a token by calling the **Login** or **Signup** endpoints.
 ---
 
 ---
+
 
 ## 3. Category Endpoints
 
@@ -336,6 +345,7 @@ You can obtain a token by calling the **Login** or **Signup** endpoints.
 | **Content-Type** | `multipart/form-data` |
 
 **Request Parts:** Same as **Create Category (3.1)**. Include the `category` JSON with the new `badge` and `shortDescription` fields and an optional `image` file.
+
 
 **Success Response (200 OK):** Updated `Category` object.
 
@@ -721,13 +731,7 @@ fetch('/products', {
       "sp": 2800.0,
       "discount": 20.0,
       "images": ["..."],
-      "benefits": [
-        {
-          "svg": "<svg>...</svg>",
-          "nutrientName": "Protein",
-          "benefitDescription": "Rapid absorption for quick recovery"
-        }
-      ]
+      "benefits": ["..."]
     }
   ]
 }
@@ -788,7 +792,7 @@ fetch('/products', {
 | **URL**     | `/blogs/{id}`          |
 | **Auth**    | 🔒 ADMIN              |
 
-**Success Response (24 No Content):** Empty body.
+**Success Response (204 No Content):** Empty body.
 
 ---
 
@@ -1096,15 +1100,20 @@ All errors follow a consistent JSON format:
 
 ---
 
-## 12. Working with Images (Frontend Guide)
+### 12. Working with Images (Frontend Guide)
 
-### 9.1 Uploading Images (Multipart/Form-Data)
-When creating or updating a product, images must be sent as binary files using the `FormData` browser API. Do **not** send raw JSON for these endpoints.
+#### 🚀 Performance Warning: Use Binary Multipart Uploads
+Do **not** send image data as Base64 strings inside the JSON payload. This causes massive request sizes and slow processing.
+
+**The backend is optimized to ignore image fields in JSON.** Instead, always use the `MultipartFile` parts (binary) which are significantly faster and more reliable for large files.
+
+#### 9.1 Uploading Images (Multipart/Form-Data)
+When creating or updating a product, images must be sent as binary files using the `FormData` browser API. 
 
 **Steps:**
 1.  Construct a `FormData` object.
-2.  Attach the product JSON as a `Blob` with type `application/json`.
-3.  Attach individual or lists of files.
+2.  Attach the product JSON as a `Blob` with type `application/json` (exclude image fields).
+3.  Attach individual or lists of files as binary parts.
 
 ```javascript
 const formData = new FormData();
@@ -1163,13 +1172,13 @@ return (
 
     {/* Displaying featured images list */}
     {product.featuredImages.map((src, index) => (
-      <img key={index} src={src} alt={`Featured ${index}`} />
-    ))}
-  </div>
-);
-```
+                      <img key={index} src={src} alt={`Featured ${index}`} />
+                    ))}
+                  </div>
+                );
+                ```
 
-**Key Advantages:**
-*   **Plug-and-play**: No need to `atob` or prepend prefixes in your frontend code.
-*   **Security**: Stored as binary in the DB, served as safe Data URLs.
-*   **Size**: We've increased server limits (10MB per file) so high-res images are supported.
+                **Key Advantages:**
+                *   **Plug-and-play**: No need to `atob` or prepend prefixes in your frontend code.
+                *   **Security**: Stored as binary in the DB, served as safe Data URLs.
+                *   **Size**: We've increased server limits (10MB per file) so high-res images are supported.
