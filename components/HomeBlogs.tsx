@@ -73,7 +73,7 @@ export function HomeBlogs({ initialBlogs }: { initialBlogs?: Blog[] }) {
 
                                 <div className="flex flex-col flex-1 text-left">
                                     <Link href={`/blog/${blog.id}`}>
-                                        <h3 className="text-black text-[18px] sm:text-[20px] font-extrabold leading-[1.3] mb-4 font-outfit uppercase tracking-tight line-clamp-2">
+                                        <h3 className="text-black text-[15px] sm:text-[16px] font-extrabold leading-[1.3] mb-4 font-outfit uppercase tracking-tight line-clamp-2">
                                             {blog.title}
                                         </h3>
                                     </Link>

@@ -62,7 +62,7 @@ export function InformationOverview({ initialData }: { initialData?: Information
                             </Link>
 
                             <div className="flex-1 flex flex-col items-start w-full">
-                                <h3 className="text-black text-[24px] md:text-[28px] font-bold font-heading leading-tight mb-4 line-clamp-2">
+                                <h3 className="text-black text-[18px] md:text-[20px] font-bold font-heading leading-tight mb-4 line-clamp-2">
                                     <Link href={`/information/${item.id}`}>
                                         {item.title}
                                     </Link>
