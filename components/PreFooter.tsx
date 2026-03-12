@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import Link from "next/link";
 
 export function PreFooter() {
@@ -19,6 +19,7 @@ export function PreFooter() {
                         <img
                             src="/supplement_ritual_left.png"
                             alt="Wellness ritual"
+                            loading="lazy"
                             className="w-[85%] h-auto object-contain mix-blend-multiply select-none opacity-90"
                         />
                     </div>
@@ -49,14 +50,15 @@ export function PreFooter() {
                         <img
                             src="/supplement_ritual_right.png"
                             alt="Premium vitamins"
+                            loading="lazy"
                             className="w-[85%] h-auto object-contain mix-blend-multiply select-none opacity-90"
                         />
                     </div>
 
                     {/* Mobile Images (Alternative Layout for Small Devices) */}
                     <div className="lg:hidden flex justify-center gap-6 mb-10 opacity-30 grayscale filter px-8">
-                        <img src="/supplement_ritual_left.png" className="w-[100px] h-auto object-contain mix-blend-multiply" />
-                        <img src="/supplement_ritual_right.png" className="w-[100px] h-auto object-contain mix-blend-multiply" />
+                        <img src="/supplement_ritual_left.png" loading="lazy" className="w-[100px] h-auto object-contain mix-blend-multiply" />
+                        <img src="/supplement_ritual_right.png" loading="lazy" className="w-[100px] h-auto object-contain mix-blend-multiply" />
                     </div>
 
                 </div>
