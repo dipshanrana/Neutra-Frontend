@@ -76,27 +76,15 @@ function ShopContent() {
                 dangerouslySetInnerHTML={{
                     __html: JSON.stringify({
                         "@context": "https://schema.org",
-                        "@graph": [
-                            {
-                                "@type": "ItemList",
-                                "name": "Products Collection",
-                                "itemListElement": products.map((p, i) => {
-                                    const img = getProductMainImage(p);
-                                    const absImg = img.startsWith('/') ? `https://nutricore.com${img}` : img;
-                                    return {
-                                        "@type": "ListItem",
-                                        "position": i + 1,
-                                        "item": {
-                                            "@type": "Product",
-                                            "url": `https://nutricore.com/products/${p.id}`,
-                                            "name": p.name,
-                                            "image": absImg,
-                                            "description": p.description
-                                        }
-                                    };
-                                })
-                            }
-                        ]
+                        "@type": "ItemList",
+                        "itemListElement": products.map((p, i) => ({
+                            "@type": "ListItem",
+                            "position": i + 1,
+                            "url": `https://nutricore.com/products/${p.id}`,
+                            "name": p.name,
+                            "image": getProductMainImage(p),
+                            "description": p.description
+                        }))
                     })
                 }}
             />
