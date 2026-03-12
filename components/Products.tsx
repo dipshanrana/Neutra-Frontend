@@ -106,7 +106,7 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
                                                     width={400}
                                                     height={400}
                                                     alt={p.name || "Product Image"}
-                                                    className="object-cover mix-blend-multiply drop-shadow-sm"
+                                                    className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm"
                                                     loading="lazy"
                                                 />
                                             )}

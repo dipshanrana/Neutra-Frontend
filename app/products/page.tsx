@@ -218,7 +218,7 @@ function ShopContent() {
                                                     height={400}
                                                     alt={p.name || "Product Image"}
                                                     loading="lazy"
-                                                    className="object-cover mix-blend-multiply drop-shadow-sm"
+                                                    className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm"
                                                 />
                                             )}
                                         </div>
