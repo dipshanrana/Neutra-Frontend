@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -12,7 +12,7 @@ const SvgPlus = ({ className }: { className?: string }) => (
     </svg>
 );
 
-const SvgEdit = ({ className }: { className?: string }) => (
+const SvgEdit = ({ className }:     { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" strokeWidth="1.5" />
         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" strokeWidth="1.5" />
@@ -108,7 +108,7 @@ export default function AdminProducts() {
 
                 {loading ? (
                     <div className="text-center py-12">
-                        <p className="text-white/60">Loading products...</p>
+                        <p className="text-white/60">Loading products.. .</p>
                     </div>
                 ) : products.length === 0 ? (
                     <div className="text-center py-12">
@@ -148,7 +148,7 @@ export default function AdminProducts() {
                                                         {typeof product.category === 'string' ? product.category : product.category.name}
                                                     </p>
                                                     {product.badge && (
-                                                        <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-brand-primary/20 text-brand-primary border border-brand-primary/30">
+                                                        <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-[#38A36D]/20 text-[#38A36D] border border-[#38A36D]/30">
                                                             {product.badge}
                                                         </span>
                                                     )}

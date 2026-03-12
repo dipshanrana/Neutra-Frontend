@@ -80,18 +80,8 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
                                     className="group bg-[#f6f6f8] border border-transparent hover:border-stone-200 hover:shadow-lg rounded-md overflow-hidden flex flex-col transition-all cursor-pointer"
                                 >
                                     <div className="relative bg-transparent aspect-square flex items-center justify-center mb-5 overflow-hidden">
-                                        {savePct > 0 && (
-                                            <div className="absolute top-0 left-0 bg-[#b91c1c] text-white font-sans text-[11px] font-bold px-3 pt-1.5 pb-1 uppercase tracking-wider z-10">
-                                                SALE
-                                            </div>
-                                        )}
-                                        {p.badge && (
-                                            <div className={`absolute ${savePct > 0 ? 'top-8' : 'top-0'} left-0 bg-brand-primary text-white font-sans text-[10px] font-bold px-3 pt-1.5 pb-1 uppercase tracking-wider z-10`}>
-                                                {p.badge}
-                                            </div>
-                                        )}
                                         {p.categoryBadge && (
-                                            <div className="absolute top-3 right-12 bg-white/90 backdrop-blur-sm text-[#2A401E] font-sans text-[9px] font-bold px-2 py-1 rounded border border-stone-200 uppercase tracking-tight z-10 shadow-sm">
+                                            <div className="absolute top-0 left-0 bg-[#b91c1c] text-white font-sans text-[9px] font-bold px-3 pt-1.5 pb-1 uppercase tracking-wider z-10 shadow-sm">
                                                 {p.categoryBadge}
                                             </div>
                                         )}

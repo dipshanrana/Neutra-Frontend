@@ -11,6 +11,7 @@ const apiCache: Record<string, { data: any, timestamp: number }> = {};
 const CACHE_TTL = 300000; // 5 minutes
 
 function getCache<T>(key: string): T | null {
+  if (IS_SERVER) return null; // Never serve stale cache on server — SSR must always see fresh data
   const cached = apiCache[key];
   if (cached && (Date.now() - cached.timestamp < CACHE_TTL)) {
     return cached.data as T;
@@ -19,6 +20,7 @@ function getCache<T>(key: string): T | null {
 }
 
 function setCache(key: string, data: any) {
+  if (IS_SERVER) return; // Don't populate cache on server — each SSR request fetches fresh
   apiCache[key] = { data, timestamp: Date.now() };
 }
 

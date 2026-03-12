@@ -209,13 +209,6 @@ export default function ProductForm() {
         setLoading(true);
         setError("");
 
-        // Validate How To Use fields (must not be empty)
-        if (formData.howToUse.some(step => step.trim() === "")) {
-            setError("Please fill out all 'How To Use' steps. Remove any extra empty steps if not needed.");
-            setLoading(false);
-            return;
-        }
-
         try {
             const productData = {
                 name: formData.name,
@@ -855,7 +848,7 @@ export default function ProductForm() {
                                         className="flex-1 px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#38A36D] transition-colors text-white placeholder-white/20"
                                         placeholder={`Step ${index + 1} description`}
                                     />
-                                    {formData.howToUse.length > 4 && (
+                                    {formData.howToUse.length > 1 && (
                                         <button
                                             type="button"
                                             onClick={() => setFormData(prev => ({
