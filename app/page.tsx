@@ -36,31 +36,42 @@ export default async function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            {
-              "@context": "https://schema.org",
-              "@type": "ItemList",
-              "name": "Featured Products",
-              "itemListElement": initialProducts.map((p, i) => ({
-                "@type": "ListItem",
-                "position": i + 1,
-                "url": `https://nutricore.com/products/${p.id}`,
-                "name": p.name,
-                "image": getProductMainImage(p)
-              }))
-            },
-            {
-              "@context": "https://schema.org",
-              "@type": "ItemList",
-              "name": "Wellness Insights",
-              "itemListElement": initialBlogs.map((b, i) => ({
-                "@type": "ListItem",
-                "position": i + 1,
-                "url": `https://nutricore.com/blog/${b.id}`,
-                "name": b.title
-              }))
-            }
-          ])
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "ItemList",
+                "name": "Featured Products",
+                "itemListElement": initialProducts.map((p, i) => {
+                  const img = getProductMainImage(p);
+                  const absImg = img.startsWith('/') ? `https://nutricore.com${img}` : img;
+                  return {
+                    "@type": "ListItem",
+                    "position": i + 1,
+                    "item": {
+                      "@type": "Product",
+                      "url": `https://nutricore.com/products/${p.id}`,
+                      "name": p.name,
+                      "image": absImg
+                    }
+                  };
+                })
+              },
+              {
+                "@type": "ItemList",
+                "name": "Wellness Insights",
+                "itemListElement": initialBlogs.map((b, i) => ({
+                  "@type": "ListItem",
+                  "position": i + 1,
+                  "item": {
+                    "@type": "BlogPosting",
+                    "url": `https://nutricore.com/blog/${b.id}`,
+                    "headline": b.title
+                  }
+                }))
+              }
+            ]
+          })
         }}
       />
 
