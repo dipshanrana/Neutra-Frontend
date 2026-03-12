@@ -221,7 +221,7 @@ function ShopContent() {
                                                     height={400}
                                                     loading="lazy"
                                                     decoding="async"
-                                                    className="w-full h-full object-contain p-4 mix-blend-multiply drop-shadow-sm"
+                                                    className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm"
                                                 />
                                             ) : (
                                                 <Image
@@ -230,7 +230,7 @@ function ShopContent() {
                                                     height={400}
                                                     alt={p.name || "Product Image"}
                                                     loading="lazy"
-                                                    className="object-contain p-4 mix-blend-multiply drop-shadow-sm"
+                                                    className="object-cover mix-blend-multiply drop-shadow-sm"
                                                 />
                                             )}
                                         </div>

@@ -98,7 +98,7 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
                                                     height={400}
                                                     loading="lazy"
                                                     decoding="async"
-                                                    className="w-full h-full object-contain p-4 mix-blend-multiply drop-shadow-sm"
+                                                    className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm"
                                                 />
                                             ) : (
                                                 <Image
@@ -106,7 +106,7 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
                                                     width={400}
                                                     height={400}
                                                     alt={p.name || "Product Image"}
-                                                    className="object-contain p-4 mix-blend-multiply drop-shadow-sm"
+                                                    className="object-cover mix-blend-multiply drop-shadow-sm"
                                                 />
                                             )}
                                         </div>

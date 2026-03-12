@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState, Suspense } from "react";
 import { useParams } from "next/navigation";
@@ -20,6 +20,8 @@ export default function BlogDetailPage() {
         "https://images.unsplash.com/photo-1542318047-920fca5df6da?q=80&w=2000&auto=format&fit=crop"
     ];
 
+    const [related, setRelated] = useState<Blog[]>([]);
+
     useEffect(() => {
         const fetchBlog = async () => {
             try {
@@ -36,6 +38,22 @@ export default function BlogDetailPage() {
         };
         fetchBlog();
     }, [params.id]);
+
+    useEffect(() => {
+        const fetchRelated = async () => {
+            try {
+                const all = await api.blogs.getAll();
+                if (Array.isArray(all) && article) {
+                    // Filter out current and take 3
+                    const filtered = all
+                        .filter(b => b.id !== article.id)
+                        .slice(0, 3);
+                    setRelated(filtered);
+                }
+            } catch { }
+        };
+        if (article) fetchRelated();
+    }, [article]);
 
     if (loading) {
         return (
@@ -68,24 +86,6 @@ export default function BlogDetailPage() {
             </main>
         );
     }
-
-    const [related, setRelated] = useState<Blog[]>([]);
-
-    useEffect(() => {
-        const fetchRelated = async () => {
-            try {
-                const all = await api.blogs.getAll();
-                if (Array.isArray(all)) {
-                    // Filter out current and take 3
-                    const filtered = all
-                        .filter(b => b.id !== article.id)
-                        .slice(0, 3);
-                    setRelated(filtered);
-                }
-            } catch { }
-        };
-        if (article) fetchRelated();
-    }, [article]);
 
     const imgUrl = article.image ? formatBase64Image(article.image) : fallbacks[(article.id || 0) % fallbacks.length];
 
