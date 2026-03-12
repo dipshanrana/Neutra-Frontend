@@ -74,9 +74,9 @@ export function InformationOverview({ initialData }: { initialData?: Information
 
                                 <Link
                                     href={`/information/${item.id}`}
-                                    className="mt-auto group/btn flex items-center gap-2 bg-[#1B4332] hover:bg-[#2FAF82] text-white px-8 py-3.5 rounded-full transition-all duration-300 text-[13px] font-bold uppercase tracking-wider shadow-[0_4px_15px_rgba(27,67,50,0.2)] hover:shadow-[0_8px_25px_rgba(47,175,130,0.3)] hover:-translate-y-0.5 active:translate-y-0"
+                                    className="mt-auto group/btn flex items-center gap-2 bg-[#E8F3EE] hover:bg-[#1B4332] text-[#1B4332] hover:text-white px-7 py-3 rounded-lg transition-all duration-300 text-[13px] font-extrabold uppercase tracking-widest border border-transparent hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
                                 >
-                                    Read More
+                                    Learn More
                                     <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" stroke="currentColor">
                                         <path d="M5 12h14m-7-7l7 7-7 7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
