@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -143,9 +143,21 @@ export default function AdminProducts() {
                                         <div className="flex items-start justify-between gap-4 mb-2">
                                             <div>
                                                 <h3 className="text-xl font-medium mb-1">{product.name}</h3>
-                                                <p className="text-sm text-[#38A36D]">
-                                                    {typeof product.category === 'string' ? product.category : product.category.name}
-                                                </p>
+                                                <div className="flex items-center gap-2 mt-2">
+                                                    <p className="text-sm text-[#38A36D]">
+                                                        {typeof product.category === 'string' ? product.category : product.category.name}
+                                                    </p>
+                                                    {product.badge && (
+                                                        <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-brand-primary/20 text-brand-primary border border-brand-primary/30">
+                                                            {product.badge}
+                                                        </span>
+                                                    )}
+                                                    {product.categoryBadge && (
+                                                        <span className="px-2 py-0.5 rounded text-[10px] uppercase font-bold tracking-wider bg-white/10 text-white/80 border border-white/20">
+                                                            {product.categoryBadge}
+                                                        </span>
+                                                    )}
+                                                </div>
                                             </div>
                                             <div className="text-right">
                                                 <p className="text-2xl font-medium font-number">

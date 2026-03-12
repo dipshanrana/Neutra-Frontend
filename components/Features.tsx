@@ -1,4 +1,4 @@
-﻿import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 
 const SvgAward = ({ className }: { className?: string }) => (
@@ -61,7 +61,7 @@ export function Features() {
                 </p>
                 <Link
                   href="/information"
-                  className="w-max bg-[#2FAF82] hover:bg-[#258a67] text-white font-medium py-3 sm:py-4 px-8 sm:px-10 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-xl inline-block text-xs sm:text-sm"
+                  className="w-max bg-[#E8F3EE] hover:bg-white/10 text-[#1B4332] hover:text-white font-extrabold py-3.5 px-10 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-2xl inline-block text-[12px] uppercase tracking-[0.2em] border border-transparent hover:border-white/20"
                 >
                   Learn More
                 </Link>
@@ -134,7 +134,10 @@ export function Features() {
               <div className="transform translate-y-8 group-hover:translate-y-0 transition-transform duration-[1500ms] ease-[cubic-bezier(0.2,1,0.3,1)]">
                 <span className="text-emerald-400 font-bold text-[10px] uppercase tracking-widest mb-2 block">Absorption</span>
                 <h4 className="text-xl sm:text-2xl text-white font-heading mb-4">Fluid Kinetics</h4>
-                <Link href="/information" className="bg-[#2FAF82] text-white text-[10px] sm:text-[12px] font-medium px-6 py-2 rounded-full hover:bg-[#258a67] transition-colors inline-block">
+                <Link
+                  href="/information"
+                  className="w-max bg-[#E8F3EE] hover:bg-[#1B4332] text-[#1B4332] hover:text-white font-extrabold py-3 px-8 rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-lg inline-block text-[11px] uppercase tracking-widest"
+                >
                   Learn More
                 </Link>
               </div>

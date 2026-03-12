@@ -213,27 +213,28 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                     <span>/</span>
                                                     <Link href="/products" className="hover:text-brand-primary">{cat}</Link>
                                                 </div>
+
                                                 <h1 className="font-heading text-[#2A401E] text-[1.6rem] leading-[1.2] tracking-tight">
                                                     {product.name}
                                                 </h1>
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-1">
                                                         <span className="font-sans text-[13px] text-stone-500">By</span>
-                                                        <Link href={relatedBlog ? `/blog/${relatedBlog.id}` : "/blogs"} className="font-sans text-[13px] text-brand-primary font-semibold hover:underline flex items-center gap-0.5">
+                                                        <Link href={relatedBlog ? `/blog/${relatedBlog.id}` : "/blogs"} className="font-sans text-[13px] text-brand-primary font-medium hover:underline flex items-center gap-0.5">
                                                             {product.name.split(' ')[0]} {product.name.split(' ')[1]} <ChevronRight className="w-3.5 h-3.5" />
                                                         </Link>
                                                     </div>
                                                     <div className="flex items-center gap-6">
                                                         {product.servingSize && (
                                                             <div className="flex flex-col items-center">
-                                                                <span className="text-[9px] text-stone-400 uppercase tracking-wider font-medium">Serving Size</span>
-                                                                <span className="text-[15px] text-[#2A401E] font-bold">{product.servingSize}</span>
+                                                                <span className="text-[9px] text-stone-400 uppercase tracking-wide font-medium">Serving Size</span>
+                                                                <span className="text-[14px] text-[#2A401E] font-medium">{product.servingSize}</span>
                                                             </div>
                                                         )}
                                                         {product.capsulesPerContainer && (
                                                             <div className="flex flex-col items-center">
-                                                                <span className="text-[9px] text-stone-400 uppercase tracking-wider font-medium">Container</span>
-                                                                <span className="text-[15px] text-[#2A401E] font-bold">{product.capsulesPerContainer}</span>
+                                                                <span className="text-[9px] text-stone-400 uppercase tracking-wide font-medium">Container</span>
+                                                                <span className="text-[14px] text-[#2A401E] font-medium">{product.capsulesPerContainer}</span>
                                                             </div>
                                                         )}
                                                     </div>
@@ -248,8 +249,8 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                                 className={`w-4 h-4 ${i < Math.round(avgRating || 4.5) ? "fill-[#fbbf24]" : "fill-stone-200"}`} />
                                                         ))}
                                                     </div>
-                                                    <span className="font-sans text-[13px] font-bold text-[#252422]">
-                                                        {avgRating ? avgRating.toFixed(1) : "4.8"} <span className="text-stone-400 font-medium ml-1">({reviews.length > 0 ? reviews.length : 44} Reviews)</span>
+                                                    <span className="font-sans text-[13px] font-medium text-[#252422]">
+                                                        {avgRating ? avgRating.toFixed(1) : "4.8"} <span className="text-stone-400 font-normal ml-1">({reviews.length > 0 ? reviews.length : 44} Reviews)</span>
                                                     </span>
                                                 </div>
 
@@ -260,7 +261,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                                 <div className="w-4 h-4 rounded-full bg-brand-accent flex items-center justify-center">
                                                                     <Award className="w-2.5 h-2.5 text-white" />
                                                                 </div>
-                                                                <span className="font-sans text-[11px] text-[#2A401E] font-bold whitespace-nowrap">{freebie}</span>
+                                                                <span className="font-sans text-[11px] text-[#2A401E] font-medium whitespace-nowrap">{freebie}</span>
                                                             </div>
                                                         ))}
                                                     </div>
@@ -272,13 +273,19 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                             <div className="flex flex-col gap-0.5 mb-2">
                                                 <span className="font-sans text-stone-400 text-[13px]">MRP : <span className="line-through">{formatPrice(displayMp)}</span></span>
                                                 <div className="flex items-center gap-2">
-                                                    <span className="font-sans font-bold text-[#252422] text-[18px]">Price:</span>
-                                                    <span className="font-sans font-bold text-[#252422] text-[24px]">{formatPrice(displaySp)}</span>
-                                                    <span className="text-emerald-500 font-bold text-[14px]">{savePct}% off</span>
-                                                    <div className="flex items-center gap-1 ml-2 text-stone-500 font-sans text-[12px]">
-                                                        <span>Get {Math.round(displaySp * 0.02)} HK Cash</span>
-                                                        <div className="w-4 h-4 rounded-full bg-amber-400 flex items-center justify-center text-[10px] text-white font-bold">{currency.symbol}</div>
-                                                    </div>
+                                                    <span className="font-sans font-medium text-[#252422] text-[17px]">Price:</span>
+                                                    <span className="font-sans font-medium text-[#252422] text-[22px]">{formatPrice(displaySp)}</span>
+                                                    <span className="text-emerald-500 font-medium text-[13px]">{savePct}% off</span>
+                                                    {product.badge && (
+                                                        <span className="bg-brand-primary text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ml-1">
+                                                            {product.badge}
+                                                        </span>
+                                                    )}
+                                                    {product.categoryBadge && (
+                                                        <span className="bg-stone-100 text-[#2A401E] text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-stone-200 ml-1">
+                                                            {product.categoryBadge}
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 <div className="text-[11px] text-stone-400 font-sans font-medium">Inclusive of all taxes</div>
                                             </div>
@@ -287,7 +294,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                         <div className="p-5 border-b border-stone-100">
                                             <div className="flex items-end justify-between gap-6 mb-8">
                                                 <div className="flex flex-col gap-2">
-                                                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 uppercase tracking-widest px-1">
+                                                    <div className="flex items-center gap-1.5 text-[10px] font-semibold text-emerald-600 uppercase tracking-widest px-1">
                                                         <ShieldCheck className="w-3.5 h-3.5" />
                                                         Secure Checkout
                                                     </div>
@@ -300,12 +307,12 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                     </div>
                                                 </div>
                                                 {product.link ? (
-                                                    <a href={ensureUrl(product.link)} target="_blank" rel="noopener noreferrer" className="flex-1 h-14 font-sans font-bold text-[16px] transition-all duration-300 flex items-center justify-center group btn-gold rounded-2xl shadow-lg no-underline relative overflow-hidden">
+                                                    <a href={ensureUrl(product.link)} target="_blank" rel="noopener noreferrer" className="flex-1 h-14 font-sans font-semibold text-[16px] transition-all duration-300 flex items-center justify-center group btn-gold rounded-2xl shadow-lg no-underline relative overflow-hidden">
                                                         <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-[200%] group-hover:animate-shine z-10"></div>
                                                         <span className="flex items-center text-current relative z-20">Buy Now <ChevronRight className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1" /></span>
                                                     </a>
                                                 ) : (
-                                                    <button className="flex-1 h-14 font-sans font-bold text-[16px] transition-all duration-300 flex items-center justify-center group btn-gold rounded-2xl shadow-lg relative overflow-hidden">
+                                                    <button className="flex-1 h-14 font-sans font-medium text-[16px] transition-all duration-300 flex items-center justify-center group btn-gold rounded-2xl shadow-lg relative overflow-hidden">
                                                         <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-[200%] group-hover:animate-shine z-10"></div>
                                                         <span className="flex items-center text-current relative z-20">Buy Now <ChevronRight className="w-5 h-5 ml-1 transition-transform group-hover:translate-x-1" /></span>
                                                     </button>
@@ -318,7 +325,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                         <div className="w-8 h-8 rounded-lg bg-stone-50 flex items-center justify-center border border-stone-100">
                                                             <Truck className="w-4 h-4 text-stone-400" />
                                                         </div>
-                                                        <span className="font-sans font-bold text-[14px] text-stone-700">Select Variant</span>
+                                                        <span className="font-sans font-medium text-[14px] text-stone-700">Select Variant</span>
                                                     </div>
                                                     <div className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded-md border border-emerald-100 uppercase tracking-wider">
                                                         In Stock
@@ -340,7 +347,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                                 }}
                                                                 className={`flex flex-col items-center justify-center py-3 rounded-xl border transition-all duration-200 text-center gap-1.5 ${isActive ? "border-brand-primary bg-emerald-50/20" : "border-stone-100 bg-white hover:border-stone-200"}`}
                                                             >
-                                                                <span className={`font-sans font-bold text-[13px] ${isActive ? "text-[#2A401E]" : "text-stone-700"}`}>{b.label}</span>
+                                                                <span className={`font-sans font-medium text-[13px] ${isActive ? "text-[#2A401E]" : "text-stone-700"}`}>{b.label}</span>
                                                                 <span className="font-sans text-[11px] text-stone-400">{formatPrice(b.sp as number)}</span>
                                                             </button>
                                                         );
@@ -366,7 +373,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                             </div>
                                             <div>
                                                 <span className="font-sans text-[11px] text-stone-400 uppercase tracking-[0.3em] block mb-1">Guidance</span>
-                                                <h2 className="font-sans text-[#2A401E] text-3xl font-bold">How to Use</h2>
+                                                <h2 className="font-sans text-[#2A401E] text-3xl font-medium">How to Use</h2>
                                             </div>
                                         </div>
                                         <p className="font-sans text-stone-600 text-[14px] leading-[1.9]">
@@ -393,7 +400,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                 <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm">
                                                     <ShieldCheck className="w-5 h-5 text-brand-primary" />
                                                 </div>
-                                                <span className="font-sans text-[#2A401E] text-lg font-bold">Pro Tip</span>
+                                                <span className="font-sans text-[#2A401E] text-lg font-medium">Pro Tip</span>
                                             </div>
                                             <p className="font-sans text-stone-600 text-[14px] leading-[1.9] relative z-10 font-medium italic">
                                                 "To achieve the most significant benefits, maintain a consistent routine. Most users report better results after 2-3 weeks of regular use."
@@ -504,7 +511,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
                                 <div>
                                     <span className="font-sans text-[11px] font-bold text-brand-primary uppercase tracking-[0.3em] block mb-3">Community Feedback</span>
-                                    <h2 className="font-heading text-[#2A401E] text-4xl font-semibold tracking-tight">Verified Reviews</h2>
+                                    <h2 className="font-heading text-[#2A401E] text-4xl font-medium tracking-tight">Verified Reviews</h2>
                                 </div>
                                 <div className="text-center sm:text-right">
                                     <div className="flex items-center gap-2 justify-center sm:justify-end mb-1">
@@ -527,7 +534,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                             </div>
                                             <div>
                                                 <div className="flex items-center gap-1.5 leading-none mb-1">
-                                                    <span className="font-heading text-[#2A401E] font-bold text-base tracking-tight">{r.username}</span>
+                                                    <span className="font-heading text-[#2A401E] font-medium text-base tracking-tight">{r.username}</span>
                                                     <div className="w-3.5 h-3.5 rounded-full bg-brand-accent flex items-center justify-center">
                                                         <Check className="w-2 h-2 text-white" strokeWidth={5} />
                                                     </div>
@@ -557,7 +564,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                 {product.faqs.map((faq, i) => (
                                     <details key={i} className="group border-b border-stone-200">
                                         <summary className="flex items-center justify-between py-6 cursor-pointer list-none appearance-none [&::-webkit-details-marker]:hidden">
-                                            <h3 className="font-sans text-[#1d1d1f] text-[17px] font-semibold leading-tight pr-8">{faq.question}</h3>
+                                            <h3 className="font-sans text-[#1d1d1f] text-[17px] font-medium leading-tight pr-8">{faq.question}</h3>
                                             <div className="relative w-5 h-5 flex items-center justify-center shrink-0">
                                                 <ChevronDown className="w-5 h-5 text-stone-400 transition-transform duration-300 group-open:rotate-180" />
                                             </div>
@@ -580,9 +587,9 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                         <div className="flex items-end justify-between mb-10">
                             <div>
                                 <span className="font-heading font-semibold text-[10px] text-brand-primary uppercase tracking-[0.28em] block mb-2">Architectural Synergy</span>
-                                <h2 className="font-heading font-semibold text-[#2A401E] text-4xl tracking-tight">Related Products</h2>
+                                <h2 className="font-heading font-medium text-[#2A401E] text-4xl tracking-tight">Related Products</h2>
                             </div>
-                            <Link href="/products" className="hidden sm:block font-sans text-sm font-semibold text-stone-400 hover:text-brand-primary transition-colors underline-offset-4 hover:underline">
+                            <Link href="/products" className="hidden sm:block font-sans text-sm font-medium text-stone-400 hover:text-brand-primary transition-colors underline-offset-4 hover:underline">
                                 View all →
                             </Link>
                         </div>

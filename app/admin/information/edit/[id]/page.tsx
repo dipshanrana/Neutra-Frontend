@@ -17,6 +17,7 @@ export default function EditInformation() {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [formData, setFormData] = useState({
         title: "",
+        description: "",
         content: "",
         categoryId: ""
     });
@@ -36,6 +37,7 @@ export default function EditInformation() {
                 if (infoData) {
                     setFormData({
                         title: infoData.title,
+                        description: infoData.description || "",
                         content: infoData.content,
                         categoryId: infoData.category?.id?.toString() || ""
                     });
@@ -74,6 +76,7 @@ export default function EditInformation() {
             const data = new FormData();
             const infoJson = {
                 title: formData.title,
+                description: formData.description,
                 content: formData.content,
                 category: formData.categoryId ? { id: parseInt(formData.categoryId) } as Category : undefined
             };
@@ -153,6 +156,16 @@ export default function EditInformation() {
                             onChange={e => setFormData(prev => ({ ...prev, title: e.target.value }))}
                             className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#38A36D] transition-colors text-white placeholder-white/20"
                             placeholder="e.g. Science of Protein Synthesis"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D] mb-3">Short Description (for preview)</label>
+                        <textarea
+                            rows={3}
+                            value={formData.description}
+                            onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                            className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#38A36D] transition-colors text-white placeholder-white/20 resize-none"
+                            placeholder="A brief summary for the preview card..."
                         />
                     </div>
 

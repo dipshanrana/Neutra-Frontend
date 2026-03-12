@@ -35,7 +35,7 @@ export function InformationOverview({ initialData }: { initialData?: Information
                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
                     <div className="max-w-2xl text-left">
                         <Link href="/information">
-                            <h2 className="text-[#1B4332] text-[40px] md:text-[52px] font-bold font-heading leading-[1.05] tracking-tight mb-4 hover:text-[#2FAF82] transition-colors cursor-pointer">
+                            <h2 className="text-[#1B4332] text-[32px] md:text-[42px] font-semibold font-heading leading-[1.05] tracking-tight mb-4 hover:text-[#2FAF82] transition-colors cursor-pointer">
                                 Expert Health and <br />
                                 <span className="text-[#2FAF82] italic font-light">Wellness Manuals</span>
                             </h2>
@@ -62,7 +62,7 @@ export function InformationOverview({ initialData }: { initialData?: Information
                             </Link>
 
                             <div className="flex-1 flex flex-col items-start w-full">
-                                <h3 className="text-black text-[18px] md:text-[20px] font-bold font-heading leading-tight mb-4 line-clamp-2">
+                                <h3 className="text-black text-[17px] md:text-[19px] font-semibold font-heading leading-tight mb-4 line-clamp-2">
                                     <Link href={`/information/${item.id}`}>
                                         {item.title}
                                     </Link>
@@ -74,10 +74,10 @@ export function InformationOverview({ initialData }: { initialData?: Information
 
                                 <Link
                                     href={`/information/${item.id}`}
-                                    className="mt-auto group/btn flex items-center gap-2 bg-[#E8F3EE] hover:bg-[#1B4332] text-[#1B4332] hover:text-white px-7 py-3 rounded-lg transition-all duration-300 text-[13px] font-extrabold uppercase tracking-widest border border-transparent hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
+                                    className="mt-auto group/btn flex items-center justify-center gap-3 bg-white border border-[#1B4332]/20 hover:bg-[#1B4332] hover:border-[#1B4332] text-[#1B4332] hover:text-white px-8 py-3.5 rounded-full transition-all duration-500 text-[11px] font-bold uppercase tracking-[0.2em] shadow-sm hover:shadow-xl hover:-translate-y-1"
                                 >
                                     Learn More
-                                    <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" stroke="currentColor">
+                                    <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 transition-transform duration-500 group-hover/btn:translate-x-1.5" stroke="currentColor">
                                         <path d="M5 12h14m-7-7l7 7-7 7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </Link>

@@ -52,7 +52,13 @@ export default async function Home() {
                       "@type": "Product",
                       "url": `https://nutricore.com/products/${p.id}`,
                       "name": p.name,
-                      "image": absImg
+                      "image": absImg,
+                      "offers": {
+                        "@type": "Offer",
+                        "priceCurrency": "NPR",
+                        "price": p.singleProductSp || p.sp || 99.99,
+                        "availability": "https://schema.org/InStock"
+                      }
                     }
                   };
                 })

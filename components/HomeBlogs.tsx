@@ -44,7 +44,7 @@ export function HomeBlogs({ initialBlogs }: { initialBlogs?: Blog[] }) {
             <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
                 <div className="text-center mb-12">
                     <Link href="/blog">
-                        <h2 className="text-[#1b3a32] text-[26px] sm:text-[30px] md:text-[34px] font-bold font-heading tracking-tight capitalize hover:text-[#2FAF82] transition-colors inline-block cursor-pointer">
+                        <h2 className="text-[#1b3a32] text-[22px] sm:text-[26px] md:text-[30px] font-semibold font-heading tracking-tight capitalize hover:text-[#2FAF82] transition-colors inline-block cursor-pointer">
                             Wellness Insights
                         </h2>
                     </Link>
@@ -73,7 +73,7 @@ export function HomeBlogs({ initialBlogs }: { initialBlogs?: Blog[] }) {
 
                                 <div className="flex flex-col flex-1 text-left">
                                     <Link href={`/blog/${blog.id}`}>
-                                        <h3 className="text-black text-[15px] sm:text-[16px] font-extrabold leading-[1.3] mb-4 font-outfit uppercase tracking-tight line-clamp-2">
+                                        <h3 className="text-black text-[15px] sm:text-[16px] font-semibold leading-[1.3] mb-4 font-outfit uppercase tracking-tight line-clamp-2">
                                             {blog.title}
                                         </h3>
                                     </Link>
@@ -84,9 +84,12 @@ export function HomeBlogs({ initialBlogs }: { initialBlogs?: Blog[] }) {
 
                                     <Link
                                         href={`/blog/${blog.id}`}
-                                        className="inline-block text-[#2FAF82] font-bold text-[14px] hover:text-[#1B4332] transition-colors w-fit"
+                                        className="mt-auto group/btn flex items-center justify-center gap-2.5 bg-white border border-[#1b3a32]/10 hover:bg-[#1b3a32] hover:border-[#1b3a32] text-[#1b3a32] hover:text-white px-7 py-3 rounded-full transition-all duration-500 text-[11px] font-bold uppercase tracking-[0.15em] shadow-sm hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 w-fit"
                                     >
-                                        Read More
+                                        Learn More
+                                        <svg viewBox="0 0 24 24" fill="none" className="w-3.5 h-3.5 transition-transform duration-500 group-hover/btn:translate-x-1.5" stroke="currentColor">
+                                            <path d="M5 12h14m-7-7l7 7-7 7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
                                     </Link>
                                 </div>
                             </div>

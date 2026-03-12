@@ -83,7 +83,9 @@ export default function ProductForm() {
         freebies: [] as string[],
         reviews: [] as { username: string, stars: number, comment: string }[],
         howToUse: ["", "", "", ""],
-        faqs: [] as { question: string, answer: string }[]
+        faqs: [] as { question: string, answer: string }[],
+        badge: "",
+        categoryBadge: ""
     });
 
     // File states for multipart submission
@@ -159,7 +161,9 @@ export default function ProductForm() {
                 howToUse: product.howToUse && product.howToUse.length > 0
                     ? [...product.howToUse, ...Array(Math.max(0, 4 - product.howToUse.length)).fill("")]
                     : ["", "", "", ""],
-                faqs: product.faqs && product.faqs.length > 0 ? product.faqs : []
+                faqs: product.faqs && product.faqs.length > 0 ? product.faqs : [],
+                badge: product.badge || "",
+                categoryBadge: product.categoryBadge || ""
             });
         } catch (err) {
             setError("Failed to load product");
@@ -240,7 +244,9 @@ export default function ProductForm() {
                 freebies: formData.freebies.filter(f => f && f.trim() !== ""),
                 reviews: formData.reviews.filter(r => r.username && r.username.trim() !== "" && r.comment && r.comment.trim() !== ""),
                 howToUse: formData.howToUse.map(step => step ? step.trim() : "").filter(step => step !== ""),
-                faqs: formData.faqs.filter(f => f.question && f.question.trim() !== "")
+                faqs: formData.faqs.filter(f => f.question && f.question.trim() !== ""),
+                badge: formData.badge,
+                categoryBadge: formData.categoryBadge
             };
 
             const multiFormData = new FormData();
@@ -388,6 +394,30 @@ export default function ProductForm() {
                             placeholder="20"
                         />
                         <p className="text-xs text-white/30 mt-2">Applied as a display badge/visual cue across all packs, pricing logic handled per pack below.</p>
+                    </div>
+
+                    {/* Badges */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D] mb-3">Product Badge (e.g. HOT, NEW)</label>
+                            <input
+                                type="text"
+                                value={formData.badge}
+                                onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
+                                className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#38A36D] transition-colors text-white placeholder-white/20"
+                                placeholder="HOT"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#38A36D] mb-3">Category Badge (e.g. 1 BEST SELLER)</label>
+                            <input
+                                type="text"
+                                value={formData.categoryBadge}
+                                onChange={(e) => setFormData({ ...formData, categoryBadge: e.target.value })}
+                                className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#38A36D] transition-colors text-white placeholder-white/20"
+                                placeholder="1 BEST SELLER"
+                            />
+                        </div>
                     </div>
 
                     {/* Bundle Prices */}

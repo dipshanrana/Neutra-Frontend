@@ -2,6 +2,7 @@
 // For Hydration consistency, we use the relative proxy path everywhere for string construction (like image URLs)
 // The actual fetch logic will resolve the absolute URL on the server.
 export const API_BASE_URL = "/api/backend";
+export const IMAGE_BASE_URL = "http://209.126.86.149:8079";
 const SERVER_API_URL = process.env.NEXT_PUBLIC_API_URL || "http://209.126.86.149:8079";
 const IS_SERVER = typeof window === 'undefined';
 
@@ -210,23 +211,17 @@ export function formatImageUrl(src?: string): string {
   if (src.startsWith("http") || src.startsWith("data:")) return src;
   
   // 2. Handle relative paths from the backend (e.g., /uploads/image.jpg or uploads/image.jpg)
-  if (src.startsWith("/uploads") || src.startsWith("uploads/")) {
-    const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
+  if (src.startsWith("/uploads/") || src.startsWith("uploads/")) {
+    const baseUrl = IMAGE_BASE_URL.endsWith('/') ? IMAGE_BASE_URL.slice(0, -1) : IMAGE_BASE_URL;
     const path = src.startsWith('/') ? src : `/${src}`;
     return `${baseUrl}${path}`;
   }
   
-  // 3. If it doesn't look like a path, assume it's raw base64 data from the legacy backend
-  // Only prepend the data prefix if it looks like base64 (e.g., long string, no spaces, no /)
-  if (src.length > 50 && !src.includes("/") && !src.includes(" ")) {
-    return `data:image/png;base64,${src}`;
-  }
-  
-  // 4. Default fallback: assume it might be a relative path we missed
+  // 3. Fallback for any other path that contains a slash (assumed relative)
   if (src.includes("/")) {
-     const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL;
-     const path = src.startsWith('/') ? src : `/${src}`;
-     return `${baseUrl}${path}`;
+    const baseUrl = IMAGE_BASE_URL.endsWith('/') ? IMAGE_BASE_URL.slice(0, -1) : IMAGE_BASE_URL;
+    const path = src.startsWith('/') ? src : `/${src}`;
+    return `${baseUrl}${path}`;
   }
 
   return src;
@@ -370,9 +365,9 @@ export interface Category {
   id?: number;
   name: string;
   svg: string;
-  badge?: string; // Match documentation
-  shortDescription?: string; // Match documentation
-  image?: string; // Base64 string from backend
+  badge?: string;
+  shortDescription?: string;
+  image?: string; // Path returned by backend
 }
 
 export const categoryApi = {
@@ -461,6 +456,8 @@ export interface Product {
     question: string;
     answer: string;
   }[];
+  badge?: string;
+  categoryBadge?: string;
 }
 
 export const productApi = {
@@ -519,6 +516,12 @@ export const productApi = {
 
   searchByPriceRange: (min: number, max: number) =>
     apiFetch<Product[]>(`/products/search/price?min=${min}&max=${max}`),
+
+  searchByBadge: (badge: string) =>
+    apiFetch<Product[]>(`/products/search/badge?badge=${encodeURIComponent(badge)}`),
+
+  searchByCategoryBadge: (badge: string, category: string) =>
+    apiFetch<Product[]>(`/products/search/category-badge?badge=${encodeURIComponent(badge)}&category=${encodeURIComponent(category)}`),
 };
 
 // ==================== Blog APIs ====================
@@ -556,6 +559,9 @@ export const blogApi = {
     apiFetch<void>(`/blogs/${id}`, {
       method: 'DELETE',
     }, true),
+
+  getByCategory: (categoryName: string) =>
+    apiFetch<Blog[]>(`/blogs/category/${encodeURIComponent(categoryName)}`),
 };
 
 // ==================== Information APIs ====================
@@ -592,6 +598,9 @@ export const infoApi = {
     apiFetch<void>(`/information/${id}`, {
       method: 'DELETE',
     }, true),
+
+  getByCategory: (categoryName: string) =>
+    apiFetch<Information[]>(`/information/category/${encodeURIComponent(categoryName)}`),
 };
 
 // ==================== Analytics APIs ====================
