@@ -90,15 +90,22 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     }).slice(0, 4);
 
     const images = getProductAllImages(product);
+    const schemaImages = images.map((img: string) => 
+        img.startsWith('/') ? `https://nutricore.com${img}` : img
+    );
+
     const reviews = product.reviews ?? [];
     const avgRating = reviews.length ? +(reviews.reduce((a: any, r: any) => a + r.stars, 0) / reviews.length).toFixed(1) : 0;
     const displaySp = product.singleProductSp ?? product.sp;
+
+    const nextYear = new Date();
+    nextYear.setFullYear(nextYear.getFullYear() + 1);
 
     const schemaData = {
         "@context": "https://schema.org",
         "@type": "Product",
         "name": product.name,
-        "image": images,
+        "image": schemaImages,
         "description": product.description,
         "brand": {
             "@type": "Brand",
@@ -110,14 +117,51 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
             "url": `https://nutricore.com/products/${product.id}`,
             "priceCurrency": "NPR",
             "price": displaySp,
-            "availability": "https://schema.org/InStock"
+            "availability": "https://schema.org/InStock",
+            "itemCondition": "https://schema.org/NewCondition",
+            "priceValidUntil": nextYear.toISOString().split('T')[0],
+            "shippingDetails": {
+                "@type": "OfferShippingDetails",
+                "shippingRate": {
+                    "@type": "MonetaryAmount",
+                    "value": "0",
+                    "currency": "NPR"
+                },
+                "shippingDestination": {
+                    "@type": "DefinedRegion",
+                    "addressCountry": "NP"
+                },
+                "deliveryTime": {
+                    "@type": "ShippingDeliveryTime",
+                    "handlingTime": {
+                        "@type": "QuantitativeValue",
+                        "minValue": 0,
+                        "maxValue": 1,
+                        "unitCode": "d"
+                    },
+                    "transitTime": {
+                        "@type": "QuantitativeValue",
+                        "minValue": 1,
+                        "maxValue": 3,
+                        "unitCode": "d"
+                    }
+                }
+            },
+            "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "applicableCountry": "NP",
+                "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                "merchantReturnDays": 30,
+                "returnMethod": "https://schema.org/ReturnByMail",
+                "returnFees": "https://schema.org/FreeReturn"
+            }
         },
         "aggregateRating": reviews.length > 0 ? {
             "@type": "AggregateRating",
             "ratingValue": avgRating,
             "reviewCount": reviews.length
         } : undefined,
-        "review": reviews.map((r: any) => ({
+        "review": reviews.length > 0 ? reviews.map((r: any) => ({
             "@type": "Review",
             "author": {
                 "@type": "Person",
@@ -128,7 +172,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
                 "ratingValue": r.stars
             },
             "reviewBody": r.comment
-        }))
+        })) : undefined
     };
 
     return (
