@@ -74,7 +74,29 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
         // Find a blog that specifically mentions this product (for hero/sidebar)
         const found = initialBlogs.find(b => b.relatedProducts?.some(rp => rp.id === initialProduct.id));
         if (found) setRelatedBlog(found);
-    }, [initialBlogs, initialProduct.id]);
+
+        const cCat = initialProduct.category;
+        const cId = typeof cCat === 'object' ? cCat?.id : null;
+        const cName = (typeof cCat === 'string' ? cCat : cCat?.name || "").toLowerCase().trim();
+
+        const filteredBlogs = initialBlogs.filter(b => {
+             const bCat = b.category;
+             const bName = (typeof bCat === 'string' ? bCat : bCat?.name || "").toLowerCase().trim();
+             return bName === cName && cName !== "";
+        }).slice(0, 3);
+        setRelatedBlogs(filteredBlogs);
+
+        const filteredInfo = initialInfos.filter(i => {
+             const iCat = i.category;
+             const iId = typeof iCat === 'object' ? iCat?.id : null;
+             const iName = (typeof iCat === 'string' ? iCat : iCat?.name || "").toLowerCase().trim();
+
+             const idMatch = cId !== null && iId !== null && cId === iId;
+             const nameMatch = cName !== "" && cName === iName;
+             return idMatch || nameMatch;
+        }).slice(0, 3);
+        setRelatedInfo(filteredInfo);
+    }, [initialBlogs, initialProduct, initialInfos]);
 
     if (!product) return null;
 
