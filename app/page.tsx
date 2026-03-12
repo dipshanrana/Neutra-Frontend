@@ -31,8 +31,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[#ffffff] selection:bg-[#D4AF37] selection:text-white">
-      {/* Featured Items Schemas - Rendered on Server */}
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -80,6 +79,7 @@ export default async function Home() {
           })
         }}
       />
+      <main className="min-h-screen bg-[#ffffff] selection:bg-[#D4AF37] selection:text-white">
 
       <Suspense fallback={<div className="h-20 bg-white animate-pulse" />}>
         <Navbar />
@@ -94,5 +94,6 @@ export default async function Home() {
       <PreFooter />
       <Footer />
     </main>
+    </>
   );
 }
