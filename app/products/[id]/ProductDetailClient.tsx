@@ -598,7 +598,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                             {relSave > 0 && <div className="absolute top-0 left-0 bg-[#b91c1c] text-white font-sans text-[11px] font-bold px-3 pt-1.5 pb-1 uppercase tracking-wider z-10">SALE</div>}
                                             <button className="absolute bottom-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center text-[#522c83] hover:text-[#b91c1c] transition-colors shadow-[0_2px_8px_rgba(0,0,0,0.08)] z-10" onClick={(e) => e.preventDefault()}><Heart className="w-4 h-4" /></button>
                                             <div className="relative w-full h-full">
-                                                <img src={getProductMainImage(p)} alt={p.name} className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm" />
+                                                <img src={getProductMainImage(p)} alt={p.name} className="w-full h-full object-contain p-4 mix-blend-multiply drop-shadow-sm" />
                                             </div>
                                         </div>
                                         <div className="flex flex-col flex-1 px-4 pb-4 text-left">
