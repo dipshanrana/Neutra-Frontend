@@ -111,15 +111,26 @@ export default function AdminCategories() {
     const handleUpdate = async (id: number) => {
         try {
             const formData = new FormData();
-            const categoryBlob = new Blob([JSON.stringify({ id, name: editName, svg: editSvg, badge: editBadge, shortDescription: editShortDesc })], { type: 'application/json' });
+            const categoryBlob = new Blob([JSON.stringify({ name: editName, svg: editSvg, badge: editBadge, shortDescription: editShortDesc })], { type: 'application/json' });
             formData.append('category', categoryBlob);
             if (editImageFile) {
                 formData.append('image', editImageFile);
             }
 
             const updated = await api.categories.update(id, formData);
-            setCategories(categories.map(c => c.id === id ? updated : c));
+            // Merge: keep existing fields, apply API response (for new image URL etc.),
+            // then always override with locally-edited values so they're never lost
+            // even if the API response omits badge/shortDescription.
+            setCategories(prev => prev.map(c => c.id === id ? {
+                ...c,
+                ...updated,
+                name: editName,
+                badge: editBadge,
+                shortDescription: editShortDesc,
+            } : c));
             setIsEditing(null);
+            setEditName("");
+            setEditSvg("");
             setEditBadge("");
             setEditShortDesc("");
             setEditImageFile(null);
