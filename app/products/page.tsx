@@ -4,6 +4,8 @@ import { Footer } from "@/components/Footer";
 import { api, getProductMainImage, Product, Category } from "@/lib/api";
 import { ShopClient } from "./ShopClient";
 
+export const dynamic = 'force-dynamic';
+
 export default async function ShopAll() {
     let products: Product[] = [];
     let categories: Category[] = [];
