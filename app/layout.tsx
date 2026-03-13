@@ -52,32 +52,30 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "Organization",
-              "name": "NutriCore",
-              "url": "https://nutricore.com",
-              "logo": "https://nutricore.com/logo.png",
-              "description": "Premium Supplements for a Better You. 100% Natural Ingredients.",
-              "sameAs": [
-                "https://instagram.com/nutricore",
-                "https://twitter.com/nutricore",
-                "https://linkedin.com/company/nutricore"
+              "@graph": [
+                {
+                  "@type": "Organization",
+                  "name": "NutriCore",
+                  "url": "https://nutricore.com",
+                  "logo": "https://nutricore.com/logo.png",
+                  "description": "Premium Supplements for a Better You. 100% Natural Ingredients.",
+                  "sameAs": [
+                    "https://instagram.com/nutricore",
+                    "https://twitter.com/nutricore",
+                    "https://linkedin.com/company/nutricore"
+                  ]
+                },
+                {
+                  "@type": "WebSite",
+                  "name": "NutriCore",
+                  "url": "https://nutricore.com",
+                  "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "https://nutricore.com/products?search={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                  }
+                }
               ]
-            })
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "NutriCore",
-              "url": "https://nutricore.com",
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://nutricore.com/products?search={search_term_string}",
-                "query-input": "required name=search_term_string"
-              }
             })
           }}
         />

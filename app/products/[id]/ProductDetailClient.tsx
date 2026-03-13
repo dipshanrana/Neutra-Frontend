@@ -276,13 +276,8 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                     <span className="font-sans font-medium text-[#252422] text-[17px]">Price:</span>
                                                     <span className="font-sans font-medium text-[#252422] text-[22px]">{formatPrice(displaySp)}</span>
                                                     <span className="text-emerald-500 font-medium text-[13px]">{savePct}% off</span>
-                                                    {product.badge && (
-                                                        <span className="bg-[#38A36D] text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ml-1">
-                                                            {product.badge}
-                                                        </span>
-                                                    )}
                                                     {product.categoryBadge && (
-                                                        <span className="bg-stone-100 text-[#2A401E] text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-stone-200 ml-1">
+                                                        <span className="bg-[#252422] text-white text-[11px] font-bold px-3 py-1.5 rounded uppercase tracking-wider border border-[#252422]/20 ml-1">
                                                             {product.categoryBadge}
                                                         </span>
                                                     )}
