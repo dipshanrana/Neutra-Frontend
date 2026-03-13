@@ -102,78 +102,88 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
     const nextYear = new Date();
     nextYear.setFullYear(nextYear.getFullYear() + 1);
 
+    const canonicalUrl = `https://nutricore.com/products/${product.id}`;
+    
     const schemaData = {
         "@context": "https://schema.org",
-        "@type": "Product",
-        "name": product.name,
-        "image": schemaImages,
-        "description": product.description,
-        "brand": {
-            "@type": "Brand",
-            "name": "NutriCore"
-        },
-        "sku": product.id?.toString(),
-        "offers": {
-            "@type": "Offer",
-            "url": `https://nutricore.com/products/${product.id}`,
-            "priceCurrency": "NPR",
-            "price": displaySp,
-            "availability": "https://schema.org/InStock",
-            "itemCondition": "https://schema.org/NewCondition",
-            "priceValidUntil": nextYear.toISOString().split('T')[0],
-            "shippingDetails": {
-                "@type": "OfferShippingDetails",
-                "shippingRate": {
-                    "@type": "MonetaryAmount",
-                    "value": "0",
-                    "currency": "NPR"
+        "@graph": [
+            {
+                "@type": "Product",
+                "@id": `${canonicalUrl}#product`,
+                "name": product.name,
+                "image": schemaImages,
+                "description": product.description,
+                "sku": product.id?.toString(),
+                "brand": {
+                    "@type": "Brand",
+                    "name": "NutriCore"
                 },
-                "shippingDestination": {
-                    "@type": "DefinedRegion",
-                    "addressCountry": "NP"
-                },
-                "deliveryTime": {
-                    "@type": "ShippingDeliveryTime",
-                    "handlingTime": {
-                        "@type": "QuantitativeValue",
-                        "minValue": 0,
-                        "maxValue": 1,
-                        "unitCode": "d"
+                "offers": {
+                    "@type": "Offer",
+                    "@id": `${canonicalUrl}#offer`,
+                    "url": canonicalUrl,
+                    "priceCurrency": "NPR",
+                    "price": displaySp,
+                    "availability": "https://schema.org/InStock",
+                    "itemCondition": "https://schema.org/NewCondition",
+                    "priceValidUntil": nextYear.toISOString().split('T')[0],
+                    "shippingDetails": {
+                        "@type": "OfferShippingDetails",
+                        "shippingRate": {
+                            "@type": "MonetaryAmount",
+                            "value": "0",
+                            "currency": "NPR"
+                        },
+                        "shippingDestination": {
+                            "@type": "DefinedRegion",
+                            "addressCountry": "NP"
+                        },
+                        "deliveryTime": {
+                            "@type": "ShippingDeliveryTime",
+                            "handlingTime": {
+                                "@type": "QuantitativeValue",
+                                "minValue": 0,
+                                "maxValue": 1,
+                                "unitCode": "d"
+                            },
+                            "transitTime": {
+                                "@type": "QuantitativeValue",
+                                "minValue": 1,
+                                "maxValue": 3,
+                                "unitCode": "d"
+                            }
+                        }
                     },
-                    "transitTime": {
-                        "@type": "QuantitativeValue",
-                        "minValue": 1,
-                        "maxValue": 3,
-                        "unitCode": "d"
+                    "hasMerchantReturnPolicy": {
+                        "@type": "MerchantReturnPolicy",
+                        "applicableCountry": "NP",
+                        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+                        "merchantReturnDays": 30,
+                        "returnMethod": "https://schema.org/ReturnByMail",
+                        "returnFees": "https://schema.org/FreeReturn"
                     }
-                }
-            },
-            "hasMerchantReturnPolicy": {
-                "@type": "MerchantReturnPolicy",
-                "applicableCountry": "NP",
-                "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
-                "merchantReturnDays": 30,
-                "returnMethod": "https://schema.org/ReturnByMail",
-                "returnFees": "https://schema.org/FreeReturn"
+                },
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "@id": `${canonicalUrl}#rating`,
+                    "ratingValue": avgRating,
+                    "reviewCount": reviews.length > 0 ? reviews.length : 12
+                },
+                "review": reviews.length > 0 ? reviews.map((r: any, idx: number) => ({
+                    "@type": "Review",
+                    "@id": `${canonicalUrl}#review-${idx}`,
+                    "author": {
+                        "@type": "Person",
+                        "name": r.username
+                    },
+                    "reviewRating": {
+                        "@type": "Rating",
+                        "ratingValue": r.stars
+                    },
+                    "reviewBody": r.comment
+                })) : undefined
             }
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": avgRating,
-            "reviewCount": reviews.length > 0 ? reviews.length : 12 // Fallback count if none exist
-        },
-        "review": reviews.length > 0 ? reviews.map((r: any) => ({
-            "@type": "Review",
-            "author": {
-                "@type": "Person",
-                "name": r.username
-            },
-            "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": r.stars
-            },
-            "reviewBody": r.comment
-        })) : undefined
+        ]
     };
 
     return (
