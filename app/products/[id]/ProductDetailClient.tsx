@@ -181,7 +181,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                         >
                                             <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-20 flex flex-col gap-2.5 pointer-events-none">
                                                 {savePct > 0 && (
-                                                    <div className="bg-[#2A401E] text-white font-sans text-[10px] sm:text-[11px] px-4 py-1.5 rounded-full uppercase tracking-[0.2em] font-bold shadow-[0_4px_12px_rgba(42,64,30,0.2)]">
+                                                    <div className="bg-[#b91c1c] text-white font-sans text-[10px] sm:text-[11px] px-4 py-1.5 rounded-full uppercase tracking-[0.2em] font-bold shadow-[0_4px_12px_rgba(185,28,28,0.2)]">
                                                         Save {savePct}%
                                                     </div>
                                                 )}
@@ -241,29 +241,43 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                 </div>
                                             </div>
 
-                                            <div className="flex items-center justify-between">
-                                                <div className="flex items-center gap-2.5">
-                                                    <div className="flex items-center gap-0.5">
-                                                        {[...Array(5)].map((_, i) => (
-                                                            <Star key={i} strokeWidth={0}
-                                                                className={`w-4 h-4 ${i < Math.round(avgRating || 4.5) ? "fill-[#fbbf24]" : "fill-stone-200"}`} />
-                                                        ))}
+                                            <div className="flex flex-col gap-3">
+                                                <div className="flex items-center justify-between">
+                                                    <div className="flex items-center gap-2.5">
+                                                        <div className="flex items-center gap-0.5">
+                                                            {[...Array(5)].map((_, i) => (
+                                                                <Star key={i} strokeWidth={0}
+                                                                    className={`w-4 h-4 ${i < Math.round(avgRating || 4.5) ? "fill-[#fbbf24]" : "fill-stone-200"}`} />
+                                                            ))}
+                                                        </div>
+                                                        <span className="font-sans text-[13px] font-medium text-[#252422]">
+                                                            {avgRating ? avgRating.toFixed(1) : "4.8"} <span className="text-stone-400 font-normal ml-1">({reviews.length > 0 ? reviews.length : 43} Reviews)</span>
+                                                        </span>
                                                     </div>
-                                                    <span className="font-sans text-[13px] font-medium text-[#252422]">
-                                                        {avgRating ? avgRating.toFixed(1) : "4.8"} <span className="text-stone-400 font-normal ml-1">({reviews.length > 0 ? reviews.length : 44} Reviews)</span>
-                                                    </span>
+
+                                                    {freebies.length > 0 && (
+                                                        <div className="flex items-center gap-1.5">
+                                                            {freebies.map((freebie, idx) => (
+                                                                <div key={idx} className="flex items-center gap-1.5 bg-brand-primary/[0.03] border border-brand-primary/10 px-2 py-1 rounded-md">
+                                                                    <div className="w-4 h-4 rounded-full bg-brand-accent flex items-center justify-center">
+                                                                        <Award className="w-2.5 h-2.5 text-white" />
+                                                                    </div>
+                                                                    <span className="font-sans text-[11px] text-[#2A401E] font-medium whitespace-nowrap">{freebie}</span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
                                                 </div>
 
-                                                {freebies.length > 0 && (
-                                                    <div className="flex items-center gap-1.5">
-                                                        {freebies.map((freebie, idx) => (
-                                                            <div key={idx} className="flex items-center gap-1.5 bg-brand-primary/[0.03] border border-brand-primary/10 px-2 py-1 rounded-md">
-                                                                <div className="w-4 h-4 rounded-full bg-brand-accent flex items-center justify-center">
-                                                                    <Award className="w-2.5 h-2.5 text-white" />
-                                                                </div>
-                                                                <span className="font-sans text-[11px] text-[#2A401E] font-medium whitespace-nowrap">{freebie}</span>
-                                                            </div>
-                                                        ))}
+                                                {product.categoryBadge && (
+                                                    <div className="flex items-center gap-2 text-[13px] font-sans">
+                                                        <span className="bg-[#cc4b00] text-white text-[12px] font-bold px-2 py-0.5 rounded-sm shadow-sm inline-flex items-center">
+                                                            {product.categoryBadge}
+                                                        </span>
+                                                        <span className="text-stone-500">in</span>
+                                                        <Link href={`/products?category=${encodeURIComponent(cat)}`} className="text-[#007185] hover:text-[#c45500] hover:underline font-medium transition-colors">
+                                                            {cat}
+                                                        </Link>
                                                     </div>
                                                 )}
                                             </div>
@@ -276,11 +290,6 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                     <span className="font-sans font-medium text-[#252422] text-[17px]">Price:</span>
                                                     <span className="font-sans font-medium text-[#252422] text-[22px]">{formatPrice(displaySp)}</span>
                                                     <span className="text-emerald-500 font-medium text-[13px]">{savePct}% off</span>
-                                                    {product.categoryBadge && (
-                                                        <span className="bg-[#252422] text-white text-[11px] font-bold px-3 py-1.5 rounded uppercase tracking-wider border border-[#252422]/20 ml-1">
-                                                            {product.categoryBadge}
-                                                        </span>
-                                                    )}
                                                 </div>
                                                 <div className="text-[11px] text-stone-400 font-sans font-medium">Inclusive of all taxes</div>
                                             </div>
@@ -380,7 +389,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                         <div className="space-y-6">
                                             {howToUse.map((step, idx) => (
                                                 <div key={idx} className="flex gap-5 group">
-                                                    <div className="flex-shrink-0 w-8 h-8 rounded-xl bg-white border border-stone-200 flex items-center justify-center font-sans text-[14px] text-[#2A401E] font-bold group-hover:bg-brand-primary group-hover:text-white group-hover:border-brand-primary transition-all shadow-sm">
+                                                    <div className="flex-shrink-0 w-8 h-8 rounded-xl bg-white border border-stone-200 flex items-center justify-center font-sans text-[14px] text-[#2A401E] font-bold hover:border-brand-accent transition-all shadow-sm">
                                                         {String(idx + 1).padStart(2, '0')}
                                                     </div>
                                                     <p className="font-sans text-stone-600 text-[14px] leading-[1.9] pt-0.5">{step}</p>
