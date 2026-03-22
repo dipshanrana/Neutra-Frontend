@@ -27,15 +27,15 @@ export function InformationDetailClient({ initialInfo }: { initialInfo: Informat
             {/* Back Navigation Bar */}
             <div className="bg-[#0A190E] border-b border-[#1A2E20] sticky top-[80px] z-40">
                 <div className="max-w-screen-2xl mx-auto px-6 h-14 flex items-center justify-between">
-                    <Link href="/information" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-brand-accent/60 hover:text-emerald-400 transition-colors">
+                    <Link href="/information" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-stone-400/60 hover:text-white transition-colors">
                         <ArrowLeft className="w-4 h-4" />
                         Back to Vault
                     </Link>
                     <div className="flex items-center gap-6 hidden sm:flex">
-                        <span className="text-[9px] font-mono text-brand-accent/40 uppercase tracking-widest">
-                            SYS.STATUS: <span className="text-emerald-400">SECURE</span>
+                        <span className="text-[9px] font-mono text-stone-500 uppercase tracking-widest">
+                            SYS.STATUS: <span className="text-white">SECURE</span>
                         </span>
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-accent shadow-[0_0_10px_#10B981] animate-pulse"></div>
+                        <div className="w-1.5 h-1.5 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)] animate-pulse"></div>
                     </div>
                 </div>
             </div>
@@ -48,9 +48,9 @@ export function InformationDetailClient({ initialInfo }: { initialInfo: Informat
                 </div>
 
                 <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
-                    <div className="inline-flex items-center gap-3 px-4 py-2 bg-brand-accent/10 border border-brand-accent/20 rounded-full mb-10">
-                        <ShieldCheck className="w-4 h-4 text-brand-accent" />
-                        <span className="text-[10px] font-black text-emerald-400 uppercase tracking-[0.4em]">Level 1 Clearance</span>
+                    <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/20 rounded-full mb-10">
+                        <ShieldCheck className="w-4 h-4 text-white" />
+                        <span className="text-[10px] font-black text-white uppercase tracking-[0.4em]">Level 1 Clearance</span>
                     </div>
 
                     <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-heading font-medium text-white tracking-tighter leading-[0.9] mb-12 text-balance">
@@ -60,15 +60,15 @@ export function InformationDetailClient({ initialInfo }: { initialInfo: Informat
                     <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-16 border-t border-[#1A2E20] pt-10">
                         <div className="flex flex-col items-center">
                             <span className="text-[9px] font-mono text-stone-500 uppercase tracking-widest mb-2">Module ID</span>
-                            <span className="text-brand-accent font-bold tracking-widest">MOD-{info.id?.toString().padStart(3, '0') || 'ARCH'}</span>
+                            <span className="text-white font-bold tracking-widest">MOD-{info.id?.toString().padStart(3, '0') || 'ARCH'}</span>
                         </div>
                         <div className="flex flex-col items-center">
                             <span className="text-[9px] font-mono text-stone-500 uppercase tracking-widest mb-2">Category</span>
-                            <span className="text-brand-accent font-bold uppercase tracking-widest">{catName}</span>
+                            <span className="text-white font-bold uppercase tracking-widest">{catName}</span>
                         </div>
                         <div className="flex flex-col items-center">
                             <span className="text-[9px] font-mono text-stone-500 uppercase tracking-widest mb-2">Data Integrity</span>
-                            <span className="text-brand-accent font-bold uppercase tracking-widest flex items-center gap-1">
+                            <span className="text-white font-bold uppercase tracking-widest flex items-center gap-1">
                                 <Fingerprint className="w-3.5 h-3.5" /> 100% MATCH
                             </span>
                         </div>
@@ -89,7 +89,7 @@ export function InformationDetailClient({ initialInfo }: { initialInfo: Informat
                                 />
                                 <div className="absolute inset-0 ring-1 ring-inset ring-black/10 rounded-[3rem]"></div>
                                 <div className="absolute top-6 left-6 flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-brand-accent animate-ping rounded-full"></div>
+                                    <div className="w-2 h-2 bg-white animate-ping rounded-full"></div>
                                     <span className="text-[9px] font-mono font-black uppercase text-white tracking-widest bg-black/50 px-3 py-1.5 rounded backdrop-blur-sm">Live Feed</span>
                                 </div>
                                 <div className="absolute bottom-6 right-6 opacity-30 group-hover:opacity-100 transition-opacity">

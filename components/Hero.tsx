@@ -30,15 +30,15 @@ export function Hero() {
           {/* Content */}
           <div className="max-w-2xl text-center lg:text-left mx-auto lg:mx-0">
             <div className="inline-flex items-center gap-3 mb-6">
-              <span className="h-px w-8 bg-brand-primary hidden sm:block"></span>
-              <span className="text-brand-primary font-bold text-xs uppercase tracking-[0.2em] font-heading">
+              <span className="h-px w-8 bg-black hidden sm:block"></span>
+              <span className="text-black font-bold text-xs uppercase tracking-[0.2em] font-heading">
                 Next Generation Nutrition
               </span>
             </div>
 
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-medium tracking-tight text-[#1D3557] leading-[1.1] font-heading mb-6">
               True Health,<br />
-              <span className="text-brand-primary italic font-light">Simplified.</span>
+              <span className="text-black italic font-light">Simplified.</span>
             </h1>
 
             <p className="text-base sm:text-xl text-[#1D3557]/70 font-sans font-light leading-relaxed mb-10 max-w-lg mx-auto lg:mx-0">
@@ -57,15 +57,15 @@ export function Hero() {
 
             <div className="mt-12 pt-8 border-t border-[#252422]/10 flex flex-wrap gap-4 sm:gap-8 items-center justify-center lg:justify-start text-center sm:text-left">
               <div className="flex items-center gap-2">
-                <SvgCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#82C49C]" strokeWidth={1.5} />
+                <SvgCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-stone-400" strokeWidth={1.5} />
                 <span className="text-[12px] sm:text-sm font-medium text-[#252422]/80">Third-Party Tested</span>
               </div>
               <div className="flex items-center gap-2">
-                <SvgCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#82C49C]" strokeWidth={1.5} />
+                <SvgCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-stone-400" strokeWidth={1.5} />
                 <span className="text-[12px] sm:text-sm font-medium text-[#252422]/80">Zero Fillers</span>
               </div>
               <div className="flex items-center gap-2">
-                <SvgCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-[#82C49C]" strokeWidth={1.5} />
+                <SvgCheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-stone-400" strokeWidth={1.5} />
                 <span className="text-[12px] sm:text-sm font-medium text-[#252422]/80">Non-GMO</span>
               </div>
             </div>

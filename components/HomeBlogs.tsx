@@ -3,17 +3,13 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api, Blog, formatBase64Image } from "@/lib/api";
+import { SkeletonImage } from "@/components/ui/SkeletonImage";
 
 export function HomeBlogs({ initialBlogs }: { initialBlogs?: Blog[] }) {
     const [blogs, setBlogs] = useState<Blog[]>(initialBlogs || []);
     const [loading, setLoading] = useState(!initialBlogs);
 
-    const fallbacks = [
-        "https://images.unsplash.com/photo-1542318047-920fca5df6da?q=80&w=2000&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1532187863486-abf322ce36c9?q=80&w=2000&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1579722821273-0f6c77042f02?q=80&w=2000&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1512067651074-9f2d01da918a?q=80&w=2000&auto=format&fit=crop"
-    ];
+    const fallbacks: string[] = [];
 
     useEffect(() => {
         if (!initialBlogs) {
@@ -59,13 +55,9 @@ export function HomeBlogs({ initialBlogs }: { initialBlogs?: Blog[] }) {
                             <div key={blog.id || idx} className="flex flex-col group">
                                 <Link href={`/blog/${blog.id}`} className="block overflow-hidden mb-6 rounded-sm">
                                     <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
-                                        <img
-                                            src={imgUrl}
+                                        <SkeletonImage
+                                            src={blog.image ? formatBase64Image(blog.image) : ""}
                                             alt={blog.title || "Blog Image"}
-                                            width={400}
-                                            height={300}
-                                            loading="lazy"
-                                            decoding="async"
                                             className="w-full h-full object-cover grayscale-[10%] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                                         />
                                     </div>

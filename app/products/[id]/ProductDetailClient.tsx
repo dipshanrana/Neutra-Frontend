@@ -12,8 +12,9 @@ import {
     RotateCcw, Plus, Minus, Check, Heart,
     Leaf, FlaskConical, Award, ExternalLink,
     HelpCircle, ChevronDown, BookOpen, Microscope, Activity,
-    Calendar, Clock, ArrowRight
+    Calendar, Clock, ArrowRight, X
 } from "lucide-react";
+import { SkeletonImage } from "@/components/ui/SkeletonImage";
 
 /* ── Helpers ──────────────────────────────────── */
 function ensureUrl(url: string): string {
@@ -127,6 +128,13 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
     const facts = product.supplementFacts ?? [];
     const howToUse = product.howToUse ?? [];
 
+    const ratingsDistribution = [5, 4, 3, 2, 1].map(stars => {
+        const count = reviews.filter(r => Math.round(r.stars) === stars).length;
+        const total = reviews.length || 43;
+        const percentage = reviews.length > 0 ? (count / reviews.length) * 100 : [75, 15, 5, 3, 2][5 - stars];
+        return { stars, count: reviews.length > 0 ? count : Math.round((total * percentage) / 100), percentage };
+    });
+
     return (
         <div className="flex-1 bg-[#FAF8F3] pt-20">
             {/* ── BREADCRUMB ─────────────────── */}
@@ -162,7 +170,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                         className={`relative w-20 lg:w-full aspect-square shrink-0 rounded-2xl overflow-hidden bg-white border-2 transition-all duration-300 ${isActive ? 'border-[#2A401E] shadow-[0_4px_12px_rgba(42,64,30,0.15)] ring-1 ring-[#2A401E]/20' : 'border-stone-100/80 hover:border-[#2A401E]/40'}`}
                                                     >
                                                         <div className="absolute inset-0 bg-[#FAF8F3]/50"></div>
-                                                        <img
+                                                        <SkeletonImage
                                                             src={src}
                                                             alt={`${product.name} thumbnail ${idx + 1}`}
                                                             className={`relative w-full h-full object-contain p-2 mix-blend-multiply transition-opacity duration-500 ease-out ${isActive ? 'opacity-100' : 'opacity-60 hover:opacity-100'}`}
@@ -189,12 +197,15 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                     {cat}
                                                 </div>
                                             </div>
-                                            <img
+                                            <SkeletonImage
                                                 src={img}
                                                 alt={product.name}
-                                                className={`w-full h-full object-cover mix-blend-multiply transition-transform duration-200 ease-out ${isHovered ? 'scale-[2.5]' : 'scale-100'}`}
-                                                style={{
-                                                    transformOrigin: isHovered ? `${zoomPos.x}% ${zoomPos.y}%` : 'center center'
+                                                className="w-full h-full object-cover mix-blend-multiply transition-transform duration-200 ease-out"
+                                                imageProps={{
+                                                    style: {
+                                                        transformOrigin: isHovered ? `${zoomPos.x}% ${zoomPos.y}%` : 'center center',
+                                                        transform: isHovered ? 'scale(2.5)' : 'scale(1)'
+                                                    }
                                                 }}
                                             />
                                         </div>
@@ -220,7 +231,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                 <div className="flex items-center justify-between">
                                                     <div className="flex items-center gap-1">
                                                         <span className="font-sans text-[13px] text-stone-500">By</span>
-                                                        <Link href={relatedBlog ? `/blog/${relatedBlog.id}` : "/blogs"} className="font-sans text-[13px] text-brand-primary font-medium hover:underline flex items-center gap-0.5">
+                                                        <Link href={relatedBlog ? `/blog/${relatedBlog.id}` : "/blogs"} className="font-sans text-[13px] text-stone-600 font-medium hover:underline flex items-center gap-0.5">
                                                             {product.name.split(' ')[0]} {product.name.split(' ')[1]} <ChevronRight className="w-3.5 h-3.5" />
                                                         </Link>
                                                     </div>
@@ -243,7 +254,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
 
                                             <div className="flex flex-col gap-3">
                                                 <div className="flex items-center justify-between">
-                                                    <div className="flex items-center gap-2.5">
+                                                    <div className="group relative flex items-center gap-2.5 cursor-pointer py-1">
                                                         <div className="flex items-center gap-0.5">
                                                             {[...Array(5)].map((_, i) => (
                                                                 <Star key={i} strokeWidth={0}
@@ -253,6 +264,56 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                                         <span className="font-sans text-[13px] font-medium text-[#252422]">
                                                             {avgRating ? avgRating.toFixed(1) : "4.8"} <span className="text-stone-400 font-normal ml-1">({reviews.length > 0 ? reviews.length : 43} Reviews)</span>
                                                         </span>
+
+                                                        {/* Tooltip Overlay */}
+                                                        <div className="absolute top-full left-0 mt-3 w-[320px] bg-white rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.15)] border border-stone-200 p-6 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform origin-top translate-y-2 group-hover:translate-y-0 cursor-default">
+                                                            {/* Close button UI */}
+                                                            <div className="absolute top-4 right-4 text-stone-400 hover:text-stone-600">
+                                                                <X className="w-5 h-5" />
+                                                            </div>
+
+                                                            <div className="flex items-center gap-2.5 mb-2">
+                                                                <div className="flex gap-0.5">
+                                                                    {[...Array(5)].map((_, i) => (
+                                                                        <Star key={i} strokeWidth={0} className={`w-4 h-4 ${i < Math.round(avgRating || 4.5) ? "fill-[#ffa41c]" : "fill-stone-200"}`} />
+                                                                    ))}
+                                                                </div>
+                                                                <span className="text-[17px] font-bold text-stone-900">{avgRating ? avgRating.toFixed(1) : "4.8"} out of 5</span>
+                                                            </div>
+                                                            
+                                                            <div className="text-[15px] text-stone-500 mb-6 px-1">
+                                                                {reviews.length > 0 ? reviews.length.toLocaleString() : "3,208"} global ratings
+                                                            </div>
+                                                            
+                                                            <div className="space-y-4">
+                                                                {ratingsDistribution.map((item) => (
+                                                                    <div key={item.stars} className="flex items-center gap-3 group/row">
+                                                                        <span className="text-[13px] font-medium text-[#007185] w-12 hover:underline cursor-pointer">{item.stars} star</span>
+                                                                        <div className="flex-1 h-5 bg-white rounded-[2px] overflow-hidden border border-stone-300">
+                                                                            <div 
+                                                                                className="h-full bg-[#ffa41c] transition-all duration-700 ease-out border-r border-[#de7921]"
+                                                                                style={{ width: `${item.percentage}%` }}
+                                                                            />
+                                                                        </div>
+                                                                        <span className="text-[13px] font-medium text-[#007185] w-10 text-right hover:underline cursor-pointer">
+                                                                            {Math.round(item.percentage)}%
+                                                                        </span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                            
+                                                            <div className="mt-8 pt-6 border-t border-stone-100 text-center">
+                                                                <button 
+                                                                    onClick={() => {
+                                                                        const section = document.getElementById('reviews');
+                                                                        if (section) section.scrollIntoView({ behavior: 'smooth' });
+                                                                    }}
+                                                                    className="text-[14px] text-[#007185] font-medium hover:text-[#c45500] hover:underline flex items-center justify-center w-full gap-1"
+                                                                >
+                                                                    See customer reviews <ChevronRight className="w-4 h-4 mt-0.5" />
+                                                                </button>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
                                                     {freebies.length > 0 && (
@@ -373,7 +434,7 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                     <div className="lg:w-1/3">
                                         <div className="flex items-center gap-4 mb-6">
                                             <div className="w-12 h-12 rounded-2xl bg-white border border-stone-200 flex items-center justify-center shadow-sm">
-                                                <RotateCcw className="w-6 h-6 text-brand-primary" />
+                                                <RotateCcw className="w-6 h-6 text-stone-500" />
                                             </div>
                                             <div>
                                                 <span className="font-sans text-[11px] text-stone-400 uppercase tracking-[0.3em] block mb-1">Guidance</span>
@@ -398,11 +459,11 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                         </div>
                                         <div className="bg-white rounded-3xl p-8 border border-stone-200/60 flex flex-col justify-center relative overflow-hidden shadow-sm">
                                             <div className="absolute top-0 right-0 p-4 opacity-10">
-                                                <FlaskConical className="w-24 h-24 text-brand-primary" />
+                                                <FlaskConical className="w-24 h-24 text-stone-500" />
                                             </div>
                                             <div className="flex items-center gap-3 mb-5">
                                                 <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm">
-                                                    <ShieldCheck className="w-5 h-5 text-brand-primary" />
+                                                    <ShieldCheck className="w-5 h-5 text-stone-500" />
                                                 </div>
                                                 <span className="font-sans text-[#2A401E] text-lg font-medium">Pro Tip</span>
                                             </div>
@@ -495,11 +556,14 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                     </div>
                                     <div className="divide-y divide-stone-100">
                                         {benefits.map((b, i) => (
-                                            <div key={i} className="flex items-start gap-3 px-6 py-3.5 hover:bg-[#FAFAF8] transition-colors">
-                                                <span className="font-sans text-[10px] text-stone-300 w-5 shrink-0 mt-0.5 tabular-nums">{String(i + 1).padStart(2, "00")}</span>
-                                                <div className="min-w-0">
-                                                    <p className="font-heading text-[#2A401E] text-[16px] leading-snug mb-0.5">{b.nutrientName}</p>
-                                                    <p className="font-sans text-stone-400 text-[13px] leading-relaxed">{b.benefitDescription}</p>
+                                            <div key={i} className="flex items-start gap-3 px-6 py-4 hover:bg-[#FAFAF8] transition-colors">
+                                                <div 
+                                                    className="w-8 h-8 shrink-0 mt-0.5 text-stone-800 flex items-center justify-center"
+                                                    dangerouslySetInnerHTML={{ __html: b.svg }}
+                                                />
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="font-heading text-[#2A401E] text-[16px] leading-snug mb-0.5 font-medium">{b.nutrientName}</p>
+                                                    <p className="font-sans text-stone-400 text-[13px] leading-relaxed line-clamp-2">{b.benefitDescription}</p>
                                                 </div>
                                             </div>
                                         ))}
@@ -511,10 +575,10 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
 
                     {/* REVIEWS */}
                     {reviews.length > 0 && (
-                        <div className="pt-8 border-t border-stone-100">
+                        <div id="reviews" className="pt-8 border-t border-stone-100">
                             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
                                 <div>
-                                    <span className="font-sans text-[11px] font-bold text-brand-primary uppercase tracking-[0.3em] block mb-3">Community Feedback</span>
+                                    <span className="font-sans text-[11px] font-bold text-stone-400 uppercase tracking-[0.3em] block mb-3">Community Feedback</span>
                                     <h2 className="font-heading text-[#2A401E] text-4xl font-medium tracking-tight">Verified Reviews</h2>
                                 </div>
                                 <div className="text-center sm:text-right">
@@ -609,7 +673,11 @@ export function ProductDetailClient({ initialProduct, initialRelated, initialBlo
                                             {relSave > 0 && <div className="absolute top-0 left-0 bg-[#b91c1c] text-white font-sans text-[11px] font-bold px-3 pt-1.5 pb-1 uppercase tracking-wider z-10">SALE</div>}
                                             <button className="absolute bottom-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center text-[#522c83] hover:text-[#b91c1c] transition-colors shadow-[0_2px_8px_rgba(0,0,0,0.08)] z-10" onClick={(e) => e.preventDefault()}><Heart className="w-4 h-4" /></button>
                                             <div className="relative w-full h-full">
-                                                <img src={getProductMainImage(p)} alt={p.name} className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm" />
+                                                <SkeletonImage 
+                                                    src={getProductMainImage(p)} 
+                                                    alt={p.name} 
+                                                    className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm" 
+                                                />
                                             </div>
                                         </div>
                                         <div className="flex flex-col flex-1 px-4 pb-4 text-left">

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { productApi, Product, getProductMainImage } from "@/lib/api";
 import { useCurrency } from "@/components/CurrencyContext";
 import { Heart, Star } from "lucide-react";
+import { SkeletonImage } from "@/components/ui/SkeletonImage";
 
 const SvgArrowUpRight = ({ className }: { className?: string }) => (
     <svg viewBox="0 0 24 24" fill="none" className={className} stroke="currentColor">
@@ -90,31 +91,16 @@ export function Products({ initialProducts }: { initialProducts?: Product[] }) {
                                         </button>
 
                                         <div className="relative w-full h-full transition-transform duration-500 group-hover:scale-105">
-                                            {imageSrc.startsWith("http") || imageSrc.startsWith("data:") ? (
-                                                <img
-                                                    src={imageSrc}
-                                                    alt={p.name || "Product Image"}
-                                                    width={400}
-                                                    height={400}
-                                                    loading="lazy"
-                                                    decoding="async"
-                                                    className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm"
-                                                />
-                                            ) : (
-                                                <Image
-                                                    src={imageSrc}
-                                                    width={400}
-                                                    height={400}
-                                                    alt={p.name || "Product Image"}
-                                                    className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm"
-                                                    loading="lazy"
-                                                />
-                                            )}
+                                            <SkeletonImage
+                                                src={imageSrc}
+                                                alt={p.name || "Product Image"}
+                                                className="w-full h-full object-cover mix-blend-multiply drop-shadow-sm"
+                                            />
                                         </div>
                                     </div>
 
                                     <div className="flex flex-col flex-1 px-4 pb-4">
-                                        <h3 className="font-sans text-[#166534] text-[16px] leading-snug mb-1 group-hover:underline decoration-[#166534]/30 transition-all font-medium">
+                                        <h3 className="font-sans text-black text-[16px] leading-snug mb-1 group-hover:underline transition-all font-medium">
                                             {p.name}
                                         </h3>
 

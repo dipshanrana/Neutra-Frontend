@@ -237,7 +237,7 @@ export const formatBase64Image = formatImageUrl;
  * Prioritizes: Featured[0] > SinglePack > Images[0] > Fallback
  */
 export function getProductMainImage(product?: Product | null): string {
-  if (!product) return "/multi-vit.png";
+  if (!product) return "";
 
   // 1. Single Pack is the most accurate primary image
   if (product.singleProductImage && product.singleProductImage.trim() !== "") {
@@ -256,14 +256,14 @@ export function getProductMainImage(product?: Product | null): string {
     if (firstImg) return formatBase64Image(firstImg);
   }
 
-  return "/multi-vit.png";
+  return "";
 }
 
 /**
  * Returns a unique list of all displayable images for a product gallery.
  */
 export function getProductAllImages(product?: Product | null): string[] {
-  if (!product) return ["/multi-vit.png"];
+  if (!product) return [];
 
   const all: string[] = [];
 
@@ -295,7 +295,7 @@ export function getProductAllImages(product?: Product | null): string[] {
     });
   }
 
-  return all.length > 0 ? all : ["/multi-vit.png"];
+  return all;
 }
 
 export const authApi = {
@@ -524,6 +524,12 @@ export const productApi = {
 
   searchByCategoryBadge: (badge: string, category: string) =>
     apiFetch<Product[]>(`/products/search/category-badge?badge=${encodeURIComponent(badge)}&category=${encodeURIComponent(category)}`),
+
+  bulkCreate: (products: any[]) =>
+    apiFetch<Product[]>('/products/bulk', {
+      method: 'POST',
+      body: JSON.stringify(products),
+    }, true),
 };
 
 // ==================== Blog APIs ====================

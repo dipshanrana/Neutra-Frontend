@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -91,13 +91,21 @@ export default function AdminProducts() {
                             <p className="text-sm text-white/40">{products.length} product{products.length !== 1 ? 's' : ''}</p>
                         </div>
                     </div>
-                    <Link
-                        href="/admin/products/new"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#38A36D] text-white rounded-lg hover:bg-[#38A36D]/80 transition-colors font-medium text-sm"
-                    >
-                        <SvgPlus className="w-4 h-4" />
-                        Add New
-                    </Link>
+                    <div className="flex gap-2">
+                        <Link
+                            href="/admin/products/bulk"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 border border-white/10 text-white rounded-lg hover:bg-white/10 transition-colors font-medium text-sm"
+                        >
+                            Bulk Import
+                        </Link>
+                        <Link
+                            href="/admin/products/new"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#38A36D] text-white rounded-lg hover:bg-[#38A36D]/80 transition-colors font-medium text-sm"
+                        >
+                            <SvgPlus className="w-4 h-4" />
+                            Add New
+                        </Link>
+                    </div>
                 </div>
 
                 {error && (

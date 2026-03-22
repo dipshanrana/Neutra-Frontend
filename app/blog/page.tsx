@@ -9,16 +9,13 @@ import Link from "next/link";
 import { api, Blog, formatBase64Image } from "@/lib/api";
 import { Suspense } from "react";
 import { ArrowRight } from "lucide-react";
+import { SkeletonImage } from "@/components/ui/SkeletonImage";
 
 export default function BlogPage() {
     const [articles, setArticles] = useState<Blog[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const fallbacks = [
-        "https://images.unsplash.com/photo-1579722821273-0f6c77042f02?q=80&w=2000&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1532187863486-abf322ce36c9?q=80&w=2000&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1542318047-920fca5df6da?q=80&w=2000&auto=format&fit=crop"
-    ];
+    const fallbacks: string[] = [];
 
     useEffect(() => {
         const fetchBlogs = async () => {
@@ -90,7 +87,11 @@ export default function BlogPage() {
                                     <Link href={`/blog/${article.id}`} key={article.id || idx} className="group cursor-pointer flex flex-col h-full hover:-translate-y-2 transition-transform duration-500">
                                         <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden mb-6 bg-stone-100">
                                             <div className="absolute inset-0 bg-[#D4AF37]/20 group-hover:bg-transparent transition-colors duration-500 z-10 mix-blend-multiply"></div>
-                                            <img src={imgUrl} className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-700" alt={article.title} />
+                                            <SkeletonImage 
+                                                src={article.image ? formatBase64Image(article.image) : ""} 
+                                                className="w-full h-full object-cover scale-100 group-hover:scale-110 transition-transform duration-700" 
+                                                alt={article.title} 
+                                            />
                                             <div className="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-[9px] font-black uppercase tracking-widest text-[#252422]">
                                                 {article.author || "Research"}
                                             </div>

@@ -15,7 +15,7 @@ export function PreFooter() {
                     {/* Left Image (Hand with bottle - Minimalist ritual) */}
                     <div className="hidden lg:flex items-center justify-center relative h-full">
                         {/* Soft Mint Circle behind */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-100/40 rounded-full blur-[60px] pointer-events-none"></div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-stone-200/40 rounded-full blur-[60px] pointer-events-none"></div>
                         <img
                             src="/supplement_ritual_left.png"
                             alt="Wellness ritual"
@@ -37,7 +37,7 @@ export function PreFooter() {
 
                         <Link
                             href="/products"
-                            className="inline-block px-12 py-3.5 bg-[#1b3a32] text-white font-bold text-[13px] uppercase tracking-widest rounded-sm hover:bg-black hover:shadow-lg active:scale-[0.98] transition-all duration-300"
+                            className="inline-block px-12 py-3.5 bg-stone-800 text-white font-bold text-[13px] uppercase tracking-widest rounded-sm hover:bg-black hover:shadow-lg active:scale-[0.98] transition-all duration-300"
                         >
                             Explore now
                         </Link>
@@ -46,7 +46,7 @@ export function PreFooter() {
                     {/* Right Image (Hand with bottle - Premium feel) */}
                     <div className="hidden lg:flex items-center justify-center relative h-full">
                         {/* Soft Mint Circle behind */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-100/40 rounded-full blur-[60px] pointer-events-none"></div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-stone-200/40 rounded-full blur-[60px] pointer-events-none"></div>
                         <img
                             src="/supplement_ritual_right.png"
                             alt="Premium vitamins"

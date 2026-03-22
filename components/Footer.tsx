@@ -55,21 +55,21 @@ export function Footer() {
           {/* Brand column */}
           <div className="md:col-span-5">
             <span className="text-[2rem] font-medium tracking-tight font-heading block mb-6 text-white">
-              Nutri<span className="text-[#38A36D]">Core</span>
+              NutriCore
             </span>
             <p className="text-white/60 font-sans font-light leading-relaxed max-w-sm mb-12 text-sm">
               Formulating the highest quality nutritional supplements, delivered straight to your door. Backed by science, obsessed with purity.
             </p>
 
             <div className="flex flex-col gap-2 w-full max-w-sm">
-              <span className="text-xs uppercase tracking-[0.15em] text-[#38A36D] font-heading font-bold mb-2">Join our Newsletter</span>
-              <div className="flex items-center border-b border-white/10 pb-3 focus-within:border-[#38A36D] transition-colors group">
+              <span className="text-xs uppercase tracking-[0.15em] text-white font-heading font-bold mb-2">Join our Newsletter</span>
+              <div className="flex items-center border-b border-white/10 pb-3 focus-within:border-white transition-colors group">
                 <input
                   type="email"
                   placeholder="Subscribe for insider updates"
                   className="bg-transparent border-none outline-none text-white w-full placeholder:text-white/20 font-sans text-sm font-light"
                 />
-                <button className="text-white/30 group-focus-within:text-[#38A36D] hover:text-[#4ADE80] transition-colors">
+                <button className="text-white/30 group-focus-within:text-white hover:text-white transition-colors">
                   <SvgArrowRight className="w-5 h-5" strokeWidth={1.5} />
                 </button>
               </div>
@@ -80,12 +80,12 @@ export function Footer() {
           <div className="md:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8">
 
             <div>
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#38A36D] font-heading mb-8">Shop</h4>
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-white font-heading mb-8">Shop</h4>
               <ul className="space-y-4 font-sans text-sm font-light">
                 {categories.length > 0 ? (
                   categories.slice(0, 4).map((cat) => (
                     <li key={cat.id}>
-                      <Link href={`/products?category=${encodeURIComponent(cat.name)}`} className="hover:text-[#4ADE80] transition-colors text-white/70">
+                      <Link href={`/products?category=${encodeURIComponent(cat.name)}`} className="hover:text-white transition-colors text-white/70">
                         {cat.name}
                       </Link>
                     </li>
@@ -99,22 +99,22 @@ export function Footer() {
             </div>
 
             <div>
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#38A36D] font-heading mb-8">Learn</h4>
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-white font-heading mb-8">Learn</h4>
               <ul className="space-y-4 font-sans text-sm font-light">
-                <li><a href="#" className="hover:text-[#4ADE80] transition-colors text-white/70">Our Ingredients</a></li>
-                <li><a href="#" className="hover:text-[#4ADE80] transition-colors text-white/70">Clinical Studies</a></li>
-                <li><a href="#" className="hover:text-[#4ADE80] transition-colors text-white/70">Sustainability</a></li>
-                <li><a href="#" className="hover:text-[#4ADE80] transition-colors text-white/70">Blog</a></li>
+                <li><a href="#" className="hover:text-white transition-colors text-white/70">Our Ingredients</a></li>
+                <li><a href="#" className="hover:text-white transition-colors text-white/70">Clinical Studies</a></li>
+                <li><a href="#" className="hover:text-white transition-colors text-white/70">Sustainability</a></li>
+                <li><a href="#" className="hover:text-white transition-colors text-white/70">Blog</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#38A36D] font-heading mb-8">Support</h4>
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.15em] text-white font-heading mb-8">Support</h4>
               <ul className="space-y-4 font-sans text-sm font-light">
-                <li><a href="#" className="hover:text-[#4ADE80] transition-colors text-white/70">FAQ</a></li>
-                <li><a href="#" className="hover:text-[#4ADE80] transition-colors text-white/70">Shipping</a></li>
-                <li><a href="#" className="hover:text-[#4ADE80] transition-colors text-white/70">Returns</a></li>
-                <li><a href="#" className="hover:text-[#4ADE80] transition-colors text-white/70">Contact</a></li>
+                <li><a href="#" className="hover:text-white transition-colors text-white/70">FAQ</a></li>
+                <li><a href="#" className="hover:text-white transition-colors text-white/70">Shipping</a></li>
+                <li><a href="#" className="hover:text-white transition-colors text-white/70">Returns</a></li>
+                <li><a href="#" className="hover:text-white transition-colors text-white/70">Contact</a></li>
               </ul>
             </div>
 
@@ -125,13 +125,13 @@ export function Footer() {
         <div className="flex flex-col-reverse md:flex-row justify-between items-center border-t border-white/5 pt-5 text-xs text-white/20 font-sans font-light">
           <p className="mt-6 md:mt-0">© 2026 NutriCore Technologies. All rights reserved.</p>
           <div className="flex gap-8">
-            <a href="#" className="hover:text-[#4ADE80] transition-colors" aria-label="Instagram">
+            <a href="#" className="hover:text-white transition-colors" aria-label="Instagram">
               <SvgInstagram className="w-4 h-4" strokeWidth={1.5} />
             </a>
-            <a href="#" className="hover:text-[#4ADE80] transition-colors" aria-label="Twitter">
+            <a href="#" className="hover:text-white transition-colors" aria-label="Twitter">
               <SvgTwitter className="w-4 h-4" strokeWidth={1.5} />
             </a>
-            <a href="#" className="hover:text-[#4ADE80] transition-colors" aria-label="LinkedIn">
+            <a href="#" className="hover:text-white transition-colors" aria-label="LinkedIn">
               <SvgLinkedin className="w-4 h-4" strokeWidth={1.5} />
             </a>
           </div>

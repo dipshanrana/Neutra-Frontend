@@ -4,6 +4,8 @@ import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
+import { SkeletonImage } from "@/components/ui/SkeletonImage";
+import { IconPicker } from "@/components/ui/IconPicker";
 import { api, Product, Category, ApiError, API_BASE_URL, getAdminToken, formatBase64Image } from "@/lib/api";
 
 const SvgBack = ({ className }: { className?: string }) => (
@@ -352,13 +354,24 @@ export default function ProductForm() {
                             ))}
                         </select>
 
-                        <p className="text-xs text-white/30 mt-3 mb-2">Or create a new category:</p>
                         <input
                             type="text"
                             value={formData.categoryName}
                             onChange={(e) => setFormData({ ...formData, categoryName: e.target.value, categoryId: "" })}
-                            className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#38A36D] transition-colors text-white placeholder-white/20"
+                            className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#38A36D] transition-colors text-white placeholder-white/20 mb-3"
                             placeholder="Category Name"
+                        />
+                        <p className="text-xs text-white/30 mb-2">Category SVG (for new categories):</p>
+                        <input
+                            type="text"
+                            value={formData.categorySvg}
+                            onChange={(e) => setFormData({ ...formData, categorySvg: e.target.value })}
+                            className="w-full px-5 py-4 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#38A36D] transition-colors text-white placeholder-white/20"
+                            placeholder="Category SVG Icon Code"
+                        />
+                        <IconPicker 
+                            currentSvg={formData.categorySvg} 
+                            onSelect={(svg) => setFormData({ ...formData, categorySvg: svg })} 
                         />
                     </div>
 
@@ -536,7 +549,9 @@ export default function ProductForm() {
                                     >
                                         {(formData as any)[item.key] ? (
                                             <>
-                                                <img src={formatBase64Image((formData as any)[item.key]) || "/multi-vit.png"} className="w-full h-full object-cover" alt={item.label} />
+                                                <div className="w-full h-full rounded-2xl bg-white/5 flex items-center justify-center overflow-hidden border border-white/10">
+                                                    <SkeletonImage src={formatBase64Image((formData as any)[item.key]) || ""} className="w-full h-full object-cover" alt={item.label} />
+                                                </div>
                                                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                                                     <span className="text-[10px] font-bold text-white uppercase tracking-widest">Change</span>
                                                 </div>
@@ -583,7 +598,9 @@ export default function ProductForm() {
                                     >
                                         {formData.featuredImages[i] ? (
                                             <>
-                                                <img src={formatBase64Image(formData.featuredImages[i]) || "/multi-vit.png"} className="w-full h-full object-cover" alt="Featured" />
+                                                <div className="w-full h-full rounded-xl bg-white/5 flex items-center justify-center overflow-hidden border border-white/10">
+                                                    <SkeletonImage src={formatBase64Image(formData.featuredImages[i]) || ""} className="w-full h-full object-cover" alt="Featured" />
+                                                </div>
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation();
@@ -652,6 +669,14 @@ export default function ProductForm() {
                                         }}
                                         className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg focus:outline-none focus:border-[#38A36D] transition-colors text-sm text-white placeholder-white/20"
                                         placeholder="SVG Icon Code (<svg>...</svg>)"
+                                    />
+                                    <IconPicker 
+                                        currentSvg={benefit.svg} 
+                                        onSelect={(svg) => {
+                                            const newBenefits = [...formData.benefits];
+                                            newBenefits[index].svg = svg;
+                                            setFormData(prev => ({ ...prev, benefits: newBenefits }));
+                                        }} 
                                     />
                                     <input
                                         type="text"

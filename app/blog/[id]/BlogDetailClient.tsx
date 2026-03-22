@@ -29,15 +29,15 @@ export function BlogDetailClient({ initialArticle, initialRelated }: { initialAr
             {/* Back Navigation */}
             <div className="bg-white border-b border-stone-200 sticky top-0 z-40">
                 <div className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
-                    <Link href="/blog" className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-stone-400 hover:text-brand-primary transition-colors">
+                    <Link href="/blog" className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-stone-400 hover:text-stone-600 transition-colors">
                         <ArrowLeft className="w-4 h-4" />
                         Back to Journal
                     </Link>
                     <div className="flex items-center gap-4 hidden sm:flex">
-                        <button className="w-8 h-8 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:text-brand-primary hover:border-emerald-200 transition-all">
+                        <button className="w-8 h-8 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:text-stone-600 hover:border-stone-300 transition-all">
                             <Share2 className="w-3.5 h-3.5" />
                         </button>
-                        <button className="w-8 h-8 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:text-brand-primary hover:border-emerald-200 transition-all">
+                        <button className="w-8 h-8 rounded-full border border-stone-200 flex items-center justify-center text-stone-400 hover:text-stone-600 hover:border-stone-300 transition-all">
                             <BookmarkPlus className="w-4 h-4" />
                         </button>
                     </div>
@@ -47,7 +47,7 @@ export function BlogDetailClient({ initialArticle, initialRelated }: { initialAr
             {/* Hero Section */}
             <article className="flex-1 bg-white">
                 <div className="max-w-4xl mx-auto px-6 pt-16 lg:pt-24 pb-12 text-center">
-                    <span className="inline-block text-[10px] font-black uppercase tracking-[0.3em] text-brand-primary bg-emerald-50 px-4 py-1.5 rounded-full mb-8">
+                    <span className="inline-block text-[10px] font-black uppercase tracking-[0.3em] text-black bg-stone-100 px-4 py-1.5 rounded-full mb-8">
                         Research Paper
                     </span>
                     <h1 className="text-4xl sm:text-5xl md:text-6xl font-heading font-medium text-[#252422] tracking-tight leading-[1.1] mb-10 text-pretty">
@@ -110,7 +110,7 @@ export function BlogDetailClient({ initialArticle, initialRelated }: { initialAr
                             <span className="text-[10px] font-black uppercase tracking-[0.2em] text-stone-400">SHARE:</span>
                             <div className="flex gap-2">
                                 {['twitter', 'facebook', 'linkedin'].map(platform => (
-                                    <div key={platform} className="w-10 h-10 rounded-full bg-stone-50 border border-stone-200 flex items-center justify-center hover:bg-emerald-50 hover:border-emerald-200 hover:text-brand-primary transition-colors cursor-pointer">
+                                    <div key={platform} className="w-10 h-10 rounded-full bg-stone-50 border border-stone-200 flex items-center justify-center hover:bg-stone-100 hover:border-stone-400 hover:text-black transition-colors cursor-pointer">
                                         <Share2 className="w-4 h-4" />
                                     </div>
                                 ))}
@@ -136,8 +136,8 @@ export function BlogDetailClient({ initialArticle, initialRelated }: { initialAr
                                             <img src={relImg} className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" alt={rel.title} />
                                         </div>
                                         <div className="p-6">
-                                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary mb-3 block">RELATED REVIEW</span>
-                                            <h3 className="text-xl font-heading font-medium text-[#252422] leading-tight group-hover:text-brand-secondary transition-colors line-clamp-2">
+                                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-black mb-3 block">RELATED REVIEW</span>
+                                            <h3 className="text-xl font-heading font-medium text-[#252422] leading-tight group-hover:text-stone-500 transition-colors line-clamp-2">
                                                 {rel.title}
                                             </h3>
                                         </div>

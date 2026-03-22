@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
@@ -8,17 +8,14 @@ import { PreFooter } from "@/components/PreFooter";
 import Link from "next/link";
 import { api, Information, formatBase64Image } from "@/lib/api";
 import { ArrowLeft, Binary, Lock, ShieldCheck, Activity, Fingerprint, ExternalLink, Download } from "lucide-react";
+import { SkeletonImage } from "@/components/ui/SkeletonImage";
 
 export default function InformationDetailPage() {
     const params = useParams();
     const [info, setInfo] = useState<Information | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const fallbacks = [
-        "/lab_microscope_macro_1772623339466.png",
-        "/molecular_formula_blur_1772623357430.png",
-        "/bio_data_visualization_1772623380441.png"
-    ];
+    const fallbacks: string[] = [];
 
     useEffect(() => {
         const fetchInfoDetail = async () => {
@@ -66,7 +63,7 @@ export default function InformationDetailPage() {
         );
     }
 
-    const imgUrl = info.image ? formatBase64Image(info.image) : fallbacks[(info.id || 0) % fallbacks.length];
+    const imgUrl = info.image ? formatBase64Image(info.image) : "";
     const catName = typeof info.category === 'string' ? info.category : info.category?.name || "Uncategorized";
 
     return (
@@ -157,7 +154,7 @@ export default function InformationDetailPage() {
                         <div className="space-y-12">
                             {/* Main Specimen Visual */}
                             <div className="rounded-[3rem] overflow-hidden bg-stone-100 shadow-[0_40px_80px_rgba(0,0,0,0.08)] border border-stone-200 aspect-[16/9] relative group">
-                                <img
+                                <SkeletonImage
                                     src={imgUrl}
                                     alt="Specimen view"
                                     className="w-full h-full object-cover grayscale-[0.2] transition-all duration-[2000ms] group-hover:scale-105"

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { categoryApi, formatImageUrl } from "@/lib/api";
+import { SkeletonImage } from "@/components/ui/SkeletonImage";
 import Link from "next/link";
 
 export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
@@ -60,7 +61,7 @@ export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 gap-y-16">
                     {displayCategories.map((cat, index) => {
                         const hasBadge = !!cat.badge;
-                        const imgSrc = formatImageUrl(cat.image) || "/multi-vit.png";
+                        const imgSrc = formatImageUrl(cat.image) || "";
 
                         return (
                             <Link
@@ -74,15 +75,13 @@ export function Categories({ hideHeader = false }: { hideHeader?: boolean }) {
                                     <div className="absolute bottom-0 left-0 right-0 h-[10px] bg-[#E21837] z-10"></div>
 
                                     {/* Category Image - Large, overlaps the bottom, starts behind badge */}
-                                    <img
+                                    <SkeletonImage
                                         src={imgSrc}
                                         alt={cat.name || "Category Image"}
-                                        width={500}
-                                        height={400}
-                                        loading="lazy"
-                                        decoding="async"
-                                        className="absolute left-1/2 -translate-x-1/2 w-[125%] max-w-none h-[140%] object-contain object-bottom group-hover:scale-[1.04] transition-transform duration-500 will-change-transform z-20 pointer-events-none drop-shadow-[0_20px_20px_rgba(0,0,0,0.5)]"
-                                        style={{ bottom: '-25%' }}
+                                        className="absolute left-1/2 -translate-x-1/2 w-[125%] max-w-none h-[140%] group-hover:scale-[1.04] transition-transform duration-500 will-change-transform z-20 pointer-events-none drop-shadow-[0_20px_20px_rgba(0,0,0,0.5)]"
+                                        imageProps={{
+                                            style: { bottom: '-25%', objectFit: 'contain', objectPosition: 'bottom' }
+                                        }}
                                     />
 
                                     {/* Red Badge - Top Right, Overlaps everything (z-30) */}
